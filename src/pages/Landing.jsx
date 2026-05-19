@@ -684,6 +684,12 @@ function LandingNav() {
               className={`w-9 h-9 flex items-center justify-center rounded-xl transition-colors ${scrolled ? 'border border-gray-200 text-gray-700' : 'bg-white/15 text-white border border-white/30'}`}>
               <Search size={16}/>
             </button>
+            {user && (
+              <button onClick={logout}
+                className={`px-3 h-9 text-sm font-semibold rounded-xl transition-colors ${scrolled ? 'border border-gray-200 text-gray-600' : 'bg-white/15 text-white border border-white/30'}`}>
+                Dil
+              </button>
+            )}
             <button onClick={() => setOpen(!open)}
               className={`w-9 h-9 flex items-center justify-center rounded-xl transition-colors ${scrolled ? 'border border-gray-200 text-gray-700' : 'bg-white/15 text-white border border-white/30'}`}>
               {open ? <X size={18}/> : <Menu size={18}/>}
@@ -934,7 +940,7 @@ function HeroSection() {
           </div>
 
           {/* ── RIGHT: carousel ──────────────────────────────────── */}
-          <div className="hidden lg:flex flex-col items-center gap-6 relative">
+          <div className="flex flex-col items-center gap-6 relative mt-8 lg:mt-0">
 
             {/* Floating stat badges */}
             <div className="absolute -left-6 top-10 animate-badge flex items-center gap-2.5 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md z-10"
