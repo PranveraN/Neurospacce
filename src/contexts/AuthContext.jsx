@@ -176,7 +176,7 @@ export function AuthProvider({ children }) {
       }
 
       if (!res.ok || body.error) {
-        const raw = body.error_description || body.error_code || body.error || ''
+        const raw = body.error_description || body.error_code || body.error || body.message || body.msg || ''
         const msg =
           raw.includes('Invalid login credentials') || raw.includes('invalid_credentials')
             ? 'Email ose fjalëkalim i gabuar'
