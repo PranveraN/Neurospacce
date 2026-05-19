@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import {
   Mail, Eye, EyeOff, UserX, Brain, Shield, Zap, User,
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { useMood } from '../contexts/MoodContext'
 import { useAuth, validateSignup, validatePassword } from '../contexts/AuthContext'
+import { supabase } from '../lib/supabase'
 import { AvatarDisplay, MinimalistAvatar, CreativeAvatar, FuturisticAvatar } from '../components/Avatar'
 
 const FEATURES = [
@@ -77,6 +78,28 @@ export default function Auth() {
   const fileRef                      = useRef(null)
   const [resetEmail,  setResetEmail] = useState('')
   const [resetSent,   setResetSent]  = useState(false)
+  const [newPass,     setNewPass]    = useState('')
+  const [newPassConf, setNewPassConf]= useState('')
+
+  // Detect PASSWORD_RECOVERY event when user clicks reset link in email
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') setStep('newpass')
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
+  async function handleNewPassword(e) {
+    e.preventDefault()
+    if (newPass !== newPassConf) { setErrors({ newPass: 'Fjalëkalimet nuk përputhen' }); return }
+    const pwErrors = validatePassword(newPass)
+    if (pwErrors.length) { setErrors({ newPass: pwErrors[0] }); return }
+    setLoad(true)
+    const { error } = await supabase.auth.updateUser({ password: newPass })
+    setLoad(false)
+    if (error) { setServErr(error.message); return }
+    navigate('/home', { replace: true })
+  }
 
   function field(key, val) {
     setForm(f => ({ ...f, [key]: val }))
@@ -356,6 +379,66 @@ export default function Auth() {
               <p className="text-xs text-gray-400 mt-3">
                 Nuk e gjetët emailin? Kontrolloni dosjen Spam.
               </p>
+            </div>
+
+          ) : step === 'newpass' ? (
+          /* ════════════════════════════════════════
+              STEP — SET NEW PASSWORD (from recovery link)
+          ════════════════════════════════════════ */
+            <div>
+              <h2 className="text-2xl font-black text-gray-900 mb-1">Fjalëkalim i ri</h2>
+              <p className="text-gray-500 text-sm mb-6">Vendos fjalëkalimin tënd të ri.</p>
+              {serverErr && (
+                <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-2xl px-4 py-3 mb-4">
+                  <AlertCircle size={15} className="text-red-500 shrink-0" />
+                  <p className="text-sm text-red-600 font-medium">{serverErr}</p>
+                </div>
+              )}
+              <form onSubmit={handleNewPassword} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1.5 ml-1">Fjalëkalimi i ri</label>
+                  <div className="relative">
+                    <input type={showPass ? 'text' : 'password'} value={newPass}
+                      onChange={e => { setNewPass(e.target.value); setErrors({}) }}
+                      placeholder="••••••••" autoFocus
+                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.newPass ? 'border-red-300' : 'border-gray-200 focus:border-purple-300'}`}
+                    />
+                    <button type="button" onClick={() => setShow(!showPass)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500">
+                      {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                  </div>
+                  <FieldError msg={errors.newPass} />
+                  <PasswordStrength password={newPass} />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1.5 ml-1">Konfirmo fjalëkalimin</label>
+                  <div className="relative">
+                    <input type={showConfirm ? 'text' : 'password'} value={newPassConf}
+                      onChange={e => { setNewPassConf(e.target.value); setErrors({}) }}
+                      placeholder="••••••••"
+                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${newPassConf && newPass === newPassConf ? 'border-green-300' : 'border-gray-200 focus:border-purple-300'}`}
+                    />
+                    <button type="button" onClick={() => setShowC(!showConfirm)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500">
+                      {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                  </div>
+                  {newPassConf && newPass === newPassConf && (
+                    <p className="flex items-center gap-1.5 text-xs text-green-500 mt-1.5 ml-1">
+                      <CheckCircle size={11} /> Fjalëkalimet përputhen
+                    </p>
+                  )}
+                </div>
+                <button type="submit" disabled={loading || !newPass || !newPassConf}
+                  className="w-full py-3.5 rounded-2xl text-white font-black text-sm shadow-md transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                  style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
+                  {loading
+                    ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke ruajtur...</>
+                    : 'Ruaj fjalëkalimin'
+                  }
+                </button>
+              </form>
             </div>
 
           ) : step === 'reset' ? (
