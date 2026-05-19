@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import {
   Brain, Zap, Timer, Battery, Shield, BookOpen, Trophy,
   Play, Pause, RotateCcw, Volume2, VolumeX, ChevronRight,
@@ -691,6 +692,7 @@ function _stopNodes(nodes) {
 }
 
 function DeepFocusSounds() {
+  const { isAnonymous } = useAuth()
   const [playing, setPlaying]     = useState(null)
   const [vol, setVol]             = useState(70)
   const [customFile, setCustomFile] = useState(null)
@@ -702,10 +704,41 @@ function DeepFocusSounds() {
   const mediaNodeRef = useRef(null)
 
   function getCtx() {
-    if (!ctxRef.current) ctxRef.current = new (window.AudioContext || window.webkitAudioContext)()
+    const AC = window.AudioContext || window.webkitAudioContext
+    if (!AC) return null
+    if (!ctxRef.current) ctxRef.current = new AC()
+    // iOS requires resume() in direct response to user gesture
     if (ctxRef.current.state === 'suspended') ctxRef.current.resume()
     return ctxRef.current
   }
+
+  // Unlock audio on first touch (iOS Safari)
+  useEffect(() => {
+    function unlock() {
+      const AC = window.AudioContext || window.webkitAudioContext
+      if (!AC) return
+      const ctx = ctxRef.current || new AC()
+      ctxRef.current = ctx
+      if (ctx.state === 'suspended') {
+        ctx.resume().then(() => {
+          // Play silent buffer to fully unlock iOS audio
+          const buf = ctx.createBuffer(1, 1, 22050)
+          const src = ctx.createBufferSource()
+          src.buffer = buf
+          src.connect(ctx.destination)
+          src.start(0)
+        })
+      }
+      document.removeEventListener('touchstart', unlock)
+      document.removeEventListener('touchend', unlock)
+    }
+    document.addEventListener('touchstart', unlock, { once: true })
+    document.addEventListener('touchend', unlock, { once: true })
+    return () => {
+      document.removeEventListener('touchstart', unlock)
+      document.removeEventListener('touchend', unlock)
+    }
+  }, [])
 
   function stopAll() {
     _stopNodes(nodesRef.current); nodesRef.current = null
@@ -815,7 +848,8 @@ function DeepFocusSounds() {
         </button>
       ))}
 
-      {/* ── Custom upload row ── */}
+      {/* ── Custom upload row — hidden for anonymous users ── */}
+      {!isAnonymous && <>
       <input ref={fileInputRef} type="file" accept="audio/*,video/mp4,.mp4,.mp3,.wav,.ogg,.m4a"
         className="hidden" onChange={handleFileChange} />
       <button onClick={handleCustomClick}
@@ -860,6 +894,7 @@ function DeepFocusSounds() {
           </div>
         )}
       </button>
+      </>}
 
       {/* ── Volume ── */}
       <div className="flex items-center gap-2 pt-1">
