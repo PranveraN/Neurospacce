@@ -1,0 +1,22 @@
+{
+  "name": "NeuroSpace — Mirëqenie mendore",
+  "short_name": "NeuroSpace",
+  "description": "Platforma e parë profesionale e shëndetit mendor në shqip. AI companion, gjurmim humori, psikologë të verifikuar.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07041a",
+  "theme_color": "#7c3aed",
+  "lang": "sq",
+  "dir": "ltr",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["health", "lifestyle", "medical"]
+}
