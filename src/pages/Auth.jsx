@@ -277,7 +277,7 @@ export default function Auth() {
           {/* Features */}
           <div className="space-y-3">
             {[
-              { icon: Brain,   text: 'AI Chat bazuar në CBT',              sub: 'Mbështetje 24/7' },
+              { icon: Brain,   text: 'NeuroAI të gjen ekspertin e duhur',    sub: 'Udhëzim i personalizuar' },
               { icon: Shield,  text: 'Hapësirë 100% private',              sub: 'E enkriptuar plotësisht' },
               { icon: Zap,     text: 'Teknika të provuara shkencërisht',   sub: 'Bazuar në kërkime' },
             ].map(({ icon: Icon, text, sub }) => (

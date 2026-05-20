@@ -774,7 +774,7 @@ function StarField() {
 const CAROUSEL_MODULES = [
   {
     icon: Brain, title: 'AI Assistant',
-    desc: 'Asistent i personalizuar AI për mirëqenien mendore, 24/7, pa gjykim.',
+    desc: 'NeuroAI të udhëzon tek eksperti i duhur dhe artikujt relevantë për situatën tënde.',
     color: '#a78bfa', grad: 'linear-gradient(135deg,#7c3aed,#6d28d9)',
     bg: 'rgba(124,58,237,0.18)', preview: 'chat',
     photo: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=700&q=80',

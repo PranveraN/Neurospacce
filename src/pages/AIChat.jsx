@@ -25,7 +25,7 @@ export default function AIChat() {
 
   const [messages, setMsgs]  = useState([{
     id:0, from:'ai', time:nowTime(),
-    text:'Mirë se vjen. Jam **NeuroAI** — shoku yt i shëndetit mendor. 🤍\n\nNuk jam terapis dhe nuk diagnostikoj — por jam këtu të dëgjoj, të ofroj teknika të bazuara shkencërisht dhe të të ndihmoj të gjesh mbështetjen e duhur.\n\nSi ndihesh sot?',
+    text:'Mirë se vjen! Jam **NeuroAI** — udhëzuesi yt i shëndetit mendor. 🤍\n\nNuk jam terapis dhe nuk zëvendësoj ekspertin — por jam këtu të të ndihmoj të gjesh **psikologun e duhur**, të të rekomandoj **artikujt relevantë** dhe të të udhëzoj drejt mbështetjes që ke nevojë.\n\nSi mund të të ndihmoj sot?',
     chips: null, articles: null, checkIn: false, crisis: false,
   }])
   const [input,      setInput]   = useState('')
@@ -211,7 +211,7 @@ export default function AIChat() {
               <h2 className="font-black text-white text-base leading-tight">NeuroAI</h2>
               <p className="text-[10px] text-white/35 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse"/>
-                Companion emocional · CBT/WHO bazuar
+                Udhëzues AI · Gjen ekspertin e duhur
               </p>
             </div>
           </div>
@@ -275,7 +275,7 @@ export default function AIChat() {
           style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.06)'}}>
           <Shield size={11} className="text-violet-400 shrink-0"/>
           <p className="text-[9px] text-white/25 leading-relaxed">
-            NeuroAI nuk diagnostikon. Për krizë thirr{' '}
+            NeuroAI nuk zëvendëson ekspertin. Për krizë thirr{' '}
             <a href="tel:112" className="font-black text-red-400/70 hover:text-red-300 transition-colors">112</a>
             {' '}ose{' '}
             <a href="tel:08004411" className="font-black text-pink-400/70 hover:text-pink-300 transition-colors">0800 44 11</a>.
