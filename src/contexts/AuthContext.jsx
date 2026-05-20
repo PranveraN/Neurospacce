@@ -101,7 +101,7 @@ export function AuthProvider({ children }) {
     // succeeds, so getSession() hangs forever and loading stays true → blank page.
     // Race it against a 3-second timeout so the app always becomes interactive.
     const timeout = new Promise(r =>
-      setTimeout(() => r({ data: { session: null } }), 3000)
+      setTimeout(() => r({ data: { session: null } }), 8000)
     )
     Promise.race([supabase.auth.getSession(), timeout])
       .then(async ({ data: { session } }) => {
@@ -216,9 +216,22 @@ export function AuthProvider({ children }) {
       setUser(u)
       setAccessToken(body.access_token)
 
-      // Persist session into supabase-js. We wait up to 4 s in case the internal
-      // lock is still held by the stale-token refresh — after that we return
-      // anyway because setUser(u) above already established the user state.
+      // Persist session to localStorage immediately so page reloads don't require
+      // re-login. supabase.auth.setSession() may timeout if the internal lock is
+      // still held — writing the raw token ourselves guarantees survival across
+      // Vite hot-reloads and dev-server restarts.
+      try {
+        localStorage.setItem('ns_auth', JSON.stringify({
+          access_token:  body.access_token,
+          refresh_token: body.refresh_token,
+          expires_in:    body.expires_in,
+          expires_at:    body.expires_at,
+          token_type:    'bearer',
+          user:          body.user,
+        }))
+      } catch {}
+
+      // Also tell supabase-js (best-effort, 4 s cap)
       try {
         await Promise.race([
           supabase.auth.setSession({
