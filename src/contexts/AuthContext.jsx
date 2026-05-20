@@ -1,6 +1,30 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 
+// ─── Read stored session from localStorage (synchronous, no network) ──────────
+function readStoredSession() {
+  try {
+    const raw = localStorage.getItem('ns_auth')
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch { return null }
+}
+
+// ─── Write session to localStorage ───────────────────────────────────────────
+function writeStoredSession(session) {
+  if (!session) return
+  try {
+    localStorage.setItem('ns_auth', JSON.stringify({
+      access_token:  session.access_token,
+      refresh_token: session.refresh_token,
+      expires_in:    session.expires_in,
+      expires_at:    session.expires_at,
+      token_type:    'bearer',
+      user:          session.user,
+    }))
+  } catch {}
+}
+
 const AuthContext = createContext(null)
 
 // ─── Validation helpers (kept for Auth.jsx form validation) ──────────────────
@@ -94,34 +118,61 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  // ── Silent session refresh (used by visibility + periodic checks) ────────────
+  const silentRefresh = useCallback(async () => {
+    try {
+      const { data: { session }, error } = await supabase.auth.refreshSession()
+      if (error || !session) return false
+      writeStoredSession(session)
+      const profile = await fetchProfileCached(session.user.id)
+      setUser(buildUser(session.user, profile))
+      setAccessToken(session.access_token)
+      return true
+    } catch { return false }
+  }, [])
+
   // ── Listen to Supabase auth state ─────────────────────────────────────────
   useEffect(() => {
-    // supabase.auth.getSession() acquires an internal lock and tries to refresh
-    // a stale token via network. After JWT key rotation that refresh never
-    // succeeds, so getSession() hangs forever and loading stays true → blank page.
-    // Race it against a 3-second timeout so the app always becomes interactive.
+    // Try getSession() with fallback to localStorage if it times out.
+    // This prevents logout caused by slow networks or mobile backgrounding.
     const timeout = new Promise(r =>
-      setTimeout(() => r({ data: { session: null } }), 8000)
+      setTimeout(() => r({ data: { session: null }, timedOut: true }), 10000)
     )
-    Promise.race([supabase.auth.getSession(), timeout])
-      .then(async ({ data: { session } }) => {
-        if (!session) {
-          setUser(null)
-          setLoading(false)
-          return
-        }
+
+    Promise.race([
+      supabase.auth.getSession().then(r => ({ ...r, timedOut: false })),
+      timeout,
+    ]).then(async ({ data: { session }, timedOut }) => {
+      if (session) {
+        writeStoredSession(session)
         const profile = await fetchProfileCached(session.user.id)
         setUser(buildUser(session.user, profile))
-        if (session.access_token) setAccessToken(session.access_token)
+        setAccessToken(session.access_token)
         setLoading(false)
-      })
+        return
+      }
 
-    // Then keep listening for changes (login, logout, token refresh)
+      // No session from Supabase — try localStorage fallback before logging out.
+      // This handles: timeout, slow network, mobile wake-up, Vite hot-reload.
+      const stored = readStoredSession()
+      if (stored?.user && stored?.refresh_token) {
+        // We have stored creds — restore user immediately, then refresh silently.
+        const profile = await fetchProfileCached(stored.user.id).catch(() => null)
+        setUser(buildUser(stored.user, profile))
+        setLoading(false)
+        // Refresh in background — updates token without interrupting the user
+        silentRefresh()
+        return
+      }
+
+      // Truly no session anywhere
+      setUser(null)
+      setLoading(false)
+    })
+
+    // Keep listening for auth events (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        // Only clear user on an EXPLICIT sign-out — never on !session alone.
-        // Back-navigation, token refresh timing, and INITIAL_SESSION can all
-        // fire with session=null without meaning the user logged out.
         if (event === 'SIGNED_OUT') {
           if (suppressNextSignedOut.current) {
             suppressNextSignedOut.current = false
@@ -129,18 +180,46 @@ export function AuthProvider({ children }) {
           }
           setUser(null)
           setAccessToken(null)
+          localStorage.removeItem('ns_auth')
           return
         }
         if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION')) {
+          writeStoredSession(session) // keep localStorage in sync on every refresh
           const profile = await fetchProfileCached(session.user.id)
           setUser(buildUser(session.user, profile))
-          if (session.access_token) setAccessToken(session.access_token)
+          setAccessToken(session.access_token)
         }
       }
     )
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [silentRefresh])
+
+  // ── Refresh when tab becomes visible (mobile wake-up, Alt+Tab) ───────────
+  useEffect(() => {
+    function onVisibilityChange() {
+      if (document.visibilityState !== 'visible') return
+      const stored = readStoredSession()
+      if (!stored?.expires_at) return
+      const secsLeft = stored.expires_at - Date.now() / 1000
+      // Refresh proactively if token expires within 10 minutes
+      if (secsLeft < 600) silentRefresh()
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [silentRefresh])
+
+  // ── Periodic refresh every 8 minutes (keeps long sessions alive) ──────────
+  useEffect(() => {
+    if (!user) return
+    const id = setInterval(() => {
+      const stored = readStoredSession()
+      if (!stored?.expires_at) return
+      const secsLeft = stored.expires_at - Date.now() / 1000
+      if (secsLeft < 600) silentRefresh()
+    }, 8 * 60 * 1000)
+    return () => clearInterval(id)
+  }, [user, silentRefresh])
 
   // ── LOGIN ─────────────────────────────────────────────────────────────────
   const login = useCallback(async ({ email, password }) => {
@@ -216,20 +295,8 @@ export function AuthProvider({ children }) {
       setUser(u)
       setAccessToken(body.access_token)
 
-      // Persist session to localStorage immediately so page reloads don't require
-      // re-login. supabase.auth.setSession() may timeout if the internal lock is
-      // still held — writing the raw token ourselves guarantees survival across
-      // Vite hot-reloads and dev-server restarts.
-      try {
-        localStorage.setItem('ns_auth', JSON.stringify({
-          access_token:  body.access_token,
-          refresh_token: body.refresh_token,
-          expires_in:    body.expires_in,
-          expires_at:    body.expires_at,
-          token_type:    'bearer',
-          user:          body.user,
-        }))
-      } catch {}
+      // Persist session to localStorage immediately (bypasses supabase-js lock)
+      writeStoredSession({ ...body, user: body.user })
 
       // Also tell supabase-js (best-effort, 4 s cap)
       try {
@@ -419,6 +486,7 @@ export function AuthProvider({ children }) {
       isAnonymous,
       goAnonymous,
       resetPassword,
+      silentRefresh,
       MOCK_DB: { users: allUsers, admins: [] },
     }}>
       {children}
