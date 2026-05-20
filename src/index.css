@@ -126,6 +126,17 @@ body {
   border-left: 0;
 }
 
+/* ---- form inputs: dark text on light backgrounds ---- */
+input:not([type='range']):not([type='checkbox']):not([type='radio']):not([type='file']):not([type='color']),
+textarea,
+select {
+  color: #111827;
+}
+input:not([type='range']):not([type='checkbox']):not([type='radio']):not([type='file'])::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
 /* ---- range slider custom ---- */
 input[type='range'] {
   -webkit-appearance: none;
