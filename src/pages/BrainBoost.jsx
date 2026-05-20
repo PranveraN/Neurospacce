@@ -744,19 +744,27 @@ function DeepFocusSounds() {
     stopAll()
     const ctx = getCtx()
     if (!ctx) return
-    // Resume synchronously within the click gesture — nodes scheduled
-    // via start() will play automatically once the context is running.
-    if (ctx.state !== 'running') ctx.resume()
-    const g = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
-    let nodes
-    if (key === 'rain')    nodes = _startRain(ctx, g)
-    if (key === 'brown')   nodes = _startBrown(ctx, g)
-    if (key === 'alpha')   nodes = _startAlpha(ctx, g)
-    if (key === 'lofi')    nodes = _startLofi(ctx, g)
-    if (key === 'library') nodes = _startLibrary(ctx, g)
-    nodesRef.current = { ...nodes, gain: g }
-    keyRef.current   = key
+    // Show playing state immediately so UI feels responsive
+    keyRef.current = key
     setPlaying(key)
+    const volSnap = vol  // capture before async gap
+    function startNodes() {
+      const g = ctx.createGain(); g.gain.value = volSnap / 100; g.connect(ctx.destination)
+      let nodes
+      if (key === 'rain')    nodes = _startRain(ctx, g)
+      if (key === 'brown')   nodes = _startBrown(ctx, g)
+      if (key === 'alpha')   nodes = _startAlpha(ctx, g)
+      if (key === 'lofi')    nodes = _startLofi(ctx, g)
+      if (key === 'library') nodes = _startLibrary(ctx, g)
+      nodesRef.current = { ...nodes, gain: g }
+    }
+    // resume() MUST resolve before start() on Chrome Android — nodes on a
+    // suspended context are silently dropped in some Chrome versions.
+    if (ctx.state === 'running') {
+      startNodes()
+    } else {
+      ctx.resume().then(startNodes).catch(() => { keyRef.current = null; setPlaying(null) })
+    }
   }
 
   function handleCustomClick() {
@@ -765,17 +773,24 @@ function DeepFocusSounds() {
     stopAll()
     const ctx = getCtx()
     if (!ctx) return
-    if (ctx.state !== 'running') ctx.resume()
-    const g = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
-    if (!mediaNodeRef.current) {
-      mediaNodeRef.current = ctx.createMediaElementSource(audioElRef.current)
-    }
-    mediaNodeRef.current.connect(g)
-    nodesRef.current = { gain: g }
-    audioElRef.current.currentTime = 0
-    audioElRef.current.play()
     keyRef.current = 'custom'
     setPlaying('custom')
+    const volSnap = vol
+    function startCustom() {
+      const g = ctx.createGain(); g.gain.value = volSnap / 100; g.connect(ctx.destination)
+      if (!mediaNodeRef.current) {
+        mediaNodeRef.current = ctx.createMediaElementSource(audioElRef.current)
+      }
+      mediaNodeRef.current.connect(g)
+      nodesRef.current = { gain: g }
+      audioElRef.current.currentTime = 0
+      audioElRef.current.play()
+    }
+    if (ctx.state === 'running') {
+      startCustom()
+    } else {
+      ctx.resume().then(startCustom).catch(() => { keyRef.current = null; setPlaying(null) })
+    }
   }
 
   function handleFileChange(e) {

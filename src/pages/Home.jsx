@@ -560,6 +560,14 @@ function NoteModal({ onClose }) {
    ROOT PAGE
 ═══════════════════════════════════════════════ */
 
+const NOTIFS = [
+  { id:1, icon:'🧘', title:'Seanca e sotme', body:'Nuk ke bërë meditim sot. 5 minuta mund të ndryshojnë ditën.', time:'Tani', unread:true },
+  { id:2, icon:'📓', title:'Ditar i harruar', body:'Shkruaj si ndihesh — ditari yt pret një hyrje të re.', time:'2h më parë', unread:true },
+  { id:3, icon:'💡', title:'Tip i ri', body:'Provo teknikën 4-7-8 të frymëmarrjes për të ulur ankthin.', time:'6h më parë', unread:true },
+  { id:4, icon:'🎯', title:'Streak aktiv!', body:'Ke 3 ditë rresht me aktivitet. Vazhdo kështu!', time:'1 ditë', unread:false },
+  { id:5, icon:'🌙', title:'Kujtesë mbrëmjeje', body:'Para gjumit, shiko humorin tënd në Mood Tracker.', time:'1 ditë', unread:false },
+]
+
 export default function Home() {
   const { user }  = useAuth()
   const navigate  = useNavigate()
@@ -567,7 +575,15 @@ export default function Home() {
   const [showAi,       setShowAi]       = useState(false)
   const [showNote,     setShowNote]     = useState(false)
   const [activeSug,    setActiveSug]    = useState(null)
-  const [notifCount]                    = useState(3)
+  const [showNotifs,   setShowNotifs]   = useState(false)
+  const [notifs,       setNotifs]       = useState(NOTIFS)
+
+  const notifCount = notifs.filter(n => n.unread).length
+
+  function openNotifs() {
+    setShowNotifs(true)
+    setNotifs(n => n.map(x => ({ ...x, unread: false })))
+  }
 
   const firstName = (
     user?.username?.split(/[\s_]/)[0] ||
@@ -600,18 +616,66 @@ export default function Home() {
           >
             <Plus size={14}/> Shto shënim
           </motion.button>
-          <button
-            className="relative w-9 h-9 rounded-xl flex items-center justify-center transition-all"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
-          >
-            <Bell size={15} className="text-white/60"/>
-            {notifCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-purple-500 flex items-center justify-center text-[9px] font-black text-white"
-                style={{ boxShadow: '0 0 8px rgba(139,92,246,0.7)' }}>
-                {notifCount}
-              </span>
-            )}
-          </button>
+          <div className="relative">
+            <button onClick={openNotifs}
+              className="relative w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-95"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
+            >
+              <Bell size={15} className="text-white/60"/>
+              {notifCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-purple-500 flex items-center justify-center text-[9px] font-black text-white"
+                  style={{ boxShadow: '0 0 8px rgba(139,92,246,0.7)' }}>
+                  {notifCount}
+                </span>
+              )}
+            </button>
+
+            {/* ── NOTIFICATIONS PANEL ── */}
+            <AnimatePresence>
+              {showNotifs && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowNotifs(false)}/>
+                  <motion.div
+                    initial={{ opacity:0, y:-8, scale:0.96 }}
+                    animate={{ opacity:1, y:0,  scale:1    }}
+                    exit={{    opacity:0, y:-8, scale:0.96 }}
+                    transition={{ duration:0.15 }}
+                    className="absolute right-0 top-11 z-50 w-80 rounded-2xl shadow-2xl overflow-hidden"
+                    style={{ background:'rgba(18,10,40,0.97)', border:'1px solid rgba(139,92,246,0.25)', backdropFilter:'blur(20px)' }}
+                  >
+                    <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor:'rgba(255,255,255,0.08)' }}>
+                      <div className="flex items-center gap-2">
+                        <Bell size={13} className="text-purple-400"/>
+                        <span className="text-xs font-black text-white">Njoftimet</span>
+                      </div>
+                      <button onClick={() => setShowNotifs(false)} className="w-6 h-6 rounded-lg flex items-center justify-center text-white/30 hover:text-white transition-colors" style={{ background:'rgba(255,255,255,0.06)' }}>
+                        <X size={11}/>
+                      </button>
+                    </div>
+                    <div className="max-h-72 overflow-y-auto">
+                      {notifs.map(n => (
+                        <div key={n.id} className="flex items-start gap-3 px-4 py-3 border-b transition-colors hover:bg-white/5 cursor-pointer" style={{ borderColor:'rgba(255,255,255,0.05)' }}>
+                          <span className="text-xl shrink-0 mt-0.5">{n.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="text-[11px] font-black text-white truncate">{n.title}</p>
+                              <span className="text-[9px] text-white/30 shrink-0">{n.time}</span>
+                            </div>
+                            <p className="text-[10px] text-white/50 leading-relaxed mt-0.5">{n.body}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="px-4 py-2.5 text-center">
+                      <button onClick={() => setShowNotifs(false)} className="text-[10px] font-bold text-purple-400 hover:text-purple-300 transition-colors">
+                        Shëno të gjitha si të lexuara
+                      </button>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
