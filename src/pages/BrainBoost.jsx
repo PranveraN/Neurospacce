@@ -703,41 +703,36 @@ function DeepFocusSounds() {
   const audioElRef   = useRef(null)
   const mediaNodeRef = useRef(null)
 
-  function getCtx() {
+  async function getCtx() {
     const AC = window.AudioContext || window.webkitAudioContext
     if (!AC) return null
     if (!ctxRef.current) ctxRef.current = new AC()
-    // iOS requires resume() in direct response to user gesture
-    if (ctxRef.current.state === 'suspended') ctxRef.current.resume()
+    // Always await resume so nodes aren't created on a still-suspended context (iOS)
+    if (ctxRef.current.state === 'suspended') {
+      try { await ctxRef.current.resume() } catch (_) {}
+    }
     return ctxRef.current
   }
 
-  // Unlock audio on first touch (iOS Safari)
+  // Pre-unlock AudioContext on first touch so resume() is already in progress
+  // when the click handler fires milliseconds later (iOS Safari)
   useEffect(() => {
-    function unlock() {
+    async function unlock() {
       const AC = window.AudioContext || window.webkitAudioContext
       if (!AC) return
-      const ctx = ctxRef.current || new AC()
-      ctxRef.current = ctx
+      if (!ctxRef.current) ctxRef.current = new AC()
+      const ctx = ctxRef.current
       if (ctx.state === 'suspended') {
-        ctx.resume().then(() => {
-          // Play silent buffer to fully unlock iOS audio
+        try {
+          await ctx.resume()
           const buf = ctx.createBuffer(1, 1, 22050)
           const src = ctx.createBufferSource()
-          src.buffer = buf
-          src.connect(ctx.destination)
-          src.start(0)
-        })
+          src.buffer = buf; src.connect(ctx.destination); src.start(0)
+        } catch (_) {}
       }
-      document.removeEventListener('touchstart', unlock)
-      document.removeEventListener('touchend', unlock)
     }
-    document.addEventListener('touchstart', unlock, { once: true })
-    document.addEventListener('touchend', unlock, { once: true })
-    return () => {
-      document.removeEventListener('touchstart', unlock)
-      document.removeEventListener('touchend', unlock)
-    }
+    document.addEventListener('touchstart', unlock, { passive: true })
+    return () => document.removeEventListener('touchstart', unlock)
   }, [])
 
   function stopAll() {
@@ -747,10 +742,11 @@ function DeepFocusSounds() {
     setPlaying(null)
   }
 
-  function toggle(key) {
+  async function toggle(key) {
     if (keyRef.current === key) { stopAll(); return }
     stopAll()
-    const ctx = getCtx()
+    const ctx = await getCtx()
+    if (!ctx) return
     const g = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
     let nodes
     if (key === 'rain')    nodes = _startRain(ctx, g)
@@ -763,11 +759,12 @@ function DeepFocusSounds() {
     setPlaying(key)
   }
 
-  function handleCustomClick() {
+  async function handleCustomClick() {
     if (!customFile) { fileInputRef.current?.click(); return }
     if (playing === 'custom') { stopAll(); return }
     stopAll()
-    const ctx = getCtx()
+    const ctx = await getCtx()
+    if (!ctx) return
     const g = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
     if (!mediaNodeRef.current) {
       mediaNodeRef.current = ctx.createMediaElementSource(audioElRef.current)
@@ -792,8 +789,8 @@ function DeepFocusSounds() {
     audioElRef.current = audio
     const name  = file.name.replace(/\.[^.]+$/, '')
     setCustomFile({ name, url })
-    setTimeout(() => {
-      const ctx = getCtx()
+    getCtx().then(ctx => {
+      if (!ctx) return
       const g   = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
       const node = ctx.createMediaElementSource(audio)
       node.connect(g)
@@ -802,7 +799,7 @@ function DeepFocusSounds() {
       audio.play()
       keyRef.current = 'custom'
       setPlaying('custom')
-    }, 60)
+    })
     e.target.value = ''
   }
 
