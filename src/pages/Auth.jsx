@@ -401,7 +401,7 @@ export default function Auth() {
                     <input type={showPass ? 'text' : 'password'} value={newPass}
                       onChange={e => { setNewPass(e.target.value); setErrors({}) }}
                       placeholder="••••••••" autoFocus
-                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.newPass ? 'border-red-300' : 'border-gray-200 focus:border-purple-300'}`}
+                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.newPass ? 'border-red-300' : 'border-gray-200 focus:border-purple-300'}`}
                     />
                     <button type="button" onClick={() => setShow(!showPass)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500">
@@ -417,7 +417,7 @@ export default function Auth() {
                     <input type={showConfirm ? 'text' : 'password'} value={newPassConf}
                       onChange={e => { setNewPassConf(e.target.value); setErrors({}) }}
                       placeholder="••••••••"
-                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${newPassConf && newPass === newPassConf ? 'border-green-300' : 'border-gray-200 focus:border-purple-300'}`}
+                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${newPassConf && newPass === newPassConf ? 'border-green-300' : 'border-gray-200 focus:border-purple-300'}`}
                     />
                     <button type="button" onClick={() => setShowC(!showConfirm)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500">
@@ -483,7 +483,7 @@ export default function Auth() {
                         <input type="email" value={resetEmail}
                           onChange={e => { setResetEmail(e.target.value); setServErr('') }}
                           placeholder="email@example.com" autoFocus
-                          className="w-full bg-white rounded-2xl border border-gray-200 px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none focus:border-purple-300 shadow-sm" />
+                          className="w-full bg-white rounded-2xl border border-gray-200 px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none focus:border-purple-300 shadow-sm" />
                         <Mail size={15} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300" />
                       </div>
                     </div>
@@ -543,7 +543,7 @@ export default function Auth() {
                       <input type="text" value={form.username}
                         onChange={e => field('username', e.target.value)}
                         placeholder="username_yt"
-                        className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.username ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-purple-300'}`}
+                        className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.username ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-purple-300'}`}
                       />
                       <User size={15} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300" />
                     </div>
@@ -557,7 +557,7 @@ export default function Auth() {
                     <input type="email" value={form.email}
                       onChange={e => field('email', e.target.value)}
                       placeholder="email@example.com"
-                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-purple-300'}`}
+                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-purple-300'}`}
                     />
                     {errors.email
                       ? <AlertCircle size={15} className="absolute right-4 top-1/2 -translate-y-1/2 text-red-400" />
@@ -575,7 +575,7 @@ export default function Auth() {
                     <input type={showPass ? 'text' : 'password'} value={form.password}
                       onChange={e => field('password', e.target.value)}
                       placeholder="••••••••"
-                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.password ? 'border-red-300' : 'border-gray-200 focus:border-purple-300'}`}
+                      className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.password ? 'border-red-300' : 'border-gray-200 focus:border-purple-300'}`}
                     />
                     <button type="button" onClick={() => setShow(!showPass)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors">
@@ -593,7 +593,7 @@ export default function Auth() {
                       <input type={showConfirm ? 'text' : 'password'} value={form.confirmPassword}
                         onChange={e => field('confirmPassword', e.target.value)}
                         placeholder="••••••••"
-                        className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.confirm ? 'border-red-300' : form.confirmPassword && form.password === form.confirmPassword ? 'border-green-300' : 'border-gray-200 focus:border-purple-300'}`}
+                        className={`w-full bg-white rounded-2xl border px-4 py-3 pr-11 text-base md:text-sm text-gray-800 focus:outline-none transition-colors shadow-sm ${errors.confirm ? 'border-red-300' : form.confirmPassword && form.password === form.confirmPassword ? 'border-green-300' : 'border-gray-200 focus:border-purple-300'}`}
                       />
                       <button type="button" onClick={() => setShowC(!showConfirm)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500">

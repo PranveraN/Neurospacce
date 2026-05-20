@@ -191,7 +191,7 @@ export default function AIChat() {
   const showStarters = messages.length <= 1
 
   return (
-    <div className="flex flex-col h-screen md:h-[calc(100vh-48px)] overflow-hidden md:rounded-3xl"
+    <div className="flex flex-col h-screen md:h-[calc(100vh-48px)] overflow-hidden md:rounded-3xl overflow-x-hidden"
       style={{background: BG}}>
 
       {/* ── HEADER ── */}
@@ -294,7 +294,7 @@ export default function AIChat() {
               onChange={e => setInput(e.target.value.slice(0, 500))}
               onKeyDown={e => e.key === 'Enter' && !e.shiftKey && processUserMessage(input)}
               placeholder="Shkruaj si ndihesh..."
-              className="flex-1 text-[13px] bg-transparent outline-none text-white/80 placeholder-white/20"
+              className="flex-1 text-base md:text-[13px] bg-transparent outline-none text-white/80 placeholder-white/20"
             />
             {input.length > 400 && (
               <span className={`text-[10px] font-bold shrink-0 ${input.length >= 500 ? 'text-red-400' : 'text-amber-400'}`}>

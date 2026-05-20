@@ -26,7 +26,7 @@ export default function BottomNav() {
             to="/"
             className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all duration-200 no-select min-w-[56px] group"
           >
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 bg-violet-50 group-active:scale-95">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 bg-violet-50 group-active:scale-95">
               <Globe size={18} strokeWidth={1.8} color="#7c3aed" />
             </div>
             <span className="text-[9px] font-bold leading-none text-violet-400">Kryefaqja</span>
@@ -42,7 +42,7 @@ export default function BottomNav() {
                 <>
                   {/* Icon bubble */}
                   <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                    className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200"
                     style={
                       isActive
                         ? {

@@ -363,7 +363,7 @@ export default function Journal() {
           <textarea value={text} onChange={e => setText(e.target.value.slice(0, 5000))}
             placeholder="Shkruaj lirshëm — kjo hapësirë është vetëm jote..."
             rows={5}
-            className="w-full bg-transparent resize-none text-sm text-gray-700 placeholder-gray-300 outline-none leading-relaxed" />
+            className="w-full bg-transparent resize-none text-base md:text-sm text-gray-700 placeholder-gray-300 outline-none leading-relaxed" />
           <div className="border-t border-gray-100 mt-3 pt-3 flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <Lock size={11} className="text-gray-300" />

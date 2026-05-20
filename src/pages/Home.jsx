@@ -107,7 +107,8 @@ function MoodOrbitCard({ onDetailClick }) {
       </div>
 
       {/* orbit + gauge row */}
-      <div className="flex items-center gap-4 mt-2">
+      <div className="overflow-x-auto -mx-5 px-5 mt-2">
+      <div className="flex items-center gap-4 min-w-max pb-1">
 
         {/* ── ORBIT VISUALIZATION ── */}
         <div className="relative shrink-0" style={{ width: OW, height: OH }}>
@@ -177,6 +178,7 @@ function MoodOrbitCard({ onDetailClick }) {
         <div className="ml-auto shrink-0 pr-2">
           <CircularGauge value={gauge}/>
         </div>
+      </div>
       </div>
 
       {/* Bottom bar */}
@@ -269,7 +271,7 @@ function LivingJournalCard() {
           value={text}
           onChange={e => setText(e.target.value)}
           placeholder="Çfarë ke në mendje sot?"
-          className="flex-1 bg-transparent resize-none text-[13px] text-white/75 placeholder-white/20 outline-none leading-relaxed"
+          className="flex-1 bg-transparent resize-none text-base md:text-[13px] text-white/75 placeholder-white/20 outline-none leading-relaxed"
           rows={5}
         />
 
@@ -536,7 +538,7 @@ function NoteModal({ onClose }) {
         <textarea
           value={text} onChange={e => setText(e.target.value)}
           placeholder="Shëno mendimin tënd këtu..."
-          className="w-full bg-transparent resize-none text-[13px] text-white/80 placeholder-white/20 outline-none leading-relaxed border-b pb-3 mb-4"
+          className="w-full bg-transparent resize-none text-base md:text-[13px] text-white/80 placeholder-white/20 outline-none leading-relaxed border-b pb-3 mb-4"
           style={{ borderColor: 'rgba(255,255,255,0.08)' }}
           rows={5} autoFocus
         />
