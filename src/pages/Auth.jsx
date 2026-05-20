@@ -294,13 +294,6 @@ export default function Auth() {
             ))}
           </div>
 
-          <div className="mt-10 p-4 rounded-2xl border border-white/5 bg-white/3">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <p className="text-xs font-bold text-white/60">Mbi 1,000+ përdorues aktivë</p>
-            </div>
-            <p className="text-[11px] text-white/25">Supabase Auth · JWT · RLS · End-to-end security</p>
-          </div>
         </div>
 
         {/* ── Right: Auth card ── */}
