@@ -102,8 +102,11 @@ export function AuthProvider({ children }) {
   // In-memory profile cache — prevents duplicate fetchProfile calls on login
   // (login() and onAuthStateChange both call fetchProfile for the same userId)
   const profileCache = useRef({})
-  // Set to true in login() before clearing ns_auth so the resulting SIGNED_OUT
-  // from supabase-js completing its stale-token refresh doesn't null out the user
+  // Timestamp set at login() start — suppress ALL SIGNED_OUT events that fire
+  // within 30 s of login (supabase can fire up to two SIGNED_OUTs during
+  // setSession: one when clearing the stale session, one from its internal cleanup).
+  const loginStartedAt = useRef(0)
+  // Keep for backward-compat reference; actual guard uses loginStartedAt
   const suppressNextSignedOut = useRef(false)
 
   async function fetchProfileCached(userId) {
@@ -174,10 +177,11 @@ export function AuthProvider({ children }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_OUT') {
-          if (suppressNextSignedOut.current) {
-            suppressNextSignedOut.current = false
-            return
-          }
+          // Suppress ANY SIGNED_OUT that fires within 30 s of login() starting.
+          // supabase can fire two SIGNED_OUTs during setSession (stale-session
+          // clear + internal cleanup). Without this guard the second one would
+          // null out the user right after login.
+          if (Date.now() - loginStartedAt.current < 30_000) return
           setUser(null)
           setAccessToken(null)
           localStorage.removeItem('ns_auth')
@@ -228,11 +232,12 @@ export function AuthProvider({ children }) {
       const SUPA_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 
       // A stale refresh token in ns_auth makes supabase-js hold its internal
-      // lock indefinitely (trying to refresh the old token). Clear it first so
-      // the lock is free, then use a raw fetch that bypasses the lock entirely.
-      // The suppressNextSignedOut flag prevents the resulting SIGNED_OUT event
-      // (fired when supabase-js detects the cleared session) from nulling user.
-      suppressNextSignedOut.current = true
+      // lock indefinitely. Clear it first so the lock is free, then use a raw
+      // fetch that bypasses the lock entirely. Mark the login start time so the
+      // SIGNED_OUT handler suppresses all events for 30 s (supabase can fire
+      // multiple SIGNED_OUTs during setSession).
+      loginStartedAt.current = Date.now()
+      suppressNextSignedOut.current = true   // kept for legacy; guard uses timestamp
       localStorage.removeItem('ns_auth')
 
       const ac  = new AbortController()
@@ -284,6 +289,8 @@ export function AuthProvider({ children }) {
         if (pRes.ok) {
           const rows = await pRes.json()
           profile = rows[0] ?? null
+          // Cache it so the SIGNED_IN handler doesn't re-fetch
+          if (profile) profileCache.current[body.user.id] = profile
         }
       } catch {}
 

@@ -8,8 +8,9 @@ export default function ProtectedRoute({ children, requiredRole = 'user', redire
   // Still waiting for Supabase session — don't redirect yet
   if (loading || user === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-8 h-8 border-3 border-violet-200 border-t-violet-600 rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(160deg,#030711,#0e0525,#030711)' }}>
+        <div className="w-8 h-8 border-2 border-violet-500/30 border-t-violet-400 rounded-full animate-spin" />
       </div>
     )
   }
