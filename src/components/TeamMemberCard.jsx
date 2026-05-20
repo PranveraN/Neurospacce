@@ -1,16 +1,19 @@
 import { useState, useRef } from 'react'
 import { Camera } from 'lucide-react'
 import { useEditMode } from '../contexts/EditModeContext'
+import { useAuth } from '../contexts/AuthContext'
 import EditableText from './EditableText'
 
 export default function TeamMemberCard({ index, initials, name, role, grad, size = 'lg' }) {
   const { editMode } = useEditMode()
+  const { isAdmin }  = useAuth()
   const [photo, setPhoto] = useState(() => {
     try { return localStorage.getItem(`ns_team_photo_${index}`) || null } catch { return null }
   })
   const fileRef = useRef(null)
 
   function handleFile(e) {
+    if (!isAdmin) return
     const file = e.target.files?.[0]
     if (!file) return
     const reader = new FileReader()
@@ -22,8 +25,9 @@ export default function TeamMemberCard({ index, initials, name, role, grad, size
     reader.readAsDataURL(file)
   }
 
-  const dim = size === 'sm' ? 'w-14 h-14' : 'w-20 h-20'
+  const dim  = size === 'sm' ? 'w-14 h-14' : 'w-20 h-20'
   const text = size === 'sm' ? 'text-base' : 'text-xl'
+  const canEditPhoto = editMode && isAdmin
 
   return (
     <div className="text-center">
@@ -35,12 +39,12 @@ export default function TeamMemberCard({ index, initials, name, role, grad, size
             : <span className={`${text} font-black text-white/60`}>{initials}</span>
           }
         </div>
-        {editMode && (
+        {canEditPhoto && (
           <>
             <button
               onClick={() => fileRef.current?.click()}
               className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center shadow-lg hover:bg-violet-700 transition-colors z-10"
-              title="Ngarko foto">
+              title="Ngarko foto (vetëm admin)">
               <Camera size={12} color="white"/>
             </button>
             {photo && (
