@@ -150,7 +150,7 @@ export default function Sidebar() {
           <span className="text-[12px] text-white/30 font-medium group-hover:text-white/60 transition-colors">Faqja kryesore</span>
         </Link>
         {user?.role === 'admin' && (
-          <Link to="/admin"
+          <Link to="/ns-secure-7381"
             className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/[0.04] transition-colors group">
             <LayoutDashboard size={13} color="rgba(251,191,36,0.5)" />
             <span className="text-[12px] text-amber-400/60 font-medium group-hover:text-amber-400 transition-colors">Paneli Admin</span>

@@ -36,7 +36,7 @@ function getConfig(pathname) {
 
 // Pages where the button must NOT appear
 const HIDDEN = new Set(['/', '/home', '/auth'])
-const HIDDEN_PREFIX = ['/admin']
+const HIDDEN_PREFIX = ['/ns-secure-7381']
 
 // User-shell pages that have the sidebar (desktop → button offset to clear sidebar)
 const USER_SHELL = new Set([

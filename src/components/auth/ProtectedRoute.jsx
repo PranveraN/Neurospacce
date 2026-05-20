@@ -26,7 +26,7 @@ export default function ProtectedRoute({ children, requiredRole = 'user', redire
   const requiredLevel = HIERARCHY[requiredRole] ?? 1
 
   if (userLevel < requiredLevel) {
-    const fallback = user.role === 'admin' ? '/admin' : '/'
+    const fallback = user.role === 'admin' ? '/ns-secure-7381' : '/'
     return <Navigate to={redirectTo ?? fallback} replace />
   }
 

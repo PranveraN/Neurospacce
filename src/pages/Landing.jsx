@@ -322,7 +322,7 @@ function AdminBar({ onAdd, articleCount }) {
           <span className="text-[11px] bg-white/20 px-2 py-0.5 rounded-full">{articleCount} artikuj</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <button onClick={() => navigate('/admin')}
+          <button onClick={() => navigate('/ns-secure-7381')}
             className="flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-lg transition-colors border border-white/20">
             <LayoutDashboard size={11}/> Paneli
           </button>
@@ -379,7 +379,7 @@ function LoginModal({ onClose }) {
       }
 
       onClose()
-      navigate('/admin')
+      navigate('/ns-secure-7381')
     } catch (caught) {
       clearTimeout(timerRef.current)
       setStatus('')

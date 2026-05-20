@@ -182,7 +182,7 @@ export default function Auth() {
       return
     }
     loginAttempts.current = { count: 0, windowStart: 0 }
-    if (res.user?.role === 'admin') navigate('/admin', { replace: true })
+    if (res.user?.role === 'admin') navigate('/ns-secure-7381', { replace: true })
     else { const from = location.state?.from?.pathname; navigate(from && from !== '/auth' ? from : '/home', { replace: true }) }
   }
 

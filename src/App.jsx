@@ -71,7 +71,7 @@ function PageLoader() {
 function GlobalHeader() {
   const { pathname } = useLocation()
   const hide = pathname.startsWith('/auth')
-            || pathname.startsWith('/admin')
+            || pathname.startsWith('/ns-secure-7381')
   if (hide) return null
   return <PublicHeader />
 }
