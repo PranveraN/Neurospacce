@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import { Baby, ChevronRight, BookOpen, Lightbulb, Bot, Shield } from 'lucide-react'
 import { PARENT_CATEGORIES, PARENTING_ARTICLES, PARENTING_TECHNIQUES } from '../../data/parentingData'
 import EditableText from '../EditableText'
@@ -21,7 +21,7 @@ export default function ParentingSection() {
             <EditableText as="span" className="text-sm font-bold text-violet-600">Për Prindërit</EditableText>
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 leading-tight">
-            <EditableText>NeuroSpace për</EditableText>{' '}
+            <EditableText>NeuroSphera për</EditableText>{' '}
             <EditableText as="span" className="bg-gradient-to-r from-violet-600 to-pink-500 bg-clip-text text-transparent">
               Prindërit
             </EditableText>

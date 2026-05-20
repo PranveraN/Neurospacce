@@ -1,4 +1,4 @@
-// ─── IQ Test — NeuroSpace ─────────────────────────────────────────────────
+﻿// ─── IQ Test — NeuroSphera ─────────────────────────────────────────────────
 export const IQ_TEST = {
   id:            'iq',
   title:         'Testi IQ',

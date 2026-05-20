@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+﻿import { useState, useMemo, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import {
   Bell, Shield, ChevronRight, LogOut,
@@ -259,7 +259,7 @@ function SupportModal({ onClose }) {
   return (
     <DarkModal title="Mbështetje" icon={HelpCircle} color="#f87171" onClose={onClose}>
       <div className="space-y-3">
-        <a href="mailto:info@neurospace.com"
+        <a href="mailto:info@NeuroSphera.com"
           className="flex items-center gap-3 p-3 rounded-2xl hover:bg-white/5 transition-colors"
           style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:'rgba(167,139,250,0.2)'}}>
@@ -267,7 +267,7 @@ function SupportModal({ onClose }) {
           </div>
           <div>
             <p className="text-sm font-bold text-white/80">Email</p>
-            <p className="text-xs text-white/35">info@neurospace.com</p>
+            <p className="text-xs text-white/35">info@NeuroSphera.com</p>
           </div>
         </a>
         <div className="flex items-center gap-3 p-3 rounded-2xl"
@@ -714,7 +714,7 @@ export default function Profile() {
 
         <div className="rounded-3xl p-4 text-center"
           style={{background:'rgba(255,255,255,0.025)',border:'1px solid rgba(255,255,255,0.05)'}}>
-          <p className="text-xs font-bold text-white/15">NeuroSpace v1.0 · AI Mental Wellness</p>
+          <p className="text-xs font-bold text-white/15">NeuroSphera v1.0 · AI Mental Wellness</p>
           <p className="text-[10px] text-white/10 mt-1">Nuk zëvendëson terapinë profesionale</p>
         </div>
 

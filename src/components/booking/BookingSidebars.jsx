@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import { ArrowRight, Lock } from 'lucide-react'
 
 const WELLNESS_QUOTES = [
@@ -6,7 +6,7 @@ const WELLNESS_QUOTES = [
   { text: 'Kujdesi ndaj vetes nuk është egoist. Është thelbësor.', author: 'Brené Brown' },
   { text: 'Shëndeti mendor është po aq i rëndësishëm sa ai fizik.', author: 'Kate Middleton' },
   { text: 'Çdo udhëtim i madh fillon me një hap të vetëm të guximshëm.', author: 'Lao Tzu' },
-  { text: 'Nuk je vetëm. Ndihma është pranë.', author: 'NeuroSpace' },
+  { text: 'Nuk je vetëm. Ndihma është pranë.', author: 'NeuroSphera' },
   { text: 'Forca nuk është mungesa e frikës, por veprimi pavarësisht saj.', author: 'Nelson Mandela' },
   { text: 'Kujdesi i mirë i vetes ndez dritën brenda teje.', author: 'Rumi' },
 ]

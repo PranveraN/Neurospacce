@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+﻿import { useState, useEffect, useCallback, useRef } from 'react'
 import {
   BookOpen, TrendingUp, Activity, Download, ChevronDown,
   Calendar, BarChart2, Clock, FileText, Sparkles, X,
@@ -143,7 +143,7 @@ function PrintReport({ pRef, user, periodLabel, moodData, journalData, activityD
         <div style={{ borderBottom: '3px solid #7c3aed', paddingBottom: 20, marginBottom: 28 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#7c3aed', letterSpacing: -0.5 }}>🧠 NeuroSpace</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: '#7c3aed', letterSpacing: -0.5 }}>🧠 NeuroSphera</div>
               <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>Raport Personal i Mirëqenies Mendore</div>
             </div>
             <div style={{ textAlign: 'right' }}>
@@ -228,8 +228,8 @@ function PrintReport({ pRef, user, periodLabel, moodData, journalData, activityD
 
         {/* Footer */}
         <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontSize: 10, color: '#9ca3af' }}>NeuroSpace · Konfidencial · Vetëm për përdorim personal</div>
-          <div style={{ fontSize: 10, color: '#9ca3af' }}>neurospace.app</div>
+          <div style={{ fontSize: 10, color: '#9ca3af' }}>NeuroSphera · Konfidencial · Vetëm për përdorim personal</div>
+          <div style={{ fontSize: 10, color: '#9ca3af' }}>NeuroSphera.app</div>
         </div>
       </div>
     </div>

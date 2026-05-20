@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+﻿import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowLeft, Flame, Zap, Star, Trophy, CheckCircle, Circle,
@@ -523,7 +523,7 @@ export default function EvolutionDashboard() {
                 if (navigator.share && archObj) {
                   navigator.share({
                     title: `Arketipa ime: ${archObj.name}`,
-                    text: `Zbulova arketipën time në NeuroSpace PersonaMatrix: ${archObj.nickname} (${archObj.code}) — ${archObj.desc.slice(0, 100)}...`,
+                    text: `Zbulova arketipën time në NeuroSphera PersonaMatrix: ${archObj.nickname} (${archObj.code}) — ${archObj.desc.slice(0, 100)}...`,
                   }).catch(() => {})
                 }
               }}

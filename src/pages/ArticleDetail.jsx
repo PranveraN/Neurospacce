@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from 'react-router-dom'
+﻿import { useParams, Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Clock, Calendar, User, ArrowRight, Share2, BookOpen } from 'lucide-react'
 import PublicLayout from '../components/layout/PublicLayout'
 import { loadArticles, getCatColor } from '../data/articlesData'
@@ -130,7 +130,7 @@ export default function ArticleDetail() {
                     </div>
                     <div>
                       <p className="font-bold text-gray-800">{article.author}</p>
-                      <p className="text-xs text-gray-400">Ekipi Editorial · NeuroSpace</p>
+                      <p className="text-xs text-gray-400">Ekipi Editorial · NeuroSphera</p>
                     </div>
                   </div>
                 </div>

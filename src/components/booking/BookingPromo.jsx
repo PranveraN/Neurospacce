@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, Award, Brain, Clock, Heart, Shield, Users, Zap } from 'lucide-react'
@@ -11,7 +11,7 @@ const STATS = [
   { value:'1 në 4', sub:'njerëzve kalon krizë mendore gjatë jetës' },
   { value:'80%',    sub:'nuk kërkojnë kurrë ndihmë profesionale' },
   { value:'6×',     sub:'më efektive terapia vs vetë-menaxhimi' },
-  { value:'98%',    sub:'satisfaksion i klientëve NeuroSpace' },
+  { value:'98%',    sub:'satisfaksion i klientëve NeuroSphera' },
 ]
 
 const WHY = [
@@ -46,9 +46,9 @@ const WHY = [
 ]
 
 const QUOTES = [
-  { text: '"Nuk ka njeri të thyer — vetëm njerëz që nuk kanë gjetur ende mjetet e duhura."', author: 'NeuroSpace' },
-  { text: '"Gjumi nuk është luksi — është neurokirurgjia natyrale e trurit tuaj."',            author: 'NeuroSpace' },
-  { text: '"Intelekti nuk është i fikse. Është muskul që mund ta stërvitësh."',               author: 'NeuroSpace' },
+  { text: '"Nuk ka njeri të thyer — vetëm njerëz që nuk kanë gjetur ende mjetet e duhura."', author: 'NeuroSphera' },
+  { text: '"Gjumi nuk është luksi — është neurokirurgjia natyrale e trurit tuaj."',            author: 'NeuroSphera' },
+  { text: '"Intelekti nuk është i fikse. Është muskul që mund ta stërvitësh."',               author: 'NeuroSphera' },
 ]
 
 function AnimCounter({ target, suffix = '', delay = 0 }) {

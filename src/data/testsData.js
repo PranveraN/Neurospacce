@@ -1,5 +1,5 @@
-// ============================================================
-// NEUROSPACE — Psychological Testing Data & Scoring Functions
+﻿// ============================================================
+// NeuroSphera — Psychological Testing Data & Scoring Functions
 // ============================================================
 
 // ─── PERSONALITY TEST (Big Five / OCEAN, 12 questions) ──────

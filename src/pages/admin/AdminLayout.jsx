@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Routes, Route, NavLink, useNavigate, useLocation, Navigate } from 'react-router-dom'
 import {
   LayoutDashboard, Users, FileText, MessageSquare,
@@ -48,7 +48,7 @@ function AdminSidebar({ collapsed, onToggle, onClose }) {
         </div>
         {!collapsed && (
           <div className="flex-1 min-w-0">
-            <p className="font-black text-white text-sm leading-tight">NeuroSpace</p>
+            <p className="font-black text-white text-sm leading-tight">NeuroSphera</p>
             <p className="text-[10px] text-violet-400 font-semibold tracking-wide">Admin Panel</p>
           </div>
         )}
@@ -143,7 +143,7 @@ function AdminHeader({ onMobileMenu }) {
         <div>
           <h2 className="font-black text-white text-sm leading-tight">{pageTitle}</h2>
           <p className="text-[10px] text-slate-500 hidden sm:block">
-            NeuroSpace Admin · {new Date().toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })}
+            NeuroSphera Admin · {new Date().toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         </div>
       </div>

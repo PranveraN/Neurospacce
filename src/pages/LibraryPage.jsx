@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+﻿import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import {
   Search, ArrowRight, Clock, X, Sparkles,
@@ -21,12 +21,12 @@ const KF = `
 
 /* ─── Quotes ─────────────────────────────────────────────────────────── */
 const QUOTES = [
-  { text: 'Truri yt mund të rindërtojë veten çdo ditë. Çdo libër, çdo ide e re — ndryshon strukturën e neuroneve.', author: 'NeuroSpace' },
-  { text: 'Nëse nuk mëson diçka të re çdo ditë, je duke qëndruar "të qëndrueshëm" — dhe qëndrueshmëria është regres i ngadaltë.', author: 'NeuroSpace' },
-  { text: 'Kujtesa nuk është e fiksuar. Ajo është e ndryshueshme, e formësueshme — dhe mund të optimizohet plotësisht.', author: 'NeuroSpace' },
-  { text: 'Gjumi nuk është koha kur ndalon të mësuarit. Është kur truri proceson, organizon dhe forcon gjithçka mësove.', author: 'NeuroSpace' },
-  { text: 'Ankthi nuk është armiku. Është sistemi i alarmit i trurit tënd. Mëso gjuhën e tij dhe ai bëhet aleat.', author: 'NeuroSpace' },
-  { text: 'Çdo minutë e rileximit është investim me interesa. Truri quan çdo rishikim si "informacion i rëndësishëm" dhe e ruan thellë.', author: 'NeuroSpace' },
+  { text: 'Truri yt mund të rindërtojë veten çdo ditë. Çdo libër, çdo ide e re — ndryshon strukturën e neuroneve.', author: 'NeuroSphera' },
+  { text: 'Nëse nuk mëson diçka të re çdo ditë, je duke qëndruar "të qëndrueshëm" — dhe qëndrueshmëria është regres i ngadaltë.', author: 'NeuroSphera' },
+  { text: 'Kujtesa nuk është e fiksuar. Ajo është e ndryshueshme, e formësueshme — dhe mund të optimizohet plotësisht.', author: 'NeuroSphera' },
+  { text: 'Gjumi nuk është koha kur ndalon të mësuarit. Është kur truri proceson, organizon dhe forcon gjithçka mësove.', author: 'NeuroSphera' },
+  { text: 'Ankthi nuk është armiku. Është sistemi i alarmit i trurit tënd. Mëso gjuhën e tij dhe ai bëhet aleat.', author: 'NeuroSphera' },
+  { text: 'Çdo minutë e rileximit është investim me interesa. Truri quan çdo rishikim si "informacion i rëndësishëm" dhe e ruan thellë.', author: 'NeuroSphera' },
 ]
 
 /* ─── Smart Popup ────────────────────────────────────────────────────── */

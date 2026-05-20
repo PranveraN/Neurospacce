@@ -1,4 +1,4 @@
-import { NavLink, Link, useNavigate } from 'react-router-dom'
+﻿import { NavLink, Link, useNavigate } from 'react-router-dom'
 import {
   Home, Radio, BookOpen, BarChart2, Zap,
   Wind, Users, User, Brain, Crown, Settings,
@@ -53,7 +53,7 @@ export default function Sidebar() {
       <div className="flex items-center gap-3 px-5 py-5">
         <LogoMark size={38} radius="rounded-2xl"/>
         <div>
-          <h1 className="font-black text-base leading-tight tracking-tight bg-gradient-to-r from-violet-400 via-fuchsia-300 to-blue-400 bg-clip-text text-transparent">NeuroSpace</h1>
+          <h1 className="font-black text-base leading-tight tracking-tight bg-gradient-to-r from-violet-400 via-fuchsia-300 to-blue-400 bg-clip-text text-transparent">NeuroSphera</h1>
           <p className="text-[9px] text-violet-400/70 font-semibold tracking-widest uppercase">Shëndeti Mendor</p>
         </div>
       </div>

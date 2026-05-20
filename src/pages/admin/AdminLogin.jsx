@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+﻿import { useState, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Brain, Shield, Eye, EyeOff, AlertCircle, Lock } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
@@ -75,7 +75,7 @@ export default function AdminLogin() {
           <div className="w-16 h-16 rounded-2xl bg-violet-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-violet-500/30">
             <Brain size={30} color="white" strokeWidth={1.8} />
           </div>
-          <h1 className="text-2xl font-black text-white">NeuroSpace Admin</h1>
+          <h1 className="text-2xl font-black text-white">NeuroSphera Admin</h1>
           <p className="text-slate-400 text-sm mt-1">Paneli i administrimit</p>
         </div>
 
@@ -103,7 +103,7 @@ export default function AdminLogin() {
               <label className="block text-xs font-bold text-slate-400 mb-1.5">Email</label>
               <input
                 type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="admin@neurospace.com"
+                placeholder="admin@NeuroSphera.com"
                 className="w-full bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-violet-500 transition-colors"
               />
             </div>
@@ -143,7 +143,7 @@ export default function AdminLogin() {
         </div>
 
         <p className="text-center text-[10px] text-slate-700 mt-6">
-          NeuroSpace Admin Panel v1.0 · Akses i mbrojtur me JWT + RBAC
+          NeuroSphera Admin Panel v1.0 · Akses i mbrojtur me JWT + RBAC
         </p>
       </div>
     </div>

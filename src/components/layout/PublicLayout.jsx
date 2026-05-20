@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+﻿import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Brain, Menu, X, ArrowRight, Mail, Search, ChevronRight } from 'lucide-react'
 import LogoMark from '../LogoMark'
@@ -147,7 +147,7 @@ function PublicHeader() {
           <div className="flex items-center gap-2.5 shrink-0 mr-2">
             <LogoMark size={36} radius="rounded-xl"/>
             <Link to="/" className="flex flex-col leading-none">
-              <span className="font-black text-lg tracking-tight bg-gradient-to-r from-violet-600 via-purple-600 to-blue-500 bg-clip-text text-transparent">NeuroSpace</span>
+              <span className="font-black text-lg tracking-tight bg-gradient-to-r from-violet-600 via-purple-600 to-blue-500 bg-clip-text text-transparent">NeuroSphera</span>
               <span className="text-[9px] font-semibold text-violet-400 uppercase tracking-widest">Shëndeti Mendor</span>
             </Link>
           </div>
@@ -234,7 +234,7 @@ function PublicFooter() {
             <div className="flex items-center gap-2.5 mb-4">
               <LogoMark size={36} radius="rounded-xl"/>
               <div className="flex flex-col leading-none">
-                <span className="font-black text-base tracking-tight bg-gradient-to-r from-violet-400 via-purple-300 to-blue-400 bg-clip-text text-transparent">NeuroSpace</span>
+                <span className="font-black text-base tracking-tight bg-gradient-to-r from-violet-400 via-purple-300 to-blue-400 bg-clip-text text-transparent">NeuroSphera</span>
                 <span className="text-[9px] font-semibold text-violet-400 uppercase tracking-widest">Shëndeti Mendor</span>
               </div>
             </div>
@@ -270,7 +270,7 @@ function PublicFooter() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-slate-400 text-sm">
                 <Mail size={15} className="text-violet-400 shrink-0" />
-                info@neurospace.com
+                info@NeuroSphera.com
               </li>
             </ul>
             <div className="mt-6 p-4 bg-slate-800 rounded-2xl">
@@ -281,7 +281,7 @@ function PublicFooter() {
         </div>
 
         <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">© 2026 NeuroSpace. Të gjitha të drejtat e rezervuara.</p>
+          <p className="text-xs text-slate-500">© 2026 NeuroSphera. Të gjitha të drejtat e rezervuara.</p>
           <div className="flex gap-4">
             <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Privatësia</span>
             <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Kushtet</span>

@@ -1,4 +1,4 @@
-// NeuroSpace Sistemi i Vlerësimit të Inteligjencës së Karrierës v1.0
+﻿// NeuroSphera Sistemi i Vlerësimit të Inteligjencës së Karrierës v1.0
 // 60 pyetje · 15 dimensione kognitive · 12 arkëtipe · 18 përputhje karriere
 
 export const MODULES = [

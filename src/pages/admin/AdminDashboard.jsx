@@ -1,4 +1,4 @@
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+﻿import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { Users, FileText, MessageSquare, TrendingUp, ArrowUp, ArrowDown, Activity, Clock, Shield } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
       {/* Page title */}
       <div>
         <h1 className="text-2xl font-black text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-0.5">Pasqyra e sistemit · NeuroSpace</p>
+        <p className="text-gray-500 text-sm mt-0.5">Pasqyra e sistemit · NeuroSphera</p>
       </div>
 
       {/* KPI cards */}

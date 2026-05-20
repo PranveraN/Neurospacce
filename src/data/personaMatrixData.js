@@ -1,5 +1,5 @@
-// ================================================================
-// NEUROSPACE — PersonaMatrix Assessment
+﻿// ================================================================
+// NeuroSphera — PersonaMatrix Assessment
 // 60 questions · 16 original archetypes · 6 advanced metrics
 // ================================================================
 

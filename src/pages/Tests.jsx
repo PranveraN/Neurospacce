@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+﻿import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import EditableText from '../components/EditableText'
 import PublicLayout from '../components/layout/PublicLayout'
@@ -158,7 +158,7 @@ function HubView({ onStart }) {
           <EditableText>Teste Shkencore</EditableText>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-          <EditableText>Teset e NeuroSpace</EditableText>
+          <EditableText>Teset e NeuroSphera</EditableText>
         </h1>
         <EditableText as="p" multiline className="text-lg text-gray-500 max-w-xl mx-auto">
           Zbulo veten nëpërmjet shkencës: rezultate reale, pa gjykim.
@@ -358,7 +358,7 @@ function HubView({ onStart }) {
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-indigo-300 uppercase tracking-[0.15em]">Testi Kognitiv</p>
-                  <h2 className="text-2xl font-black text-white leading-tight">IQ Test — NeuroSpace</h2>
+                  <h2 className="text-2xl font-black text-white leading-tight">IQ Test — NeuroSphera</h2>
                 </div>
               </div>
               <EditableText as="p" multiline className="text-white/60 text-sm leading-relaxed mb-5 max-w-md">
@@ -1345,7 +1345,7 @@ function IQResultView({ result, onReset, onHub }) {
             <div className="text-5xl mb-3">🧠</div>
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full text-xs font-bold text-white"
               style={{ background: band.color }}>
-              Testi IQ · NeuroSpace
+              Testi IQ · NeuroSphera
             </div>
             <div className="text-8xl font-black mb-2 tabular-nums" style={{ color: band.color }}>
               {animIQ}

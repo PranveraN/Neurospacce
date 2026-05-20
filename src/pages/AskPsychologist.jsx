@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import {
   MessageCircle, ChevronDown, ChevronUp, Heart, Send, CheckCircle,
@@ -122,7 +122,7 @@ function ExpertModal({ expert, onSave, onClose }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className={labelCls}>Email kontakti</label>
-                  <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="emri@neurospace.com" className={inputCls}/>
+                  <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="emri@NeuroSphera.com" className={inputCls}/>
                 </div>
                 <div>
                   <label className={labelCls}>Statusi</label>
@@ -502,7 +502,7 @@ function QACard({ qa }) {
               </div>
               <div>
                 <p className="text-xs font-bold text-gray-700">Përgjigje nga psikologu</p>
-                <p className="text-[10px] text-gray-400">NeuroSpace Expert Team</p>
+                <p className="text-[10px] text-gray-400">NeuroSphera Expert Team</p>
               </div>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">{qa.answer}</p>

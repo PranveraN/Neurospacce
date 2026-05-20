@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+﻿import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Brain, ArrowRight, Star, Shield, BookOpen, MessageCircle,
@@ -51,12 +51,12 @@ const HOW_STEPS = [
 
 const TESTIMONIALS = [
   {
-    text: 'NeuroSpace ndryshoi mënyrën time të studimit. Rezultatet u dyfishuan brenda 3 javësh me teknikat e tyre të bazuara në neuroshkencë.',
+    text: 'NeuroSphera ndryshoi mënyrën time të studimit. Rezultatet u dyfishuan brenda 3 javësh me teknikat e tyre të bazuara në neuroshkencë.',
     name: 'Arjeta M.', role: 'Studente Mjekësie', avatar: 'A',
     stars: 5, color: '#7c3aed',
   },
   {
-    text: 'Si entrepreneur, "Deep Work" dhe sistemet e fokusit nga NeuroSpace u bënë fondamenti i çdo dite produktive. Jashtzakonisht praktike.',
+    text: 'Si entrepreneur, "Deep Work" dhe sistemet e fokusit nga NeuroSphera u bënë fondamenti i çdo dite produktive. Jashtzakonisht praktike.',
     name: 'Blerim K.', role: 'Themelues Startup', avatar: 'B',
     stars: 5, color: '#1d4ed8',
   },
@@ -398,7 +398,7 @@ function LoginModal({ onClose }) {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center shadow-md">
               <Brain size={16} color="white" strokeWidth={2}/>
             </div>
-            <div><p className="font-black text-gray-900 text-base leading-tight">Kyçu në NeuroSpace</p><p className="text-[10px] text-gray-400">Admin ose anëtar</p></div>
+            <div><p className="font-black text-gray-900 text-base leading-tight">Kyçu në NeuroSphera</p><p className="text-[10px] text-gray-400">Admin ose anëtar</p></div>
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200"><X size={15}/></button>
         </div>
@@ -640,7 +640,7 @@ function LandingNav() {
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-md border transition-all duration-300 ${scrolled ? 'bg-gradient-to-br from-violet-600 to-blue-600 border-violet-400 shadow-violet-200' : 'bg-white/15 border-white/30'}`}>
               <Brain size={18} color="white" strokeWidth={2}/>
             </div>
-            <span className={`font-black text-base transition-colors duration-300 ${tc('text-gray-900','text-white')}`}>NeuroSpace</span>
+            <span className={`font-black text-base transition-colors duration-300 ${tc('text-gray-900','text-white')}`}>NeuroSphera</span>
           </Link>
 
           {/* Desktop links */}
@@ -904,7 +904,7 @@ function HeroSection() {
             <EditableText id="hero-subtitle" as="p" multiline
               className="text-white/50 leading-relaxed mb-10 max-w-md"
               style={{ fontSize: '1.1rem' }}>
-              NeuroSpace bashkon psikologji klinike, AI dhe gjurmim humori për mbështetje e vërtetë mendore, çdo ditë, në shqip.
+              NeuroSphera bashkon psikologji klinike, AI dhe gjurmim humori për mbështetje e vërtetë mendore, çdo ditë, në shqip.
             </EditableText>
 
             {/* CTAs */}
@@ -1395,7 +1395,7 @@ function DifferentiatorsSection() {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
             <span className="inline-block text-xs font-bold uppercase tracking-widest text-violet-600 bg-violet-50 border border-violet-200 px-4 py-2 rounded-full mb-6">
-              <EditableText id="diff-badge">Pse NeuroSpace</EditableText>
+              <EditableText id="diff-badge">Pse NeuroSphera</EditableText>
             </span>
             <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
               <EditableText id="diff-h2-line1">Jo vetëm</EditableText><br/>
@@ -1405,7 +1405,7 @@ function DifferentiatorsSection() {
               <br/><EditableText id="diff-h2-line3">por transformim</EditableText>
             </h2>
             <EditableText id="diff-sub" as="p" multiline className="text-gray-500 text-lg leading-relaxed mb-8">
-              Portalet tjera ofrojnë artikuj. NeuroSpace ofron një sistem të plotë, nga teoria te praktika, nga leximi te zakoni i qëndrueshëm.
+              Portalet tjera ofrojnë artikuj. NeuroSphera ofron një sistem të plotë, nga teoria te praktika, nga leximi te zakoni i qëndrueshëm.
             </EditableText>
             <Link to="/auth"
               className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-sm font-bold text-white shadow-lg hover:scale-105 transition-all duration-200"
@@ -1667,7 +1667,7 @@ function CTASection() {
               Gati të fillosh?
             </EditableText>
             <EditableText id="cta-sub" as="p" multiline className="text-white/70 text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-              NeuroSpace është platforma e parë profesionale e shëndetit mendor në Shqipëri. Sot mund të fillosh edhe ti.
+              NeuroSphera është platforma e parë profesionale e shëndetit mendor në Shqipëri. Sot mund të fillosh edhe ti.
             </EditableText>
 
             <Link to="/auth"
@@ -1716,7 +1716,7 @@ function AboutSection() {
               Ndërtuar për njerëz të vërtetë, me sfida të vërteta
             </EditableText>
             <EditableText id="about-landing-sub" as="p" multiline className="text-gray-500 leading-relaxed mb-7">
-              NeuroSpace ekziston sepse miliona njerëz vuajnë në heshtje, pa ditur ku të drejtohen, pa gjetur mbështetje në gjuhën e tyre. Ne ndryshojmë këtë.
+              NeuroSphera ekziston sepse miliona njerëz vuajnë në heshtje, pa ditur ku të drejtohen, pa gjetur mbështetje në gjuhën e tyre. Ne ndryshojmë këtë.
             </EditableText>
             <div className="grid grid-cols-2 gap-3">
               {WHO.map((w, i) => (
@@ -1741,7 +1741,7 @@ function AboutSection() {
                   <Brain size={14} color="white" strokeWidth={2}/>
                 </div>
                 <div>
-                  <p className="text-xs font-black text-white">NeuroSpace</p>
+                  <p className="text-xs font-black text-white">NeuroSphera</p>
                   <p className="text-[10px] text-white/40">Kosovë · Shqipëri · Diaspora</p>
                 </div>
               </div>
@@ -1755,7 +1755,7 @@ function AboutSection() {
         <div className="text-center mb-10">
           <p className="text-xs font-black text-violet-500 uppercase tracking-widest mb-2">Ekipi</p>
           <EditableText id="about-team-landing-h3" as="h3" className="text-2xl font-black text-gray-900">
-            Njerëzit pas NeuroSpace
+            Njerëzit pas NeuroSphera
           </EditableText>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
@@ -1793,7 +1793,7 @@ function Footer() {
     },
     {
       title: 'Kompania',
-      links: [{ to: '/about', label: 'Rreth nesh' }, { to: '/library', label: 'Blog' }, { to: '/about#careers', label: 'Karriera' }, { to: 'mailto:info@neurospace.com', label: 'Kontakti' }],
+      links: [{ to: '/about', label: 'Rreth nesh' }, { to: '/library', label: 'Blog' }, { to: '/about#careers', label: 'Karriera' }, { to: 'mailto:info@NeuroSphera.com', label: 'Kontakti' }],
     },
   ]
 
@@ -1807,7 +1807,7 @@ function Footer() {
               <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center shadow-lg">
                 <Brain size={18} color="white" strokeWidth={2}/>
               </div>
-              <EditableText id="footer-brand" as="span" className="font-black text-white text-base">NeuroSpace</EditableText>
+              <EditableText id="footer-brand" as="span" className="font-black text-white text-base">NeuroSphera</EditableText>
             </div>
             <EditableText id="footer-tagline" as="p" multiline className="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
               Platforma e parë shqiptare e zhvillimit të mendjes bazuar në neuroshkencë. Mëso si funksionon truri yt.
@@ -1843,20 +1843,20 @@ function Footer() {
         {/* Contact strip */}
         <div className="border-t border-white/5 pt-8 mb-6">
           <div className="flex flex-wrap gap-6 text-slate-500 text-sm">
-            <a href="mailto:info@neurospace.com" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={14} className="text-violet-400"/>&nbsp;info@neurospace.com
+            <a href="mailto:info@NeuroSphera.com" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Mail size={14} className="text-violet-400"/>&nbsp;info@NeuroSphera.com
             </a>
             <span className="flex items-center gap-2">
-              <Phone size={14} className="text-violet-400"/>psikolog@neurospace.com
+              <Phone size={14} className="text-violet-400"/>psikolog@NeuroSphera.com
             </span>
             <span className="flex items-center gap-2">
-              <Globe size={14} className="text-violet-400"/>neurospace.com
+              <Globe size={14} className="text-violet-400"/>NeuroSphera.com
             </span>
           </div>
         </div>
 
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <EditableText id="footer-copyright" as="p" className="text-xs text-slate-600">© 2026 NeuroSpace. Të gjitha të drejtat e rezervuara.</EditableText>
+          <EditableText id="footer-copyright" as="p" className="text-xs text-slate-600">© 2026 NeuroSphera. Të gjitha të drejtat e rezervuara.</EditableText>
           <div className="flex gap-5">
             {['Privatësia', 'Kushtet', 'Cookies'].map(t => (
               <span key={t} className="text-xs text-slate-600 hover:text-slate-300 cursor-pointer transition-colors">{t}</span>

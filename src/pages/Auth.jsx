@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import {
   Mail, Eye, EyeOff, UserX, Brain, Shield, Zap, User,
@@ -244,7 +244,7 @@ export default function Auth() {
           <div className="w-20 h-20 rounded-3xl bg-white/20 flex items-center justify-center mx-auto mb-6 shadow-xl">
             <Brain size={36} color="white" strokeWidth={1.8} />
           </div>
-          <h1 className="text-3xl font-black mb-2">NeuroSpace</h1>
+          <h1 className="text-3xl font-black mb-2">NeuroSphera</h1>
           <p className="text-white/75 text-sm mb-10 leading-relaxed">
             Platforma jote e mirëqenies mendore.<br />E ndërtuar mbi shkencë, e dizajnuar për ty.
           </p>
@@ -276,7 +276,7 @@ export default function Auth() {
           >
             <Brain size={28} color="white" strokeWidth={1.8} />
           </div>
-          <h1 className="text-2xl font-black text-gray-900">NeuroSpace</h1>
+          <h1 className="text-2xl font-black text-gray-900">NeuroSphera</h1>
         </div>
 
         <div className="max-w-sm w-full mx-auto">

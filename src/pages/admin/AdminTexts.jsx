@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from 'react'
+﻿import { useState, useMemo, useRef, useCallback } from 'react'
 import {
   Search, RotateCcw, Download, Upload,
   CheckCircle, AlertCircle, ChevronDown, ChevronUp, X,
@@ -401,7 +401,7 @@ export default function AdminTexts() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url  = URL.createObjectURL(blob)
     const a    = document.createElement('a')
-    a.href = url; a.download = `neurospace-texts-${lang}.json`; a.click()
+    a.href = url; a.download = `NeuroSphera-texts-${lang}.json`; a.click()
     URL.revokeObjectURL(url)
   }
 

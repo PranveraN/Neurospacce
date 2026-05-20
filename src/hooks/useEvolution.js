@@ -1,5 +1,5 @@
-// ================================================================
-// NEUROSPACE — Self-Evolution State Hook
+﻿// ================================================================
+// NeuroSphera — Self-Evolution State Hook
 // All state persisted in localStorage, keyed by ns_evo_*
 // ================================================================
 import { useState, useCallback, useEffect } from 'react'

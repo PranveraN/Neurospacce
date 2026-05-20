@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react'
+﻿import * as Sentry from '@sentry/react'
 
 /**
  * Call once before ReactDOM.render(). No-ops when VITE_SENTRY_DSN is absent (local dev).
@@ -10,7 +10,7 @@ export function initSentry() {
   Sentry.init({
     dsn,
     environment: import.meta.env.MODE,                          // 'development' | 'production'
-    release:     import.meta.env.VITE_APP_VERSION ?? 'neurospace@0.0.0',
+    release:     import.meta.env.VITE_APP_VERSION ?? 'NeuroSphera@0.0.0',
 
     integrations: [
       Sentry.browserTracingIntegration(),

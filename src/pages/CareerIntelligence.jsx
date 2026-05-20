@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ArrowLeft, CheckCircle, ChevronRight, Brain, Zap, Target, BarChart2, Star } from 'lucide-react'
 import { QUESTIONS, MODULES, DIMENSIONS, ARCHETYPES, CAREERS, scoreAssessment } from '../data/careerAssessment'
@@ -58,7 +58,7 @@ function IntroScreen({ onStart }) {
         {/* badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-bold text-violet-300 uppercase tracking-widest"
           style={{background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.3)'}}>
-          <Brain size={12}/> NeuroSpace Inteligjenca e Karrierës
+          <Brain size={12}/> NeuroSphera Inteligjenca e Karrierës
         </div>
 
         <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-5">

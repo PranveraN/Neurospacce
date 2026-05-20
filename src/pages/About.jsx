@@ -1,4 +1,4 @@
-import { Brain, Heart, Shield, Users, Zap, Mail, ChevronRight, Sparkles, BookOpen, Baby, UserCheck, Globe2, ArrowRight } from 'lucide-react'
+﻿import { Brain, Heart, Shield, Users, Zap, Mail, ChevronRight, Sparkles, BookOpen, Baby, UserCheck, Globe2, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PublicLayout from '../components/layout/PublicLayout'
 import EditableText from '../components/EditableText'
@@ -9,7 +9,7 @@ const SERVE = [
   {
     icon: Heart,
     title: 'Njerëzit që vuajnë në heshtje',
-    desc: 'Ankthi, depresioni, stresi kronik: kaq shumë njerëz jetojnë me barrë të padukshme. NeuroSpace i jep çdonjërit hapësirë të sigurt për të kuptuar dhe menaxhuar emocionet e veta.',
+    desc: 'Ankthi, depresioni, stresi kronik: kaq shumë njerëz jetojnë me barrë të padukshme. NeuroSphera i jep çdonjërit hapësirë të sigurt për të kuptuar dhe menaxhuar emocionet e veta.',
     from: '#ec4899', to: '#9d174d',
     tag: 'Shëndet mendor',
   },
@@ -23,14 +23,14 @@ const SERVE = [
   {
     icon: UserCheck,
     title: 'Profesionistët e lodhur',
-    desc: 'Burnout, presioni i punës, ekuilibri jeta-punë: profesionistët modernë kanë nevojë për mbështetje të specializuar. NeuroSpace ofron teknika konkrete dhe mentorim profesional.',
+    desc: 'Burnout, presioni i punës, ekuilibri jeta-punë: profesionistët modernë kanë nevojë për mbështetje të specializuar. NeuroSphera ofron teknika konkrete dhe mentorim profesional.',
     from: '#3b82f6', to: '#1e3a8a',
     tag: 'Mirëqenie',
   },
   {
     icon: Globe2,
     title: 'Diaspora dhe ata larg shtëpisë',
-    desc: 'Të jetosh larg shtëpisë sjell sfida unike: vetmi, nostalgjia, identiteti. NeuroSpace është gjithmonë këtu, në gjuhën tënde, me kuptimin e kontekstit tënd kulturor.',
+    desc: 'Të jetosh larg shtëpisë sjell sfida unike: vetmi, nostalgjia, identiteti. NeuroSphera është gjithmonë këtu, në gjuhën tënde, me kuptimin e kontekstit tënd kulturor.',
     from: '#7c3aed', to: '#4c1d95',
     tag: 'Komunitet',
   },
@@ -40,7 +40,7 @@ const SERVE = [
 const PILLARS = [
   { num: '1 në 4', label: 'persona përballet me probleme të shëndetit mendor gjatë jetës, por shumica nuk kërkojnë ndihmë kurrë' },
   { num: '74%', label: 'e njerëzve me probleme të shëndetit mendor nuk marrin asnjë ndihmë profesionale' },
-  { num: '1-e', label: 'platformë cilësore e shëndetit mendor në gjuhën shqipe: NeuroSpace' },
+  { num: '1-e', label: 'platformë cilësore e shëndetit mendor në gjuhën shqipe: NeuroSphera' },
 ]
 
 /* ── Values ── */
@@ -48,7 +48,7 @@ const VALUES = [
   { icon: Heart,  title: 'Njeriu para çdo tjetri',   desc: 'Çdo funksion vendoset duke pyetur: "A ndihmon vërtet dikë sot?" Jo metrika, jo viral, por vetëm ndikim real.', from: '#ec4899', to: '#be185d' },
   { icon: Shield, title: 'Privatësi pa kompromis',    desc: 'Çfarë ndani me ne qëndron me ne. Asnjë të dhënë për reklama, asnjë profilizim, asnjë shitje e të dhënave.', from: '#7c3aed', to: '#4c1d95' },
   { icon: Zap,    title: 'Shkencë, jo klishe',        desc: 'Çdo teknikë, çdo artikull, çdo vlerësim buron nga kërkime të verifikuara. Nuk ofrojmë "motivim", por dije.', from: '#f59e0b', to: '#b45309' },
-  { icon: Users,  title: 'Gjithëpërfshirje reale',   desc: 'Nga Prishtina në Tiranë deri te diaspora në Zvicër: NeuroSpace është për çdo folës të shqipes, pavarësisht vendndodhjes.', from: '#10b981', to: '#065f46' },
+  { icon: Users,  title: 'Gjithëpërfshirje reale',   desc: 'Nga Prishtina në Tiranë deri te diaspora në Zvicër: NeuroSphera është për çdo folës të shqipes, pavarësisht vendndodhjes.', from: '#10b981', to: '#065f46' },
 ]
 
 export const TEAM_DEFAULTS = [
@@ -75,7 +75,7 @@ export default function About() {
             Kujdesi për mendjen s'duhet të jetë luks
           </EditableText>
           <EditableText id="about-hero-sub" as="p" multiline className="text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto mb-10">
-            Miliona njerëz vuajnë nga ankthi, depresioni dhe stresi pa e ditur ku të drejtohen, pa gjetur ndihmë në gjuhën e tyre. NeuroSpace ekziston për t'i ndryshuar këto shifra.
+            Miliona njerëz vuajnë nga ankthi, depresioni dhe stresi pa e ditur ku të drejtohen, pa gjetur ndihmë në gjuhën e tyre. NeuroSphera ekziston për t'i ndryshuar këto shifra.
           </EditableText>
           <Link to="/auth"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-sm text-white hover:scale-105 transition-all"
@@ -108,7 +108,7 @@ export default function About() {
               Për këdo që ka nevojë, pa gjykim
             </EditableText>
             <EditableText id="about-serve-sub" as="p" multiline className="text-gray-500 max-w-xl mx-auto leading-relaxed">
-              NeuroSpace është ndërtuar për njerëz të vërtetë me sfida të vërteta, nga Kosova në Shqipëri deri te diaspora në çdo cep të botës.
+              NeuroSphera është ndërtuar për njerëz të vërtetë me sfida të vërteta, nga Kosova në Shqipëri deri te diaspora në çdo cep të botës.
             </EditableText>
           </div>
 
@@ -163,7 +163,7 @@ export default function About() {
                       <Brain size={15} color="white" strokeWidth={2}/>
                     </div>
                     <div>
-                      <p className="text-xs font-black text-white">NeuroSpace</p>
+                      <p className="text-xs font-black text-white">NeuroSphera</p>
                       <p className="text-[10px] text-white/40">Fondimi i platformës, 2024</p>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ export default function About() {
             <div className="md:col-span-3">
               <p className="text-xs font-black text-violet-500 uppercase tracking-widest mb-3">Historia jonë</p>
               <EditableText id="about-story-h2" as="h2" className="text-3xl font-black text-gray-900 mb-6 leading-tight">
-                Pse e ndërtuam NeuroSpace
+                Pse e ndërtuam NeuroSphera
               </EditableText>
 
               <div className="space-y-4">
@@ -191,7 +191,7 @@ export default function About() {
                   Burimet ekzistonin, por jo në shqip. Psikologët ekzistonin, por me tarifa shumë të larta. Platformat ekzistonin, por pa kuptuar kontekstin kulturor dhe gjuhësor tonin.
                 </EditableText>
                 <EditableText id="about-story-p3" as="p" multiline className="text-gray-600 leading-relaxed">
-                  Kështu lindi NeuroSpace, një platformë e ndërtuar nga njerëz që kuptojnë sfidën, për njerëz që meritojnë ndihmë reale. Sot jemi këtu, nesër do të jemi edhe më afër.
+                  Kështu lindi NeuroSphera, një platformë e ndërtuar nga njerëz që kuptojnë sfidën, për njerëz që meritojnë ndihmë reale. Sot jemi këtu, nesër do të jemi edhe më afër.
                 </EditableText>
               </div>
 
@@ -242,7 +242,7 @@ export default function About() {
           <div className="text-center mb-14">
             <p className="text-xs font-black text-violet-500 uppercase tracking-widest mb-3">Ekipi</p>
             <EditableText id="about-team-h2" as="h2" className="text-3xl font-black text-gray-900 mb-3">
-              Njerëzit pas NeuroSpace
+              Njerëzit pas NeuroSphera
             </EditableText>
             <EditableText id="about-team-sub" as="p" multiline className="text-gray-500 max-w-xl mx-auto leading-relaxed">
               Ekspertizë psikologjike, teknologjike dhe dizajn, bashkuar nga një qëllim i vetëm.
@@ -282,7 +282,7 @@ export default function About() {
             ))}
           </div>
 
-          <a href="mailto:karriera@neurospace.com"
+          <a href="mailto:karriera@NeuroSphera.com"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-sm text-white hover:opacity-90 transition-all"
             style={{ background: 'linear-gradient(135deg,#7c3aed,#3b82f6)', boxShadow: '0 0 30px rgba(124,58,237,0.3)' }}>
             <Mail size={15}/> Dërgoni CV-në tuaj
@@ -305,7 +305,7 @@ export default function About() {
               style={{ background: 'linear-gradient(135deg,#7c3aed,#3b82f6)' }}>
               Regjistrohu falas
             </Link>
-            <a href="mailto:info@neurospace.com"
+            <a href="mailto:info@NeuroSphera.com"
               className="px-6 py-3 rounded-xl font-bold text-sm text-gray-700 border border-gray-200 hover:border-violet-300 transition-colors flex items-center justify-center gap-2">
               <Mail size={15}/> Na kontaktoni
             </a>

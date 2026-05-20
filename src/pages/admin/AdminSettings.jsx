@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import {
   Palette, CreditCard,
   Save, RotateCcw, Shield, Bell, Globe, Lock, Zap, CheckCircle,
@@ -16,8 +16,8 @@ const ACCENT_COLORS = [
 const DEFAULTS = {
   accent: '#7c3aed',
   general: {
-    siteName: 'NeuroSpace',
-    supportEmail: 'support@neurospace.com',
+    siteName: 'NeuroSphera',
+    supportEmail: 'support@NeuroSphera.com',
     maxUsersPerRoom: '50',
     sessionTimeout: '24',
     maintenanceMode: false,
@@ -128,7 +128,7 @@ export default function AdminSettings() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Cilësimet</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Konfigurimi i sistemit · NeuroSpace</p>
+          <p className="text-gray-500 text-sm mt-0.5">Konfigurimi i sistemit · NeuroSphera</p>
         </div>
         <div className="flex gap-2">
           <button onClick={handleReset}
@@ -326,7 +326,7 @@ export default function AdminSettings() {
               }
               const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' })
               const url  = URL.createObjectURL(blob)
-              const a    = document.createElement('a'); a.href = url; a.download = `neurospace_backup_${new Date().toISOString().slice(0,10)}.json`; a.click()
+              const a    = document.createElement('a'); a.href = url; a.download = `NeuroSphera_backup_${new Date().toISOString().slice(0,10)}.json`; a.click()
               URL.revokeObjectURL(url)
             }}
             className="text-left p-4 rounded-xl border-2 border-red-200 text-red-600 hover:bg-red-100 transition-colors">

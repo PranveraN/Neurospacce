@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Search, Shield, Trash2, Ban, CheckCircle, MoreVertical, Filter, Download, UserPlus, X, ChevronDown } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -81,7 +81,7 @@ function exportCSV(users) {
   const csv     = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n')
   const blob    = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
   const url     = URL.createObjectURL(blob)
-  const a       = document.createElement('a'); a.href = url; a.download = 'neurospace_users.csv'; a.click()
+  const a       = document.createElement('a'); a.href = url; a.download = 'NeuroSphera_users.csv'; a.click()
   URL.revokeObjectURL(url)
 }
 

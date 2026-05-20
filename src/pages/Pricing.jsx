@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Check, ArrowLeft, ArrowRight, Sparkles, Heart, Shield,
@@ -128,9 +128,9 @@ export default function Pricing() {
       `Specializimet:    ${applyForm.specialties}\n` +
       `Vite eksperiencë: ${applyForm.experience || 'Jo specifiku'}\n\n` +
       `Mesazh motivues:\n${applyForm.message || '(pa mesazh)'}\n\n` +
-      `--- Dërguar nga forma e aplikimit NeuroSpace ---`
+      `--- Dërguar nga forma e aplikimit NeuroSphera ---`
     )
-    window.location.href = `mailto:psikolog@neurospace.app?subject=${subject}&body=${body}`
+    window.location.href = `mailto:psikolog@NeuroSphera.app?subject=${subject}&body=${body}`
     setApplyStep('success')
   }
 
@@ -335,7 +335,7 @@ export default function Pricing() {
                     <textarea
                       value={applyForm.message}
                       onChange={e => setField('message', e.target.value)}
-                      placeholder="Pse dëshiron të bashkohesh me NeuroSpace? Çfarë mund të sjellësh..."
+                      placeholder="Pse dëshiron të bashkohesh me NeuroSphera? Çfarë mund të sjellësh..."
                       rows={3}
                       className="w-full rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-600 outline-none focus:ring-1 focus:ring-violet-500 transition-all resize-none"
                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
@@ -378,7 +378,7 @@ export default function Pricing() {
       <div className="max-w-3xl mx-auto px-5 pt-12 pb-14 text-center">
         <div className="inline-flex items-center gap-2 bg-violet-50 border border-violet-200 rounded-full px-4 py-2 mb-6">
           <Heart size={13} className="text-violet-500" />
-          <EditableText as="span" className="text-sm font-bold text-violet-600">NeuroSpace: Aksesibël dhe humane</EditableText>
+          <EditableText as="span" className="text-sm font-bold text-violet-600">NeuroSphera: Aksesibël dhe humane</EditableText>
         </div>
         <EditableText as="h1" className="text-4xl md:text-5xl font-black text-slate-900 mb-5 leading-tight">
           Mbështetja mendore nuk<br />duhet të jetë luks
@@ -651,7 +651,7 @@ export default function Pricing() {
                   <span className="text-slate-400 mb-1">/ seancë</span>
                 </div>
                 <EditableText as="p" multiline className="text-sm text-slate-400 leading-relaxed">
-                  Psikologët e vendosin çmimin e vet. NeuroSpace merr 15–20% komision dhe ju merrni profesionistin e duhur.
+                  Psikologët e vendosin çmimin e vet. NeuroSphera merr 15–20% komision dhe ju merrni profesionistin e duhur.
                 </EditableText>
               </div>
             </div>
@@ -757,7 +757,7 @@ export default function Pricing() {
               Zgjero praktikën tënde.<br />Ndihmo njerëz që kanë nevojë.
             </EditableText>
             <EditableText as="p" multiline className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto">
-              NeuroSpace të lidh me klientë të motivuar, që kanë zgjedhur vetë të kërkojnë mbështetje. Ti fokusohesh te terapia dhe platformë kujdeset për pjesën tjetër.
+              NeuroSphera të lidh me klientë të motivuar, që kanë zgjedhur vetë të kërkojnë mbështetje. Ti fokusohesh te terapia dhe platformë kujdeset për pjesën tjetër.
             </EditableText>
           </div>
 
@@ -784,7 +784,7 @@ export default function Pricing() {
           {/* CTA block */}
           <div className="text-center">
             <EditableText as="p" className="text-slate-400 text-sm mb-6">
-              Bashkohu me psikologët që ndërtojnë praktikën e tyre dixhitale në NeuroSpace.
+              Bashkohu me psikologët që ndërtojnë praktikën e tyre dixhitale në NeuroSphera.
             </EditableText>
             <button
               onClick={openApply}
@@ -918,7 +918,7 @@ export default function Pricing() {
               },
               {
                 q: 'Si funksionon modeli i komisionit për psikologët?',
-                a: 'Psikologu vendos çmimin e seancës (€20–50). NeuroSpace merr 15–20% komision vetëm kur seanca mbahet. Pa tarifa mujore, pa kontrata. Psikologu përfiton nga klientët e rinj dhe sistemi automatik i rezervimeve.',
+                a: 'Psikologu vendos çmimin e seancës (€20–50). NeuroSphera merr 15–20% komision vetëm kur seanca mbahet. Pa tarifa mujore, pa kontrata. Psikologu përfiton nga klientët e rinj dhe sistemi automatik i rezervimeve.',
               },
               {
                 q: 'A janë psikologët të verifikuar?',
@@ -940,7 +940,7 @@ export default function Pricing() {
             Fillo udhëtimin tënd sot
           </EditableText>
           <EditableText as="p" multiline className="text-slate-400 text-base mb-8 leading-relaxed">
-            Qoftë me planin falas apo Pro, NeuroSpace është këtu. Pa presion dhe pa gjykim.
+            Qoftë me planin falas apo Pro, NeuroSphera është këtu. Pa presion dhe pa gjykim.
           </EditableText>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth"

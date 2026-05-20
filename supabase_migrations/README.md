@@ -1,4 +1,4 @@
-# NeuroSpace — Database Migrations
+﻿# NeuroSphera — Database Migrations
 
 ## Si të ekzekutosh
 

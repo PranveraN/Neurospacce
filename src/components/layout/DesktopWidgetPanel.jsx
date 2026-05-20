@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+﻿import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { ArrowRight, Droplets, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -329,7 +329,7 @@ function DefaultPanel() {
         <p className="text-[11px] text-white/55 leading-relaxed italic">
           "Truri yt është si një muskul. Sa më shumë që e trajnon, aq më i fortë bëhet."
         </p>
-        <p className="text-[9px] text-white/25 mt-2 font-semibold">— NeuroSpace</p>
+        <p className="text-[9px] text-white/25 mt-2 font-semibold">— NeuroSphera</p>
       </div>
 
       {/* Community */}

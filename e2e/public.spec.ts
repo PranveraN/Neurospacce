@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+﻿import { test, expect } from '@playwright/test'
 
 test.describe('Landing page', () => {
   test('loads and shows hero CTA', async ({ page }) => {
@@ -20,9 +20,9 @@ test.describe('Landing page', () => {
     await expect(page).toHaveURL(/\/auth/)
   })
 
-  test('page title contains NeuroSpace', async ({ page }) => {
+  test('page title contains NeuroSphera', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/NeuroSpace/i)
+    await expect(page).toHaveTitle(/NeuroSphera/i)
   })
 })
 

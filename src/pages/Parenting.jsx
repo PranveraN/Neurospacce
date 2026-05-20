@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import EditableText from '../components/EditableText'
 import PublicLayout from '../components/layout/PublicLayout'
@@ -642,7 +642,7 @@ export default function Parenting() {
                 👨‍👩‍👧‍👦
               </div>
               <div>
-                <EditableText as="h1" className="text-xl font-black text-white leading-tight">NeuroSpace për Prindërit</EditableText>
+                <EditableText as="h1" className="text-xl font-black text-white leading-tight">NeuroSphera për Prindërit</EditableText>
                 <EditableText as="p" className="text-sm text-white/75 mt-0.5">Psikologji zhvillimore · Teknika praktike · AI</EditableText>
               </div>
             </div>
