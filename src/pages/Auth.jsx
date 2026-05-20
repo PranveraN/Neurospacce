@@ -470,67 +470,63 @@ export default function Auth() {
             /* ═══ MAIN FORM ═══ */
             ) : (
               <>
-                {/* Header */}
-                <div className="mb-6">
-                  <h2 className="text-2xl font-black text-white mb-1">
-                    {tab === 'login' ? 'Mirë se vjen!' : 'Krijo llogarinë'}
-                  </h2>
-                  <p className="text-white/35 text-sm">
-                    {tab === 'login' ? 'Hyr në hapësirën tënde mendore' : 'Fillo udhëtimin tënd sot'}
-                  </p>
+                {/* Header + tab switch */}
+                <div className="flex items-start justify-between mb-7">
+                  <div>
+                    <h2 className="text-2xl font-black text-white mb-1">
+                      {tab === 'login' ? 'Mirë se vjen!' : 'Krijo llogarinë'}
+                    </h2>
+                    <p className="text-white/35 text-sm">
+                      {tab === 'login' ? 'Kyçu në hapësirën tënde' : 'Fillo udhëtimin tënd sot'}
+                    </p>
+                  </div>
+                  <button onClick={() => switchTab(tab === 'login' ? 'signup' : 'login')}
+                    className="shrink-0 mt-1 text-xs font-bold px-3 py-1.5 rounded-lg border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 transition-all">
+                    {tab === 'login' ? 'Regjistrohu' : 'Kyçu'}
+                  </button>
                 </div>
 
                 {/* ── Google button ── */}
                 <button onClick={handleGoogleLogin} disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-200 mb-3 disabled:opacity-50">
+                  className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl border border-white/12 text-white text-sm font-semibold transition-all duration-200 mb-3 disabled:opacity-50 group"
+                  style={{ background: 'rgba(255,255,255,0.06)' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.10)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}>
                   <GoogleIcon />
-                  {tab === 'login' ? 'Hyr me Google' : 'Regjistrohu me Google'}
+                  {tab === 'login' ? 'Kyçu me Google' : 'Regjistrohu me Google'}
                 </button>
 
                 {/* Divider */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex-1 h-px bg-white/8" />
-                  <span className="text-[11px] text-white/25 font-semibold">ose me email</span>
-                  <div className="flex-1 h-px bg-white/8" />
-                </div>
-
-                {/* Tabs */}
-                <div className="flex bg-white/5 rounded-xl p-1 mb-5 border border-white/5">
-                  {[{ key: 'login', label: 'Hyr' }, { key: 'signup', label: 'Regjistrohu' }].map(t => (
-                    <button key={t.key} onClick={() => switchTab(t.key)}
-                      className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${
-                        tab === t.key ? 'text-white shadow-sm' : 'text-white/30 hover:text-white/50'
-                      }`}
-                      style={tab === t.key ? { background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` } : {}}>
-                      {t.label}
-                    </button>
-                  ))}
+                <div className="flex items-center gap-3 my-4">
+                  <div className="flex-1 h-px bg-white/6" />
+                  <span className="text-[11px] text-white/20 font-medium tracking-wider uppercase">ose me email</span>
+                  <div className="flex-1 h-px bg-white/6" />
                 </div>
 
                 {/* Error */}
                 {serverErr && <ErrorBanner msg={serverErr} />}
 
                 {/* Form */}
-                <form onSubmit={tab === 'login' ? handleLogin : handleSignup} className="space-y-3.5">
+                <form onSubmit={tab === 'login' ? handleLogin : handleSignup} className="space-y-3">
 
                   {tab === 'signup' && (
                     <div>
-                      <label className="block text-xs font-bold text-white/40 mb-1.5 ml-1">
-                        Emri i përdoruesit <span className="text-white/20 font-normal">(opsional)</span>
+                      <label className="block text-xs font-semibold text-white/30 mb-1.5 ml-0.5">
+                        Emri i përdoruesit <span className="text-white/15">(opsional)</span>
                       </label>
                       <div className="relative">
                         <input type="text" value={form.username}
                           onChange={e => field('username', e.target.value)}
                           placeholder="username_yt"
                           className={inp(errors.username)} />
-                        <User size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20" />
+                        <User size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
                       </div>
                       <FieldError msg={errors.username} />
                     </div>
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold text-white/40 mb-1.5 ml-1">Email</label>
+                    <label className="block text-xs font-semibold text-white/30 mb-1.5 ml-0.5">Email</label>
                     <div className="relative">
                       <input type="email" value={form.email}
                         onChange={e => field('email', e.target.value)}
@@ -540,21 +536,30 @@ export default function Auth() {
                         ? <AlertCircle size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-red-400" />
                         : form.email && !errors.email
                           ? <CheckCircle size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-400" />
-                          : <Mail size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20" />
+                          : <Mail size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
                       }
                     </div>
                     <FieldError msg={errors.email} />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-white/40 mb-1.5 ml-1">Fjalëkalimi</label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-xs font-semibold text-white/30 ml-0.5">Fjalëkalimi</label>
+                      {tab === 'login' && (
+                        <button type="button"
+                          onClick={() => { setResetEmail(form.email); setResetSent(false); setServErr(''); setStep('reset') }}
+                          className="text-[11px] text-white/25 hover:text-violet-400 transition-colors">
+                          Harrove?
+                        </button>
+                      )}
+                    </div>
                     <div className="relative">
                       <input type={showPass ? 'text' : 'password'} value={form.password}
                         onChange={e => field('password', e.target.value)}
                         placeholder="••••••••"
                         className={inp(errors.password)} />
                       <button type="button" onClick={() => setShow(!showPass)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50 transition-colors">
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15 hover:text-white/50 transition-colors">
                         {showPass ? <EyeOff size={14} /> : <Eye size={14} />}
                       </button>
                     </div>
@@ -564,14 +569,14 @@ export default function Auth() {
 
                   {tab === 'signup' && (
                     <div>
-                      <label className="block text-xs font-bold text-white/40 mb-1.5 ml-1">Konfirmo fjalëkalimin</label>
+                      <label className="block text-xs font-semibold text-white/30 mb-1.5 ml-0.5">Konfirmo fjalëkalimin</label>
                       <div className="relative">
                         <input type={showConfirm ? 'text' : 'password'} value={form.confirmPassword}
                           onChange={e => field('confirmPassword', e.target.value)}
                           placeholder="••••••••"
                           className={inp(errors.confirm)} />
                         <button type="button" onClick={() => setShowC(!showConfirm)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50">
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15 hover:text-white/50">
                           {showConfirm ? <EyeOff size={14} /> : <Eye size={14} />}
                         </button>
                       </div>
@@ -584,18 +589,8 @@ export default function Auth() {
                     </div>
                   )}
 
-                  {tab === 'login' && (
-                    <div className="flex justify-end">
-                      <button type="button"
-                        onClick={() => { setResetEmail(form.email); setResetSent(false); setServErr(''); setStep('reset') }}
-                        className="text-xs font-semibold text-white/30 hover:text-violet-400 transition-colors">
-                        Harrove fjalëkalimin?
-                      </button>
-                    </div>
-                  )}
-
                   <button type="submit" disabled={loading || cooldown > 0}
-                    className="w-full py-3.5 rounded-xl text-white font-black text-sm shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-1"
+                    className="w-full py-3.5 rounded-2xl text-white font-black text-sm shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 !mt-5"
                     style={{
                       background: cooldown > 0 ? 'rgba(255,255,255,0.08)' : `linear-gradient(135deg, ${theme.start}, ${theme.end})`,
                       boxShadow: cooldown > 0 ? 'none' : `0 8px 32px ${theme.start}44`,
@@ -604,7 +599,7 @@ export default function Auth() {
                       ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke u lidhur...</>
                       : cooldown > 0
                         ? `Provo pas ${cooldown}s`
-                        : tab === 'login' ? 'Hyr me Email' : 'Vazhdo'
+                        : tab === 'login' ? 'Kyçu me Email' : 'Regjistrohu me Email'
                     }
                   </button>
                 </form>
