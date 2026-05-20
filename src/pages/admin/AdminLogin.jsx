@@ -60,7 +60,7 @@ export default function AdminLogin() {
     }
     if (res.user.role !== 'admin') { setError('Kjo llogari nuk ka akses admin'); return }
     attempts.current = { count: 0, windowStart: 0 }
-    navigate('/admin')
+    navigate('/ns-secure-7381')
   }
 
   return (
@@ -135,11 +135,6 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-slate-800 text-center">
-            <Link to="/auth" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
-              ← Kthehu tek faqja kryesore
-            </Link>
-          </div>
         </div>
 
         <p className="text-center text-[10px] text-slate-700 mt-6">

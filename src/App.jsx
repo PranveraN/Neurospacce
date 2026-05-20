@@ -187,11 +187,10 @@ export default function App() {
                 {/* Auth */}
                 <Route path="/auth"          element={<Auth />}              />
                 <Route path="/privacy"       element={<Privacy />}           />
-                <Route path="/admin/login"   element={<AdminLogin />}        />
-
-                {/* Admin — protected */}
-                <Route path="/admin/*" element={
-                  <ProtectedRoute requiredRole="admin" redirectTo="/admin/login">
+                {/* Admin — secret URL (do not share publicly) */}
+                <Route path="/ns-secure-7381/login" element={<AdminLogin />} />
+                <Route path="/ns-secure-7381/*" element={
+                  <ProtectedRoute requiredRole="admin" redirectTo="/ns-secure-7381/login">
                     <AdminLayout />
                   </ProtectedRoute>
                 } />

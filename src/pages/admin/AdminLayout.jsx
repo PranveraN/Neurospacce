@@ -28,7 +28,7 @@ const NAV_ITEMS = [
 
 function usePageTitle() {
   const { pathname } = useLocation()
-  const seg = pathname.replace('/admin', '').replace('/', '')
+  const seg = pathname.replace('/ns-secure-7381', '').replace('/', '')
   const found = NAV_ITEMS.find(n => n.to === seg)
   return found?.label || 'Dashboard'
 }
@@ -63,7 +63,7 @@ function AdminSidebar({ collapsed, onToggle, onClose }) {
         {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
-            to={`/admin${to ? `/${to}` : ''}`}
+            to={`/ns-secure-7381${to ? `/${to}` : ''}`}
             end={to === ''}
             onClick={onClose}
             className={({ isActive }) =>
@@ -224,7 +224,7 @@ export default function AdminLayout() {
             <Route path="texts"           element={<AdminTexts />}     />
             <Route path="analytics"       element={<AdminAnalytics />} />
             <Route path="settings"        element={<AdminSettings />}  />
-            <Route path="*"               element={<Navigate to="/admin" replace />} />
+            <Route path="*"               element={<Navigate to="/ns-secure-7381" replace />} />
           </Routes>
         </main>
       </div>

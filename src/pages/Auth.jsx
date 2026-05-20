@@ -622,12 +622,6 @@ export default function Auth() {
                   </button>
                 </div>
 
-                <p className="text-center text-xs text-white/20 mt-5">
-                  Jeni administrator?{' '}
-                  <Link to="/admin/login" className="font-bold text-white/35 hover:text-violet-400 transition-colors">
-                    Hyrja si administrator
-                  </Link>
-                </p>
               </>
             )}
           </div>
