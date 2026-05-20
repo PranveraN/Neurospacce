@@ -702,6 +702,7 @@ function DeepFocusSounds() {
   const fileInputRef = useRef(null)
   const audioElRef   = useRef(null)
   const mediaNodeRef = useRef(null)
+  const touchRef     = useRef(null)   // tracks touchstart position to distinguish tap vs scroll
 
   // iOS Safari: AudioContext must be created AND resumed synchronously
   // inside a user gesture handler. Any async/await breaks the gesture
@@ -825,10 +826,28 @@ function DeepFocusSounds() {
     ctxRef.current?.close()
   }, [])
 
+  // onTouchEnd fires inside the real iOS gesture context (before the synthetic
+  // click). preventDefault stops the duplicate click from also calling toggle().
+  function handleTouchStart(e) {
+    touchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+  }
+  function makeTouchEnd(fn) {
+    return function(e) {
+      if (!touchRef.current) return
+      const dx = Math.abs(e.changedTouches[0].clientX - touchRef.current.x)
+      const dy = Math.abs(e.changedTouches[0].clientY - touchRef.current.y)
+      touchRef.current = null
+      if (dx < 12 && dy < 12) { e.preventDefault(); fn() }
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2">
       {SOUNDS.map(s => (
-        <button key={s.key} onClick={() => toggle(s.key)}
+        <button key={s.key}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={makeTouchEnd(() => toggle(s.key))}
+          onClick={() => toggle(s.key)}
           className="flex items-center gap-3 p-2.5 rounded-xl transition-all"
           style={playing===s.key
             ? {background:'rgba(124,58,237,0.2)',border:'1px solid rgba(167,139,250,0.4)'}
@@ -851,7 +870,10 @@ function DeepFocusSounds() {
       {!isAnonymous && <>
       <input ref={fileInputRef} type="file" accept="audio/*,video/mp4,.mp4,.mp3,.wav,.ogg,.m4a"
         className="hidden" onChange={handleFileChange} />
-      <button onClick={handleCustomClick}
+      <button
+        onTouchStart={handleTouchStart}
+        onTouchEnd={makeTouchEnd(handleCustomClick)}
+        onClick={handleCustomClick}
         className="flex items-center gap-3 p-2.5 rounded-xl transition-all mt-0.5"
         style={playing==='custom'
           ? {background:'rgba(124,58,237,0.2)',border:'1px solid rgba(167,139,250,0.4)'}
