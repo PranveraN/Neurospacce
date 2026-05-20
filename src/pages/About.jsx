@@ -282,7 +282,7 @@ export default function About() {
             ))}
           </div>
 
-          <a href="mailto:karriera@NeuroSphera.com"
+          <a href="mailto:karriera@myneurosphera.com"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-sm text-white hover:opacity-90 transition-all"
             style={{ background: 'linear-gradient(135deg,#7c3aed,#3b82f6)', boxShadow: '0 0 30px rgba(124,58,237,0.3)' }}>
             <Mail size={15}/> Dërgoni CV-në tuaj
@@ -305,7 +305,7 @@ export default function About() {
               style={{ background: 'linear-gradient(135deg,#7c3aed,#3b82f6)' }}>
               Regjistrohu falas
             </Link>
-            <a href="mailto:info@NeuroSphera.com"
+            <a href="mailto:info@myneurosphera.com"
               className="px-6 py-3 rounded-xl font-bold text-sm text-gray-700 border border-gray-200 hover:border-violet-300 transition-colors flex items-center justify-center gap-2">
               <Mail size={15}/> Na kontaktoni
             </a>

@@ -4,25 +4,14 @@ const SERVICE_ID  = import.meta.env.VITE_EJS_SERVICE
 const TEMPLATE_ID = import.meta.env.VITE_EJS_TEMPLATE
 const PUBLIC_KEY  = import.meta.env.VITE_EJS_KEY
 
-/**
- * Sends a booking-confirmation email via EmailJS.
- * Fire-and-forget: never throws — logs on failure instead.
- *
- * Required EmailJS template variables:
- *   {{to_name}}            – recipient's display name
- *   {{to_email}}           – recipient's email address
- *   {{psychologist_name}}  – expert's full name
- *   {{appointment_date}}   – e.g. "E hënë, 2 Qershor 2026"
- *   {{appointment_time}}   – e.g. "10:00 – 10:50"
- *
- * @param {{
- *   toName: string,
- *   toEmail: string,
- *   psychologistName: string,
- *   appointmentDate: string,
- *   appointmentTime: string,
- * }} params
- */
+const CONTACT_TEMPLATE = import.meta.env.VITE_EJS_CONTACT_TEMPLATE
+const EXPERT_TEMPLATE   = import.meta.env.VITE_EJS_EXPERT_TEMPLATE
+
+function ready() {
+  return SERVICE_ID && PUBLIC_KEY
+}
+
+// ── Booking confirmation → dërgohet te useri ─────────────────────────────────
 export async function sendBookingConfirmation({
   toName,
   toEmail,
@@ -30,7 +19,7 @@ export async function sendBookingConfirmation({
   appointmentDate,
   appointmentTime,
 }) {
-  if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) return
+  if (!ready() || !TEMPLATE_ID) return
 
   try {
     await emailjs.send(
@@ -46,6 +35,59 @@ export async function sendBookingConfirmation({
       { publicKey: PUBLIC_KEY },
     )
   } catch (err) {
-    console.warn('[email] confirmation failed:', err?.text ?? err)
+    console.warn('[email] booking confirmation failed:', err?.text ?? err)
+  }
+}
+
+// ── Contact form → dërgohet te info@myneurosphera.com ────────────────────────
+export async function sendContactForm({ fromName, fromEmail, subject, message }) {
+  if (!ready()) {
+    // Fallback: hap klientin e emailit
+    const body = encodeURIComponent(`Emri: ${fromName}\nEmail: ${fromEmail}\n\n${message}`)
+    window.location.href = `mailto:info@myneurosphera.com?subject=${encodeURIComponent(subject)}&body=${body}`
+    return { success: true, fallback: true }
+  }
+
+  try {
+    await emailjs.send(
+      SERVICE_ID,
+      CONTACT_TEMPLATE || TEMPLATE_ID,
+      {
+        from_name:  fromName,
+        from_email: fromEmail,
+        subject,
+        message,
+        to_email:   'info@myneurosphera.com',
+      },
+      { publicKey: PUBLIC_KEY },
+    )
+    return { success: true }
+  } catch (err) {
+    console.warn('[email] contact form failed:', err?.text ?? err)
+    return { success: false, error: err?.text ?? 'Gabim gjatë dërgimit' }
+  }
+}
+
+// ── Expert contact → dërgohet te info@myneurosphera.com ──────────────────────
+export async function sendExpertContact({ fromName, fromEmail, expertName, message }) {
+  if (!ready()) return { success: false }
+
+  try {
+    await emailjs.send(
+      SERVICE_ID,
+      EXPERT_TEMPLATE || CONTACT_TEMPLATE || TEMPLATE_ID,
+      {
+        from_name:   fromName,
+        from_email:  fromEmail,
+        expert_name: expertName,
+        message,
+        to_email:    'info@myneurosphera.com',
+      },
+      { publicKey: PUBLIC_KEY },
+    )
+    return { success: true }
+  } catch (err) {
+    console.warn('[email] expert contact failed:', err?.text ?? err)
+    return { success: false, error: err?.text ?? 'Gabim gjatë dërgimit' }
   }
 }

@@ -270,7 +270,7 @@ function PublicFooter() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-slate-400 text-sm">
                 <Mail size={15} className="text-violet-400 shrink-0" />
-                info@NeuroSphera.com
+                info@myneurosphera.com
               </li>
             </ul>
             <div className="mt-6 p-4 bg-slate-800 rounded-2xl">

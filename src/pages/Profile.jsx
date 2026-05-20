@@ -259,7 +259,7 @@ function SupportModal({ onClose }) {
   return (
     <DarkModal title="Mbështetje" icon={HelpCircle} color="#f87171" onClose={onClose}>
       <div className="space-y-3">
-        <a href="mailto:info@NeuroSphera.com"
+        <a href="mailto:info@myneurosphera.com"
           className="flex items-center gap-3 p-3 rounded-2xl hover:bg-white/5 transition-colors"
           style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:'rgba(167,139,250,0.2)'}}>
@@ -267,7 +267,7 @@ function SupportModal({ onClose }) {
           </div>
           <div>
             <p className="text-sm font-bold text-white/80">Email</p>
-            <p className="text-xs text-white/35">info@NeuroSphera.com</p>
+            <p className="text-xs text-white/35">info@myneurosphera.com</p>
           </div>
         </a>
         <div className="flex items-center gap-3 p-3 rounded-2xl"

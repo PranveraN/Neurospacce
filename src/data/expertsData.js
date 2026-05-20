@@ -13,7 +13,7 @@ Gjatë karrierës së saj, ka bashkëpunuar me Organizatën Botërore të Shënd
 
 Si terapiste CBT e certifikuar dhe praktikuese EMDR (Eye Movement Desensitization and Reprocessing), Dr. Krasniqi specializohet veçanërisht në trajtimin e PTSD, çrregullimeve të panikut dhe fobive sociale. Aktualisht është lektor i asociuar pranë Departamentit të Psikologjisë, Universiteti i Tiranës.`,
     specialties: ['Ankth', 'Trauma & PTSD', 'CBT', 'Depresion', 'Fobia Sociale'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#6d28d9,#7c3aed,#4c1d95)',
     rating: 4.9,
@@ -44,7 +44,7 @@ Mbi 15 vjet eksperiencë spitalore dhe ambulatore, duke trajtuar mbi 3,000 pacie
 
 Është anëtar aktiv i Shoqatës Europiane të Psikiatrisë (EPA) dhe Shoqatës Ndërkombëtare të Studimeve të Gjumit (WASM). Besimi i tij: "Gjumi nuk është luksi, por neurokirurgjia natyrale e trurit."`,
     specialties: ['Depresion', 'Çrregullim Bipolar', 'Insomnia', 'Psikofarmakologji', 'Stres Kronik'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#1e40af,#3b82f6,#1d4ed8)',
     rating: 4.8,
@@ -75,7 +75,7 @@ Psik. Berisha ka punuar gjerësisht me grupe të ndryshme popullsie: të rinj 18
 
 Angazhimi i saj me komunitetin include workshope mujore falas dhe kolumna javore psikologjike në media shqiptare. "Nuk ka njeri 'të thyer', por njerëz që nuk kanë gjetur ende mjetet e duhura."`,
     specialties: ['Marrëdhënie', 'Vetëbesim', 'DBT', 'Stres & Burnout', 'Mindfulness'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#065f46,#059669,#0d9488)',
     rating: 4.9,
@@ -106,7 +106,7 @@ Ka punuar si hulumtues post-doktoral pranë Institutit Max Planck për Neuroshke
 
 Autor i librit "Truri Optimal" (2022, botimi shqip) dhe mbi 25 artikujve shkencorë. Bashkëthemelues i "NeuroPerform Academy", program onlijn për optimizimin kognitiv me mbi 8,000 studentë. "Intelekti nuk është fikse. Është muskul."`,
     specialties: ['Fokus & Vëmendje', 'Kujtesa', 'Produktivitet', 'ADHD (të rritur)', 'Psikologji Sportive'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#312e81,#4f46e5,#7c3aed)',
     rating: 4.8,
@@ -137,7 +137,7 @@ Psik. Osmani ka punuar në kontekstin shkollor si psikolog i inkorporuar në 3 s
 
 Ka ndjekur trajnime të avancuara në identifikimin e hershëm të spektrit autik, çrregullimeve të të ngrënit tek adoleshentët dhe trajtimin e traumës ndaj fëmijëve. "Fëmija që sillete 'keq' është zakonisht fëmija që vuante heshtazi."`,
     specialties: ['ADHD Fëmijë', 'Spektri Autik', 'Ankth Fëmijësh', 'Terapia Familjare', 'Bullying'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#9f1239,#e11d48,#db2777)',
     rating: 5.0,
@@ -168,7 +168,7 @@ Me mbi 10 vjet eksperiencë, Psik. Halili ka ndihmuar mbi 200 çifte dhe familje
 
 Psik. Halili ofron edhe sesione intensive 2-ditore për çiftet me mundësi të kufizuara kohe, format unik në rajon.`,
     specialties: ['Terapi Çiftesh (EFT)', 'Komunikimi', 'Divorc & Ndarje', 'Tradhtimi', 'Terapia Familjare'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#92400e,#d97706,#ea580c)',
     rating: 4.9,
@@ -199,7 +199,7 @@ Dr. Sejdini ka zhvilluar baterinë "CognAlb", battery e pare e standardizuar e t
 
 Angazhimi i tij aktual: programi "Truri Aktiv", intervenime bazuara shkencërisht për ruajtjen e shëndetit kognitiv te të moshuarit aktiv (60–80 vjeç).`,
     specialties: ['Vlerësim Neuropsikologjik', 'Demenca e Hershme', 'Rehabilitim Kognitiv', 'Stroke Recovery', 'Plakja Kognitive'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#0c4a6e,#0891b2,#2563eb)',
     rating: 4.7,
@@ -230,7 +230,7 @@ Ka punuar si psikolog mbështetës me ekipin nacional të atletikës të Shqipë
 
 Certifikuar në WOOP (Wish-Outcome-Obstacle-Plan) nga Prof. Gabriele Oettingen (NYU) dhe programin "Mental Toughness" nga AQR International.`,
     specialties: ['Psikologji Sportive', 'Burnout', 'Menaxhim Presioni', 'Resilience', 'Motivim & Qëllime'],
-    email: 'info@NeuroSphera.com',
+    email: 'info@myneurosphera.com',
     image: null,
     avatarGrad: 'linear-gradient(155deg,#6b21a8,#9333ea,#ec4899)',
     rating: 4.8,

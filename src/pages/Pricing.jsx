@@ -130,7 +130,7 @@ export default function Pricing() {
       `Mesazh motivues:\n${applyForm.message || '(pa mesazh)'}\n\n` +
       `--- Dërguar nga forma e aplikimit NeuroSphera ---`
     )
-    window.location.href = `mailto:psikolog@NeuroSphera.app?subject=${subject}&body=${body}`
+    window.location.href = `mailto:info@myneurosphera.com?subject=${subject}&body=${body}`
     setApplyStep('success')
   }
 

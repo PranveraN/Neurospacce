@@ -1793,7 +1793,7 @@ function Footer() {
     },
     {
       title: 'Kompania',
-      links: [{ to: '/about', label: 'Rreth nesh' }, { to: '/library', label: 'Blog' }, { to: '/about#careers', label: 'Karriera' }, { to: 'mailto:info@NeuroSphera.com', label: 'Kontakti' }],
+      links: [{ to: '/about', label: 'Rreth nesh' }, { to: '/library', label: 'Blog' }, { to: '/about#careers', label: 'Karriera' }, { to: 'mailto:info@myneurosphera.com', label: 'Kontakti' }],
     },
   ]
 
@@ -1843,8 +1843,8 @@ function Footer() {
         {/* Contact strip */}
         <div className="border-t border-white/5 pt-8 mb-6">
           <div className="flex flex-wrap gap-6 text-slate-500 text-sm">
-            <a href="mailto:info@NeuroSphera.com" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={14} className="text-violet-400"/>&nbsp;info@NeuroSphera.com
+            <a href="mailto:info@myneurosphera.com" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Mail size={14} className="text-violet-400"/>&nbsp;info@myneurosphera.com
             </a>
             <span className="flex items-center gap-2">
               <Phone size={14} className="text-violet-400"/>psikolog@NeuroSphera.com
