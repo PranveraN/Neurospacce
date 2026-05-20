@@ -703,33 +703,29 @@ function DeepFocusSounds() {
   const audioElRef   = useRef(null)
   const mediaNodeRef = useRef(null)
 
-  async function getCtx() {
+  // iOS Safari: AudioContext must be created AND resumed synchronously
+  // inside a user gesture handler. Any async/await breaks the gesture
+  // context on iOS < 14.5, causing resume() to silently fail.
+  function getCtx() {
     const AC = window.AudioContext || window.webkitAudioContext
     if (!AC) return null
     if (!ctxRef.current) ctxRef.current = new AC()
-    // Always await resume so nodes aren't created on a still-suspended context (iOS)
-    if (ctxRef.current.state === 'suspended') {
-      try { await ctxRef.current.resume() } catch (_) {}
-    }
     return ctxRef.current
   }
 
-  // Pre-unlock AudioContext on first touch so resume() is already in progress
-  // when the click handler fires milliseconds later (iOS Safari)
+  // touchstart fires before click — resume here so the context is
+  // already running by the time the click handler calls start().
   useEffect(() => {
-    async function unlock() {
-      const AC = window.AudioContext || window.webkitAudioContext
-      if (!AC) return
-      if (!ctxRef.current) ctxRef.current = new AC()
-      const ctx = ctxRef.current
-      if (ctx.state === 'suspended') {
+    function unlock() {
+      const ctx = getCtx()
+      if (!ctx || ctx.state === 'running') return
+      ctx.resume().then(() => {
         try {
-          await ctx.resume()
           const buf = ctx.createBuffer(1, 1, 22050)
           const src = ctx.createBufferSource()
           src.buffer = buf; src.connect(ctx.destination); src.start(0)
         } catch (_) {}
-      }
+      })
     }
     document.addEventListener('touchstart', unlock, { passive: true })
     return () => document.removeEventListener('touchstart', unlock)
@@ -742,11 +738,14 @@ function DeepFocusSounds() {
     setPlaying(null)
   }
 
-  async function toggle(key) {
+  function toggle(key) {
     if (keyRef.current === key) { stopAll(); return }
     stopAll()
-    const ctx = await getCtx()
+    const ctx = getCtx()
     if (!ctx) return
+    // Resume synchronously within the click gesture — nodes scheduled
+    // via start() will play automatically once the context is running.
+    if (ctx.state !== 'running') ctx.resume()
     const g = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
     let nodes
     if (key === 'rain')    nodes = _startRain(ctx, g)
@@ -759,12 +758,13 @@ function DeepFocusSounds() {
     setPlaying(key)
   }
 
-  async function handleCustomClick() {
+  function handleCustomClick() {
     if (!customFile) { fileInputRef.current?.click(); return }
     if (playing === 'custom') { stopAll(); return }
     stopAll()
-    const ctx = await getCtx()
+    const ctx = getCtx()
     if (!ctx) return
+    if (ctx.state !== 'running') ctx.resume()
     const g = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
     if (!mediaNodeRef.current) {
       mediaNodeRef.current = ctx.createMediaElementSource(audioElRef.current)
@@ -789,8 +789,10 @@ function DeepFocusSounds() {
     audioElRef.current = audio
     const name  = file.name.replace(/\.[^.]+$/, '')
     setCustomFile({ name, url })
-    getCtx().then(ctx => {
-      if (!ctx) return
+    // file-input close counts as a user gesture on most browsers
+    const ctx = getCtx()
+    if (ctx) {
+      if (ctx.state !== 'running') ctx.resume()
       const g   = ctx.createGain(); g.gain.value = vol / 100; g.connect(ctx.destination)
       const node = ctx.createMediaElementSource(audio)
       node.connect(g)
@@ -799,7 +801,7 @@ function DeepFocusSounds() {
       audio.play()
       keyRef.current = 'custom'
       setPlaying('custom')
-    })
+    }
     e.target.value = ''
   }
 
