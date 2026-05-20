@@ -566,127 +566,174 @@ function BrainHacks() {
    9. DEEP FOCUS SOUNDS  –  Web Audio API engine
 ══════════════════════════════════════════════════════════ */
 const SOUNDS = [
-  {key:'rain',    icon:'🌧', name:'Rain',            sub:'Zhurmë e bardhë · ambient'},
-  {key:'brown',   icon:'🎵', name:'Brown Noise',      sub:'Thellë · frekuencë e ulët'},
-  {key:'alpha',   icon:'🌊', name:'Alpha Waves',      sub:'10 Hz binaural · fokus 🎧'},
-  {key:'lofi',    icon:'📚', name:'Lo-fi Beats',      sub:'78 BPM · relaks'},
-  {key:'library', icon:'🌿', name:'Library Ambience', sub:'Zhurmë rozë · ambient'},
+  { key:'rain',   icon:'🌧️', name:'Shi i lehtë',  sub:'Pika të buta · ambient qetësues'  },
+  { key:'fire',   icon:'🔥',  name:'Oxhak',         sub:'Zjarr troçëllues · ngrohtësi'     },
+  { key:'ocean',  icon:'🌊',  name:'Valë deti',      sub:'Dallgë të buta · meditues'        },
+  { key:'forest', icon:'🌿',  name:'Pyllin natën',   sub:'Grila · natyrë e heshtur'         },
+  { key:'wind',   icon:'💨',  name:'Erë e butë',     sub:'Zhurmë rozë · e fokusuar'         },
 ]
 
-function _noiseBuffer(ctx, seconds) {
-  const sr     = ctx.sampleRate
-  const frames = sr * seconds
-  const buf    = ctx.createBuffer(1, frames, sr)
-  const data   = buf.getChannelData(0)
-  for (let i = 0; i < frames; i++) data[i] = Math.random() * 2 - 1
+/* ── buffer helpers ── */
+function _white(ctx, sec) {
+  const sr = ctx.sampleRate, n = sr * sec
+  const buf = ctx.createBuffer(1, n, sr)
+  const d = buf.getChannelData(0)
+  for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1
+  return buf
+}
+function _brown(ctx, sec) {
+  const sr = ctx.sampleRate, n = sr * sec
+  const buf = ctx.createBuffer(1, n, sr)
+  const d = buf.getChannelData(0); let last = 0
+  for (let i = 0; i < n; i++) {
+    last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02
+    d[i] = last * 4
+  }
   return buf
 }
 
+/* ── 1. SHI I LEHTË ── */
 function _startRain(ctx, gainNode) {
-  const buf = _noiseBuffer(ctx, 3)
-  const src = ctx.createBufferSource()
-  src.buffer = buf; src.loop = true
-  const hp = ctx.createBiquadFilter(); hp.type='highpass';  hp.frequency.value=700
-  const lp = ctx.createBiquadFilter(); lp.type='lowpass';   lp.frequency.value=9000
-  src.connect(hp); hp.connect(lp); lp.connect(gainNode)
-  src.start()
-  return { src }
+  const src = ctx.createBufferSource(); src.buffer = _white(ctx, 4); src.loop = true
+  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 700
+  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';  lp.frequency.value = 8500
+  const pk = ctx.createBiquadFilter(); pk.type = 'peaking';  pk.frequency.value = 2200; pk.gain.value = 5; pk.Q.value = 1.2
+  const g  = ctx.createGain(); g.gain.value = 0.52
+  const lfo = ctx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 0.08
+  const lfoG = ctx.createGain(); lfoG.gain.value = 0.11
+  lfo.connect(lfoG); lfoG.connect(g.gain)
+  src.connect(hp); hp.connect(lp); lp.connect(pk); pk.connect(g); g.connect(gainNode)
+  src.start(); lfo.start()
+  // individual droplets
+  const dropId = setInterval(() => {
+    if (ctx.state !== 'running') return
+    const t = ctx.currentTime, n = 1 + Math.floor(Math.random() * 3)
+    for (let i = 0; i < n; i++) {
+      const dt = t + Math.random() * 0.22, f = 900 + Math.random() * 3200, dur = 0.022 + Math.random() * 0.05
+      const o = ctx.createOscillator(); o.type = 'sine'
+      o.frequency.setValueAtTime(f, dt); o.frequency.exponentialRampToValueAtTime(f * 0.3, dt + dur)
+      const dg = ctx.createGain()
+      dg.gain.setValueAtTime(0, dt)
+      dg.gain.linearRampToValueAtTime(0.022 + Math.random() * 0.018, dt + 0.002)
+      dg.gain.exponentialRampToValueAtTime(0.0001, dt + dur)
+      o.connect(dg); dg.connect(gainNode); o.start(dt); o.stop(dt + dur + 0.01)
+    }
+  }, 170)
+  return { src, oscs: [lfo], intervalId: dropId }
 }
 
-function _startBrown(ctx, gainNode) {
-  const sr     = ctx.sampleRate
-  const frames = sr * 4
-  const buf    = ctx.createBuffer(1, frames, sr)
-  const data   = buf.getChannelData(0)
-  let last = 0
-  for (let i = 0; i < frames; i++) {
-    const white = Math.random() * 2 - 1
-    last = (last + 0.02 * white) / 1.02
-    data[i] = last * 3.5
-  }
-  const src = ctx.createBufferSource()
-  src.buffer = buf; src.loop = true
-  src.connect(gainNode)
-  src.start()
-  return { src }
-}
-
-function _startAlpha(ctx, gainNode) {
-  const merger = ctx.createChannelMerger(2)
-  merger.connect(gainNode)
-  const leftG  = ctx.createGain(); leftG.gain.value  = 0.15
-  const rightG = ctx.createGain(); rightG.gain.value = 0.15
-  const oL = ctx.createOscillator(); oL.frequency.value = 200; oL.type = 'sine'
-  const oR = ctx.createOscillator(); oR.frequency.value = 210; oR.type = 'sine'
-  oL.connect(leftG);  leftG.connect(merger,  0, 0)
-  oR.connect(rightG); rightG.connect(merger, 0, 1)
-  oL.start(); oR.start()
-  return { oscs: [oL, oR] }
-}
-
-function _startLofi(ctx, gainNode) {
-  const BPM  = 78
-  const BEAT = 60 / BPM
-  function kick(t) {
-    const o = ctx.createOscillator(); o.type = 'sine'
-    o.frequency.setValueAtTime(150, t)
-    o.frequency.exponentialRampToValueAtTime(0.001, t + 0.4)
-    const g = ctx.createGain(); g.gain.setValueAtTime(1, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.4)
-    o.connect(g); g.connect(gainNode); o.start(t); o.stop(t + 0.4)
-  }
-  function snare(t) {
-    const buf = _noiseBuffer(ctx, 0.2)
-    const s   = ctx.createBufferSource(); s.buffer = buf
-    const bp  = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000; bp.Q.value=0.5
-    const g   = ctx.createGain(); g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.2)
-    s.connect(bp); bp.connect(g); g.connect(gainNode); s.start(t); s.stop(t + 0.2)
-  }
-  function hat(t) {
-    const buf = _noiseBuffer(ctx, 0.05)
-    const s   = ctx.createBufferSource(); s.buffer = buf
-    const hp  = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=8000
-    const g   = ctx.createGain(); g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.05)
-    s.connect(hp); hp.connect(g); g.connect(gainNode); s.start(t); s.stop(t + 0.05)
-  }
-  function bass(t, note) {
-    const freq = [55, 55, 65, 73][note % 4]
-    const o = ctx.createOscillator(); o.type='triangle'; o.frequency.value=freq
-    const g = ctx.createGain(); g.gain.setValueAtTime(0.35, t); g.gain.exponentialRampToValueAtTime(0.001, t + BEAT * 0.8)
-    o.connect(g); g.connect(gainNode); o.start(t); o.stop(t + BEAT * 0.8)
-  }
-  let step = 0
-  const id = setInterval(() => {
+/* ── 2. OXHAK (Fireplace) ── */
+function _startFire(ctx, gainNode) {
+  const base = ctx.createBufferSource(); base.buffer = _brown(ctx, 5); base.loop = true
+  const lp  = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 700; lp.Q.value = 0.6
+  const bG  = ctx.createGain(); bG.gain.value = 0.42
+  const lfo = ctx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 0.17
+  const lfoG = ctx.createGain(); lfoG.gain.value = 0.13
+  lfo.connect(lfoG); lfoG.connect(bG.gain)
+  base.connect(lp); lp.connect(bG); bG.connect(gainNode)
+  base.start(); lfo.start()
+  const crackleId = setInterval(() => {
+    if (ctx.state !== 'running') return
     const t = ctx.currentTime
-    if (step % 4 === 0) kick(t)
-    if (step % 4 === 2) snare(t)
-    hat(t)
-    if (step % 2 === 0) bass(t, step / 2)
-    step++
-  }, BEAT * 1000 * 0.5)
-  return { intervalId: id }
+    const nc = Math.random() < 0.5 ? 1 : Math.random() < 0.65 ? 2 : 3
+    for (let i = 0; i < nc; i++) {
+      const dt = t + Math.random() * 0.32, dur = 0.007 + Math.random() * 0.032
+      const frames = Math.max(1, Math.floor(ctx.sampleRate * dur))
+      const cBuf = ctx.createBuffer(1, frames, ctx.sampleRate)
+      const cd = cBuf.getChannelData(0)
+      for (let j = 0; j < cd.length; j++) cd[j] = Math.random() * 2 - 1
+      const cs = ctx.createBufferSource(); cs.buffer = cBuf
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1600 + Math.random() * 1600; bp.Q.value = 3
+      const cg = ctx.createGain()
+      cg.gain.setValueAtTime(0.001, dt)
+      cg.gain.linearRampToValueAtTime(0.22 + Math.random() * 0.28, dt + 0.001)
+      cg.gain.exponentialRampToValueAtTime(0.001, dt + dur)
+      cs.connect(bp); bp.connect(cg); cg.connect(gainNode); cs.start(dt); cs.stop(dt + dur + 0.005)
+    }
+    if (Math.random() < 0.25) {
+      const dt = t + Math.random() * 0.32
+      const o  = ctx.createOscillator(); o.type = 'sine'
+      o.frequency.setValueAtTime(220 + Math.random() * 160, dt)
+      o.frequency.exponentialRampToValueAtTime(48, dt + 0.1)
+      const pg = ctx.createGain()
+      pg.gain.setValueAtTime(0.16, dt); pg.gain.exponentialRampToValueAtTime(0.001, dt + 0.1)
+      o.connect(pg); pg.connect(gainNode); o.start(dt); o.stop(dt + 0.12)
+    }
+  }, 290)
+  return { src: base, oscs: [lfo], intervalId: crackleId }
 }
 
-function _startLibrary(ctx, gainNode) {
-  const sr     = ctx.sampleRate
-  const frames = sr * 5
-  const buf    = ctx.createBuffer(1, frames, sr)
-  const data   = buf.getChannelData(0)
-  const rows   = 16
-  const vals   = new Float32Array(rows).fill(0)
-  for (let i = 0; i < frames; i++) {
-    let k = i, cnt = 0; while (k % 2 === 0 && cnt < rows) { k >>= 1; cnt++ }
-    vals[cnt % rows] = Math.random() * 2 - 1
-    data[i] = vals.reduce((a,v)=>a+v,0) / rows
+/* ── 3. VALË DETI ── */
+function _startOcean(ctx, gainNode) {
+  function wave(period, amp) {
+    const src = ctx.createBufferSource(); src.buffer = _white(ctx, period + 2); src.loop = true
+    const hp  = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 80
+    const lp  = ctx.createBiquadFilter(); lp.type = 'lowpass';  lp.frequency.value = 2400
+    const wg  = ctx.createGain(); wg.gain.value = amp
+    const lfo = ctx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 1 / period
+    const lfoG = ctx.createGain(); lfoG.gain.value = amp * 0.8
+    lfo.connect(lfoG); lfoG.connect(wg.gain)
+    src.connect(hp); hp.connect(lp); lp.connect(wg); wg.connect(gainNode)
+    src.start(); lfo.start()
+    return { src, lfo }
   }
-  const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true
-  const lp  = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=2500
-  src.connect(lp); lp.connect(gainNode); src.start()
-  return { src }
+  const w1 = wave(8, 0.30), w2 = wave(13, 0.18)
+  return { srcs: [w1.src, w2.src], oscs: [w1.lfo, w2.lfo] }
+}
+
+/* ── 4. PYLLIN NATËN (Forest / Crickets) ── */
+function _startForest(ctx, gainNode) {
+  // soft background hum
+  const src = ctx.createBufferSource(); src.buffer = _white(ctx, 5); src.loop = true
+  const hp  = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 200
+  const lp  = ctx.createBiquadFilter(); lp.type = 'lowpass';  lp.frequency.value = 3500
+  const amG = ctx.createGain(); amG.gain.value = 0.055
+  src.connect(hp); hp.connect(lp); lp.connect(amG); amG.connect(gainNode); src.start()
+  // cricket songs: 3 chirps every ~1.5 s
+  const chirpId = setInterval(() => {
+    if (ctx.state !== 'running') return
+    const t = ctx.currentTime, baseF = 3700 + Math.random() * 700
+    for (let i = 0; i < 3; i++) {
+      const dt = t + i * 0.095, dur = 0.022
+      const frames = Math.floor(ctx.sampleRate * dur)
+      const cBuf = ctx.createBuffer(1, frames, ctx.sampleRate)
+      const cd = cBuf.getChannelData(0)
+      for (let j = 0; j < cd.length; j++) cd[j] = Math.random() * 2 - 1
+      const cs = ctx.createBufferSource(); cs.buffer = cBuf
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = baseF + i * 60; bp.Q.value = 10
+      const cg = ctx.createGain()
+      cg.gain.setValueAtTime(0.001, dt)
+      cg.gain.linearRampToValueAtTime(0.15, dt + 0.003)
+      cg.gain.exponentialRampToValueAtTime(0.001, dt + dur)
+      cs.connect(bp); bp.connect(cg); cg.connect(gainNode); cs.start(dt); cs.stop(dt + dur + 0.005)
+    }
+  }, 1500)
+  return { src, oscs: [], intervalId: chirpId }
+}
+
+/* ── 5. ERË E BUTË ── */
+function _startWind(ctx, gainNode) {
+  const src  = ctx.createBufferSource(); src.buffer = _white(ctx, 6); src.loop = true
+  const bp   = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 600; bp.Q.value = 0.55
+  const lp   = ctx.createBiquadFilter(); lp.type = 'lowpass';  lp.frequency.value = 2800
+  // frequency sweep LFO: swooshes between ~220–1000 Hz
+  const fLfo = ctx.createOscillator(); fLfo.type = 'sine'; fLfo.frequency.value = 0.18
+  const fLfoG = ctx.createGain(); fLfoG.gain.value = 380
+  fLfo.connect(fLfoG); fLfoG.connect(bp.frequency)
+  // amplitude LFO: gentle gusts
+  const aLfo = ctx.createOscillator(); aLfo.type = 'sine'; aLfo.frequency.value = 0.065
+  const aLfoG = ctx.createGain(); aLfoG.gain.value = 0.14
+  const wG = ctx.createGain(); wG.gain.value = 0.46
+  aLfo.connect(aLfoG); aLfoG.connect(wG.gain)
+  src.connect(bp); bp.connect(lp); lp.connect(wG); wG.connect(gainNode)
+  src.start(); fLfo.start(); aLfo.start()
+  return { src, oscs: [fLfo, aLfo] }
 }
 
 function _stopNodes(nodes) {
   if (!nodes) return
   try { nodes.src?.stop() } catch(_) {}
+  nodes.srcs?.forEach(s => { try { s.stop() } catch(_) {} })
   nodes.oscs?.forEach(o => { try { o.stop() } catch(_) {} })
   if (nodes.intervalId != null) clearInterval(nodes.intervalId)
 }
@@ -751,11 +798,11 @@ function DeepFocusSounds() {
     function startNodes() {
       const g = ctx.createGain(); g.gain.value = volSnap / 100; g.connect(ctx.destination)
       let nodes
-      if (key === 'rain')    nodes = _startRain(ctx, g)
-      if (key === 'brown')   nodes = _startBrown(ctx, g)
-      if (key === 'alpha')   nodes = _startAlpha(ctx, g)
-      if (key === 'lofi')    nodes = _startLofi(ctx, g)
-      if (key === 'library') nodes = _startLibrary(ctx, g)
+      if (key === 'rain')   nodes = _startRain(ctx, g)
+      if (key === 'fire')   nodes = _startFire(ctx, g)
+      if (key === 'ocean')  nodes = _startOcean(ctx, g)
+      if (key === 'forest') nodes = _startForest(ctx, g)
+      if (key === 'wind')   nodes = _startWind(ctx, g)
       nodesRef.current = { ...nodes, gain: g }
     }
     // resume() MUST resolve before start() on Chrome Android — nodes on a
