@@ -36,6 +36,7 @@ const About             = lazy(() => import('./pages/About'))
 const BrainBoost        = lazy(() => import('./pages/BrainBoost'))
 const CareerIntelligence= lazy(() => import('./pages/CareerIntelligence'))
 const Auth              = lazy(() => import('./pages/Auth'))
+const Privacy           = lazy(() => import('./pages/Privacy'))
 
 // ── user pages (lazy) ─────────────────────────────────────────────────────────
 const Home              = lazy(() => import('./pages/Home'))
@@ -185,6 +186,7 @@ export default function App() {
 
                 {/* Auth */}
                 <Route path="/auth"          element={<Auth />}              />
+                <Route path="/privacy"       element={<Privacy />}           />
                 <Route path="/admin/login"   element={<AdminLogin />}        />
 
                 {/* Admin — protected */}
