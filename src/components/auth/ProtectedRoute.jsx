@@ -2,22 +2,39 @@ import { useState, useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 
+const HIERARCHY = { user: 1, moderator: 2, admin: 3 }
+
 export default function ProtectedRoute({ children, requiredRole = 'user', redirectTo }) {
-  const { user, loading } = useAuth()
-  const location          = useLocation()
+  const { user } = useAuth()
+  const location  = useLocation()
   const [timedOut, setTimedOut] = useState(false)
 
-  // Safety net: if auth hasn't resolved after 12s, treat as not logged in.
-  // AuthContext already has a 10s getSession timeout, so this only catches
-  // unexpected hangs after that.
+  // Start a 12 s safety-net timer only while user is still undefined.
+  // Clears immediately once user resolves to any value (null or object).
   useEffect(() => {
-    if (!loading && user !== undefined) return
+    if (user !== undefined) return
     const id = setTimeout(() => setTimedOut(true), 12000)
     return () => clearTimeout(id)
-  }, [loading, user])
+  }, [user])
 
-  // Still waiting for Supabase session — don't redirect yet
-  if (!timedOut && (loading || user === undefined)) {
+  // ── User is already resolved — decide immediately, no loading wait ──────────
+  // This is the key fix: if user is set (even while AuthContext.loading is still
+  // true due to a supabase-js lock), we render immediately instead of spinning.
+  if (user !== undefined) {
+    if (!user) {
+      return <Navigate to={redirectTo ?? '/auth'} state={{ from: location }} replace />
+    }
+    const userLevel     = HIERARCHY[user.role] ?? 1
+    const requiredLevel = HIERARCHY[requiredRole] ?? 1
+    if (userLevel < requiredLevel) {
+      const fallback = user.role === 'admin' ? '/ns-secure-7381/' : '/'
+      return <Navigate to={redirectTo ?? fallback} replace />
+    }
+    return children
+  }
+
+  // ── user is still undefined (auth not yet resolved) ─────────────────────────
+  if (!timedOut) {
     return (
       <div className="min-h-screen flex items-center justify-center"
         style={{ background: 'linear-gradient(160deg,#030711,#0e0525,#030711)' }}>
@@ -26,20 +43,6 @@ export default function ProtectedRoute({ children, requiredRole = 'user', redire
     )
   }
 
-  // Not logged in (or timed out)
-  if (!user) {
-    return <Navigate to={redirectTo ?? '/auth'} state={{ from: location }} replace />
-  }
-
-  // Role hierarchy: admin > moderator > user
-  const HIERARCHY = { user: 1, moderator: 2, admin: 3 }
-  const userLevel     = HIERARCHY[user.role] ?? 1
-  const requiredLevel = HIERARCHY[requiredRole] ?? 1
-
-  if (userLevel < requiredLevel) {
-    const fallback = user.role === 'admin' ? '/ns-secure-7381/' : '/'
-    return <Navigate to={redirectTo ?? fallback} replace />
-  }
-
-  return children
+  // 12 s timed out and user is still unknown — treat as not logged in
+  return <Navigate to={redirectTo ?? '/auth'} state={{ from: location }} replace />
 }
