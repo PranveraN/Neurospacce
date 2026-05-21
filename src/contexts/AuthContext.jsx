@@ -25,6 +25,9 @@ function writeStoredSession(session) {
   } catch {}
 }
 
+const SUPA_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPA_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
+
 const AuthContext = createContext(null)
 
 // ─── Validation helpers (kept for Auth.jsx form validation) ──────────────────
@@ -121,13 +124,30 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  // Raw REST profile fetch — bypasses the supabase-js auth lock entirely.
+  // Use this instead of fetchProfileCached whenever you already have an access_token.
+  async function rawProfileFetch(userId, accessToken) {
+    if (profileCache.current[userId]) return profileCache.current[userId]
+    try {
+      const res = await fetch(
+        `${SUPA_URL}/rest/v1/profiles?id=eq.${userId}&select=*&limit=1`,
+        { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${accessToken}`, Accept: 'application/json' } }
+      )
+      if (!res.ok) return null
+      const rows = await res.json()
+      const profile = rows?.[0] || null
+      if (profile) profileCache.current[userId] = profile
+      return profile
+    } catch { return null }
+  }
+
   // ── Silent session refresh (used by visibility + periodic checks) ────────────
   const silentRefresh = useCallback(async () => {
     try {
       const { data: { session }, error } = await supabase.auth.refreshSession()
       if (error || !session) return false
       writeStoredSession(session)
-      const profile = await fetchProfileCached(session.user.id)
+      const profile = await rawProfileFetch(session.user.id, session.access_token)
       setUser(buildUser(session.user, profile))
       setAccessToken(session.access_token)
       return true
@@ -148,7 +168,7 @@ export function AuthProvider({ children }) {
     ]).then(async ({ data: { session }, timedOut }) => {
       if (session) {
         writeStoredSession(session)
-        const profile = await fetchProfileCached(session.user.id)
+        const profile = await rawProfileFetch(session.user.id, session.access_token)
         setUser(buildUser(session.user, profile))
         setAccessToken(session.access_token)
         setLoading(false)
@@ -160,7 +180,7 @@ export function AuthProvider({ children }) {
       const stored = readStoredSession()
       if (stored?.user && stored?.refresh_token) {
         // We have stored creds — restore user immediately, then refresh silently.
-        const profile = await fetchProfileCached(stored.user.id).catch(() => null)
+        const profile = await rawProfileFetch(stored.user.id, stored.access_token)
         setUser(buildUser(stored.user, profile))
         setLoading(false)
         // Refresh in background — updates token without interrupting the user
@@ -193,7 +213,7 @@ export function AuthProvider({ children }) {
           // Google OAuth SIGNED_IN is NOT suppressed (loginStartedAt resets on page load).
           if (event === 'SIGNED_IN' && Date.now() - loginStartedAt.current < 15_000) return
           writeStoredSession(session) // keep localStorage in sync on every refresh
-          const profile = await fetchProfileCached(session.user.id)
+          const profile = await rawProfileFetch(session.user.id, session.access_token)
           setUser(buildUser(session.user, profile))
           setAccessToken(session.access_token)
         }
@@ -232,9 +252,6 @@ export function AuthProvider({ children }) {
   // ── LOGIN ─────────────────────────────────────────────────────────────────
   const login = useCallback(async ({ email, password }) => {
     try {
-      const SUPA_URL = import.meta.env.VITE_SUPABASE_URL
-      const SUPA_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
-
       // A stale refresh token in ns_auth makes supabase-js hold its internal
       // lock indefinitely. Clear it first so the lock is free, then use a raw
       // fetch that bypasses the lock entirely. Mark the login start time so the
