@@ -166,11 +166,9 @@ export function AuthProvider({ children }) {
       supabase.auth.getSession().then(r => ({ ...r, timedOut: false })),
       timeout,
     ]).then(async ({ data: { session }, timedOut }) => {
-      console.log('[Auth init] session:', !!session, '| timedOut:', timedOut)
       if (session) {
         writeStoredSession(session)
         const profile = await rawProfileFetch(session.user.id, session.access_token)
-        console.log('[Auth init] profile from session:', profile?.role)
         const u = buildUser(session.user, profile)
         setUser(u)
         setAccessToken(session.access_token)
@@ -181,11 +179,9 @@ export function AuthProvider({ children }) {
       // No session from Supabase — try localStorage fallback before logging out.
       // This handles: timeout, slow network, mobile wake-up, Vite hot-reload.
       const stored = readStoredSession()
-      console.log('[Auth init] stored session:', !!stored?.user, '| refresh_token:', !!stored?.refresh_token)
       if (stored?.user && stored?.refresh_token) {
         // We have stored creds — restore user immediately, then refresh silently.
         const profile = await rawProfileFetch(stored.user.id, stored.access_token)
-        console.log('[Auth init] profile from localStorage:', profile?.role)
         setUser(buildUser(stored.user, profile))
         setLoading(false)
         // Refresh in background — updates token without interrupting the user
@@ -194,7 +190,6 @@ export function AuthProvider({ children }) {
       }
 
       // Truly no session anywhere
-      console.log('[Auth init] no session anywhere → setUser(null)')
       setUser(null)
       setLoading(false)
     })
@@ -202,7 +197,6 @@ export function AuthProvider({ children }) {
     // Keep listening for auth events (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('[Auth event]', event, '| session:', !!session, '| loginAge:', Date.now() - loginStartedAt.current, 'ms')
         if (event === 'SIGNED_OUT') {
           // Suppress ANY SIGNED_OUT that fires within 30 s of login() starting.
           // supabase can fire two SIGNED_OUTs during setSession (stale-session

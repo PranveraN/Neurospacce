@@ -196,7 +196,6 @@ export default function App() {
                 <Route path="/privacy"       element={<Privacy />}           />
                 {/* Admin — secret URL (do not share publicly) */}
                 <Route path="/ns-secure-7381/login" element={<AdminLogin />} />
-                <Route path="/ns-secure-7381" element={<Navigate to="/ns-secure-7381/" replace />} />
                 <Route path="/ns-secure-7381/*" element={
                   <ProtectedRoute requiredRole="admin" redirectTo="/ns-secure-7381/login">
                     <AdminLayout />
