@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Search, Shield, Trash2, Ban, CheckCircle, MoreVertical, Filter, Download, UserPlus, X, ChevronDown } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -149,7 +149,7 @@ function AddUserModal({ onClose, onAdd }) {
 }
 
 export default function AdminUsers() {
-  const { allUsers, deleteUser, blockUser, unblockUser, changeRole } = useAuth()
+  const { allUsers, fetchAllUsers, deleteUser, blockUser, unblockUser, changeRole } = useAuth()
   const [search, setSearch]       = useState('')
   const [roleFilter, setRole]     = useState('all')
   const [statusFilter, setStatus] = useState('all')
@@ -158,6 +158,12 @@ export default function AdminUsers() {
   const [page, setPage]           = useState(1)
   const [showAddUser, setShowAddUser] = useState(false)
   const [localExtra, setLocalExtra]   = useState([])
+  const [loadingUsers, setLoadingUsers] = useState(false)
+
+  useEffect(() => {
+    setLoadingUsers(true)
+    fetchAllUsers().finally(() => setLoadingUsers(false))
+  }, [fetchAllUsers])
 
   const allCombined = [...allUsers, ...localExtra]
 
@@ -277,7 +283,13 @@ export default function AdminUsers() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {filtered.length === 0 ? (
+            {loadingUsers ? (
+              <tr>
+                <td colSpan={7} className="py-12 text-center">
+                  <div className="w-6 h-6 border-2 border-violet-300 border-t-violet-600 rounded-full animate-spin mx-auto" />
+                </td>
+              </tr>
+            ) : filtered.length === 0 ? (
               <tr>
                 <td colSpan={7} className="py-12 text-center text-gray-400 text-sm">
                   Asnjë rezultat nuk u gjet
