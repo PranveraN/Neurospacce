@@ -187,9 +187,15 @@ export default function AdminLayout() {
   const [collapsed, setCollapsed]   = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  console.log('[AdminLayout] rendering')
+
   return (
     /* Inline style so the admin shell background is guaranteed regardless of Tailwind purge */
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f9fafb' }}>
+      {/* DIAGNOSTIC — remove after confirming */}
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999, background: 'red', color: 'white', fontWeight: 'bold', padding: '8px', textAlign: 'center', fontSize: '14px' }}>
+        ✓ AdminLayout rendering
+      </div>
 
       {/* ── Mobile: overlay + slide-in drawer ─────────────────────────────── */}
       {mobileOpen && (
