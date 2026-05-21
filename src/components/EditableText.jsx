@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { useEditMode } from '../contexts/EditModeContext'
 
-const LS_KEY = 'ns_editable'
+const LS_KEY    = 'ns_editable'
 const LS_KEY_EN = 'ns_editable_en'
 
-/* Stable hash-based ID from text content — used when no explicit id is given */
 function autoId(str) {
   let h = 5381
   const s = String(str).trim().slice(0, 60)
@@ -12,38 +11,22 @@ function autoId(str) {
   return 'et_' + (h >>> 0).toString(36)
 }
 
-function storageKey(id, lang) {
-  return lang === 'en' ? `${id}__en` : id
-}
-
-function loadValue(id, lang) {
+function loadLS(id, lang) {
   try {
-    if (lang === 'en') {
-      // Try EN store first
-      const enStore = JSON.parse(localStorage.getItem(LS_KEY_EN) || '{}')
-      if (enStore[id] != null) return enStore[id]
-      // Fall back to SQ store
-      const sqStore = JSON.parse(localStorage.getItem(LS_KEY) || '{}')
-      if (sqStore[id] != null) return sqStore[id]
-      return null
-    }
-    return (JSON.parse(localStorage.getItem(LS_KEY) || '{}'))[id] ?? null
+    const key   = lang === 'en' ? LS_KEY_EN : LS_KEY
+    const store = JSON.parse(localStorage.getItem(key) || '{}')
+    return store[id] ?? null
   } catch { return null }
 }
 
-function persistValue(id, lang, value) {
+function persistLS(id, lang, value) {
   try {
-    if (lang === 'en') {
-      const store = JSON.parse(localStorage.getItem(LS_KEY_EN) || '{}')
-      localStorage.setItem(LS_KEY_EN, JSON.stringify({ ...store, [id]: value }))
-    } else {
-      const store = JSON.parse(localStorage.getItem(LS_KEY) || '{}')
-      localStorage.setItem(LS_KEY, JSON.stringify({ ...store, [id]: value }))
-    }
+    const key   = lang === 'en' ? LS_KEY_EN : LS_KEY
+    const store = JSON.parse(localStorage.getItem(key) || '{}')
+    localStorage.setItem(key, JSON.stringify({ ...store, [id]: value }))
   } catch {}
 }
 
-// Tags that should default to multiline textarea when clicked
 const MULTILINE_TAGS = new Set(['p', 'div', 'blockquote', 'li', 'td'])
 
 export default function EditableText({
@@ -54,12 +37,34 @@ export default function EditableText({
   style,
   children,
 }) {
-  const { editMode, flash, lang } = useEditMode()
-  const id = idProp ?? autoId(children)
+  const { editMode, flash, lang, dbTexts, saveToDb } = useEditMode()
+  const id         = idProp ?? autoId(children)
   const isMultiline = multiline ?? MULTILINE_TAGS.has(String(Tag))
-  const [value, setValue] = useState(() => loadValue(id, lang) ?? children)
+
+  // Priority: Supabase DB > localStorage > children
+  function resolveValue() {
+    const db = dbTexts?.[id]
+    if (db) return lang === 'en' ? (db.en || db.sq) : (db.sq || String(children))
+    const ls = loadLS(id, lang)
+    return ls ?? children
+  }
+
+  const [value,   setValue]   = useState(resolveValue)
   const [editing, setEditing] = useState(false)
   const ref = useRef(null)
+
+  // Re-resolve when DB texts load or lang changes
+  useEffect(() => {
+    setValue(resolveValue())
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dbTexts, lang, id])
+
+  // Sync with children if no override anywhere
+  useEffect(() => {
+    const db = dbTexts?.[id]
+    if (!db && loadLS(id, lang) === null) setValue(children)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children, id])
 
   useEffect(() => {
     if (editing && ref.current) {
@@ -69,25 +74,13 @@ export default function EditableText({
     }
   }, [editing])
 
-  // Re-load value when lang changes
-  useEffect(() => {
-    const stored = loadValue(id, lang)
-    setValue(stored ?? children)
-  }, [lang, id])
+  function startEdit() { if (editMode) setEditing(true) }
 
-  // Sync with children if no saved value (code update path)
-  useEffect(() => {
-    if (loadValue(id, lang) === null) setValue(children)
-  }, [children, id])
-
-  function startEdit() {
-    if (editMode) setEditing(true)
-  }
-
-  function commit(raw) {
+  async function commit(raw) {
     const val = (raw ?? '').trim() || String(children)
     setValue(val)
-    persistValue(id, lang, val)
+    persistLS(id, lang, val)   // immediate local cache
+    saveToDb(id, lang, val)    // async Supabase persist (fire and forget)
     setEditing(false)
     flash()
   }
@@ -98,39 +91,22 @@ export default function EditableText({
   }
 
   if (editing) {
-    // Inherit the tag's visual styling — only overlay the ring
-    const sharedCls = `${className} focus:outline-none ring-2 ring-violet-400 rounded bg-transparent`
+    const sharedCls   = `${className} focus:outline-none ring-2 ring-violet-400 rounded bg-transparent`
     const sharedStyle = {
       ...style,
-      fontFamily: 'inherit',
-      fontSize: 'inherit',
-      fontWeight: 'inherit',
-      lineHeight: 'inherit',
-      letterSpacing: 'inherit',
-      color: 'inherit',
+      fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 'inherit',
+      lineHeight: 'inherit', letterSpacing: 'inherit', color: 'inherit',
     }
-
     return isMultiline
       ? (
-        <textarea
-          ref={ref}
-          defaultValue={value}
-          onBlur={e => commit(e.target.value)}
-          onKeyDown={handleKeyDown}
+        <textarea ref={ref} defaultValue={value}
+          onBlur={e => commit(e.target.value)} onKeyDown={handleKeyDown}
           rows={Math.max(2, String(value).split('\n').length + 1)}
-          className={`${sharedCls} w-full resize-none`}
-          style={sharedStyle}
-        />
+          className={`${sharedCls} w-full resize-none`} style={sharedStyle} />
       ) : (
-        <input
-          ref={ref}
-          type="text"
-          defaultValue={value}
-          onBlur={e => commit(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className={`${sharedCls} w-full`}
-          style={sharedStyle}
-        />
+        <input ref={ref} type="text" defaultValue={value}
+          onBlur={e => commit(e.target.value)} onKeyDown={handleKeyDown}
+          className={`${sharedCls} w-full`} style={sharedStyle} />
       )
   }
 
@@ -139,11 +115,7 @@ export default function EditableText({
     : ''
 
   return (
-    <Tag
-      className={`${className} ${editHint}`.trim()}
-      style={style}
-      onClick={startEdit}
-    >
+    <Tag className={`${className} ${editHint}`.trim()} style={style} onClick={startEdit}>
       {value}
     </Tag>
   )

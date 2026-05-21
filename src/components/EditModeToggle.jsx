@@ -1,12 +1,12 @@
-import { Pencil, X, CheckCircle } from 'lucide-react'
+import { Pencil, X, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
 import { useEditMode } from '../contexts/EditModeContext'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function EditModeToggle() {
   const { user } = useAuth()
-  const { editMode, toggle, flashVisible } = useEditMode()
+  const { editMode, toggle, flashVisible, syncState } = useEditMode()
 
-  if (user?.role !== 'admin') return null
+  if (user?.plan !== 'admin') return null
 
   return (
     <>
@@ -36,6 +36,9 @@ export default function EditModeToggle() {
           ? <><X size={14} /> Dil nga redaktimi</>
           : <><Pencil size={14} /> Redakto faqen</>
         }
+        {syncState === 'saving' && <Loader2 size={11} className="animate-spin opacity-60" />}
+        {syncState === 'saved'  && <CheckCircle size={11} className="text-emerald-400" />}
+        {syncState === 'error'  && <AlertCircle size={11} className="text-red-400" />}
       </button>
     </>
   )

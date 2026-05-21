@@ -2,7 +2,7 @@
 import {
   Search, RotateCcw, Download, Upload,
   CheckCircle, AlertCircle, ChevronDown, ChevronUp, X,
-  Clock, Copy, Globe, Languages,
+  Clock, Copy, Globe, Languages, Loader2, CloudUpload,
 } from 'lucide-react'
 import {
   SITE_TEXTS, SECTIONS,
@@ -339,8 +339,13 @@ function StatCard({ label, value, accent }) {
 
 /* ── Main page ───────────────────────────────────────────────────────────── */
 export default function AdminTexts() {
-  const { lang, setLang } = useEditMode()
-  const { stored, save, reset, resetAll, refresh } = useTexts(lang)
+  const { lang, setLang, saveToDb, publishAll, syncState } = useEditMode()
+  const { stored, save: saveLocal, reset, resetAll, refresh } = useTexts(lang)
+
+  const save = useCallback((id, value) => {
+    saveLocal(id, value)
+    saveToDb(id, lang, value)
+  }, [saveLocal, saveToDb, lang])
 
   const otherLang   = lang === 'sq' ? 'en' : 'sq'
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -429,6 +434,12 @@ export default function AdminTexts() {
   function handleResetAll() {
     resetAll()
     setConfirm(false)
+  }
+
+  async function handlePublishAll() {
+    const sqS = getStoredForLang('sq')
+    const enS = getStoredForLang('en')
+    await publishAll(sqS, enS, SITE_TEXTS)
   }
 
   return (
@@ -557,6 +568,20 @@ export default function AdminTexts() {
             <Upload size={11} /> Importo {lang.toUpperCase()}
           </button>
           <input ref={fileRef} type="file" accept=".json" className="hidden" onChange={handleImport} />
+
+          <button
+            onClick={handlePublishAll}
+            disabled={syncState === 'saving'}
+            title="Publiko të gjitha ndryshimet lokale në Supabase"
+            className="flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg bg-violet-600/20 text-violet-400 hover:bg-violet-600/40 border border-violet-500/25 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {syncState === 'saving'
+              ? <><Loader2 size={11} className="animate-spin" /> Duke publikuar…</>
+              : syncState === 'saved'
+              ? <><CheckCircle size={11} className="text-emerald-400" /> Publikuar</>
+              : <><CloudUpload size={11} /> Publiko në server</>
+            }
+          </button>
 
           {langEdited > 0 && !confirm && (
             <button
