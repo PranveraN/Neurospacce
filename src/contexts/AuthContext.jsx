@@ -272,40 +272,11 @@ export function AuthProvider({ children }) {
         return { success: false, error: msg }
       }
 
-      // Fetch profile with the fresh access_token (supabase client has no session yet,
-      // RLS would block the supabase-js query — raw fetch avoids that)
-      let profile = null
-      try {
-        const pRes = await fetch(
-          `${SUPA_URL}/rest/v1/profiles?id=eq.${body.user.id}&select=*&limit=1`,
-          {
-            headers: {
-              apikey:        SUPA_KEY,
-              Authorization: `Bearer ${body.access_token}`,
-              Accept:        'application/json',
-            },
-          }
-        )
-        if (pRes.ok) {
-          const rows = await pRes.json()
-          profile = rows[0] ?? null
-          // Cache it so the SIGNED_IN handler doesn't re-fetch
-          if (profile) profileCache.current[body.user.id] = profile
-        }
-      } catch {}
-
-      if (profile?.status === 'blocked') {
-        return { success: false, error: 'Llogaria juaj është e bllokuar. Kontaktoni administratorin.' }
-      }
-
-      const u = buildUser(body.user, profile)
-      setUser(u)
-      setAccessToken(body.access_token)
-
       // Persist session to localStorage immediately (bypasses supabase-js lock)
       writeStoredSession({ ...body, user: body.user })
+      setAccessToken(body.access_token)
 
-      // Also tell supabase-js (best-effort, 4 s cap)
+      // Set supabase-js session FIRST so auth.uid() is available for RLS
       try {
         await Promise.race([
           supabase.auth.setSession({
@@ -315,6 +286,27 @@ export function AuthProvider({ children }) {
           new Promise(r => setTimeout(r, 4000)),
         ])
       } catch {}
+
+      // Now fetch profile — session is active, RLS auth.uid() = id works correctly
+      let profile = profileCache.current[body.user.id] || null
+      if (!profile) {
+        try {
+          const { data } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', body.user.id)
+            .single()
+          profile = data || null
+          if (profile) profileCache.current[body.user.id] = profile
+        } catch {}
+      }
+
+      if (profile?.status === 'blocked') {
+        return { success: false, error: 'Llogaria juaj është e bllokuar. Kontaktoni administratorin.' }
+      }
+
+      const u = buildUser(body.user, profile)
+      setUser(u)
 
       return { success: true, user: u }
     } catch (err) {
