@@ -224,7 +224,7 @@ export default function AdminLayout() {
             <Route path="texts"           element={<AdminTexts />}     />
             <Route path="analytics"       element={<AdminAnalytics />} />
             <Route path="settings"        element={<AdminSettings />}  />
-            <Route path="*"               element={<Navigate to="/ns-secure-7381" replace />} />
+            <Route path="*"               element={<Navigate to="/ns-secure-7381/" replace />} />
           </Routes>
         </main>
       </div>
