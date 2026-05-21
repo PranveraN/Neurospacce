@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react'
+import AdminLayout from './pages/admin/AdminLayout'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Sentry } from './lib/sentry'
 import { MoodProvider }          from './contexts/MoodContext'
@@ -51,9 +52,8 @@ const Profile           = lazy(() => import('./pages/Profile'))
 const MyAppointments    = lazy(() => import('./pages/MyAppointments'))
 const History           = lazy(() => import('./pages/History'))
 
-// ── admin pages (lazy — heaviest chunk, rarely visited by normal users) ───────
+// ── admin pages ───────────────────────────────────────────────────────────────
 const AdminLogin        = lazy(() => import('./pages/admin/AdminLogin'))
-const AdminLayout       = lazy(() => import('./pages/admin/AdminLayout'))
 
 // ── Suspense fallback ─────────────────────────────────────────────────────────
 function PageLoader() {

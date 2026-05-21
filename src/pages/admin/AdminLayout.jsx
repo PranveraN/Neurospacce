@@ -188,22 +188,21 @@ export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    /* Inline style so the admin shell background is guaranteed regardless of Tailwind purge */
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f9fafb' }}>
 
-      {/* Mobile overlay */}
+      {/* ── Mobile: overlay + slide-in drawer ─────────────────────────────── */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
+        <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileOpen(false)} />
       )}
+      <div className={`fixed inset-y-0 left-0 z-50 md:hidden transition-transform duration-300
+        ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <AdminSidebar collapsed={false} onToggle={() => {}} onClose={() => setMobileOpen(false)} />
+      </div>
 
-      {/* Sidebar — desktop always visible, mobile drawer */}
-      <div className={`
-        fixed inset-y-0 left-0 z-50 md:relative md:block
-        transition-transform duration-300
-        ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-      `}>
+      {/* ── Desktop: static sidebar always visible ─────────────────────────── */}
+      <div className="hidden md:block shrink-0">
         <AdminSidebar
           collapsed={collapsed}
           onToggle={() => setCollapsed(c => !c)}
@@ -211,7 +210,8 @@ export default function AdminLayout() {
         />
       </div>
 
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+      {/* ── Main content ───────────────────────────────────────────────────── */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh' }}>
         <AdminHeader onMobileMenu={() => setMobileOpen(true)} />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
