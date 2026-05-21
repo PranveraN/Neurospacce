@@ -108,7 +108,7 @@ import NeuroPulse from '../NeuroPulse'
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
   const [showSearch, setShowSearch] = useState(false)
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const links = [
@@ -171,10 +171,16 @@ function PublicHeader() {
               <Search size={15}/><span className="hidden lg:inline">Kërko</span>
             </button>
             {user ? (
-              <NeuroPulse scrolled={false} />
+              <>
+                <button onClick={() => { logout(); navigate('/') }}
+                  className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-red-500 transition-colors">
+                  Dil
+                </button>
+                <NeuroPulse scrolled={false} />
+              </>
             ) : (
               <>
-                <Link to="/auth" className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Hyr</Link>
+                <Link to="/auth" className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Kyçu</Link>
                 <NeuroPulse scrolled={false} />
               </>
             )}
@@ -204,13 +210,19 @@ function PublicHeader() {
             ))}
             <div className="pt-3 flex flex-col gap-2 border-t border-gray-100 mt-2">
               {user ? (
-                <div className="flex justify-center" onClick={() => setOpen(false)}>
-                  <NeuroPulse scrolled={false} />
-                </div>
+                <>
+                  <button onClick={() => { logout(); navigate('/'); setOpen(false) }}
+                    className="py-2.5 text-center text-sm font-semibold border border-red-100 rounded-xl text-red-500">
+                    Dil nga llogaria
+                  </button>
+                  <div className="flex justify-center" onClick={() => setOpen(false)}>
+                    <NeuroPulse scrolled={false} />
+                  </div>
+                </>
               ) : (
                 <>
                   <Link to="/auth" onClick={() => setOpen(false)}
-                    className="py-2.5 text-center text-sm font-semibold border border-gray-200 rounded-xl text-gray-600">Hyr</Link>
+                    className="py-2.5 text-center text-sm font-semibold border border-gray-200 rounded-xl text-gray-600">Kyçu</Link>
                   <div className="flex justify-center" onClick={() => setOpen(false)}>
                     <NeuroPulse scrolled={false} />
                   </div>
