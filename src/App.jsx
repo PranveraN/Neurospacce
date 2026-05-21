@@ -14,6 +14,7 @@ import DesktopWidgetPanel        from './components/layout/DesktopWidgetPanel'
 
 // ── utils (eager — tiny, used everywhere) ─────────────────────────────────────
 import ScrollToTop               from './components/ScrollToTop'
+import { usePageView }          from './lib/usePageView'
 import EditModeToggle            from './components/EditModeToggle'
 import FloatingBack              from './components/FloatingBack'
 import { EditModeProvider }      from './contexts/EditModeContext'
@@ -74,6 +75,11 @@ function GlobalHeader() {
             || pathname.startsWith('/ns-secure-7381')
   if (hide) return null
   return <PublicHeader />
+}
+
+function PageViewTracker() {
+  usePageView()
+  return null
 }
 
 // ── user app shell ────────────────────────────────────────────────────────────
@@ -160,6 +166,7 @@ export default function App() {
           <EditModeProvider>
             <BrowserRouter>
             <GlobalHeader />
+            <PageViewTracker />
             <ScrollToTop />
             <EditModeToggle />
             <FloatingBack />
