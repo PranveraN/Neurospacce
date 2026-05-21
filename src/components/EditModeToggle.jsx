@@ -3,10 +3,10 @@ import { useEditMode } from '../contexts/EditModeContext'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function EditModeToggle() {
-  const { user } = useAuth()
+  const { isAdmin } = useAuth()
   const { editMode, toggle, flashVisible, syncState } = useEditMode()
 
-  if (user?.plan !== 'admin') return null
+  if (!isAdmin) return null
 
   return (
     <>
