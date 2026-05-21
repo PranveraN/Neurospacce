@@ -73,7 +73,6 @@ function GlobalHeader() {
   const { pathname } = useLocation()
   const hide = pathname.startsWith('/auth')
             || pathname.startsWith('/ns-secure-7381')
-            || pathname === '/'
   if (hide) return null
   return <PublicHeader />
 }

@@ -312,7 +312,7 @@ function AdminBar({ onAdd, articleCount }) {
   const navigate = useNavigate()
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-violet-700 via-violet-600 to-blue-700 text-white px-4"
+      className="fixed top-16 left-0 right-0 z-[60] bg-gradient-to-r from-violet-700 via-violet-600 to-blue-700 text-white px-4"
       style={{ height: ADMIN_BAR_H }}
     >
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between gap-4">
