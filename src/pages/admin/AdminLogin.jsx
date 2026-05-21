@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from 'react'
+﻿import { useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Brain, Shield, Eye, EyeOff, AlertCircle, Lock } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
@@ -15,6 +15,10 @@ export default function AdminLogin() {
 
   const attempts   = useRef({ count: 0, windowStart: 0 })
   const cooldownTimer = useRef(null)
+
+  // Preload the AdminLayout chunk while the user is still on the login page,
+  // so the panel appears instantly after login instead of showing the dark Suspense loader.
+  useEffect(() => { import('./AdminLayout') }, [])
 
   function startCooldown(seconds) {
     setCooldown(seconds)
