@@ -17,7 +17,7 @@ export const TECHNIQUES = [
   {
     id: 'anx-grounding', category: 'anxiety',
     title: '5-4-3-2-1 Grounding', emoji: '🌿', duration: '3 min',
-    description: 'Teknika e grounding-ut çon vëmendjen tek e tashmja, duke ndërprerë spiralen e ankthit.',
+    description: 'Kjo teknikë çon vëmendjen tek e tashmja, duke ndërprerë spiralen e ankthit.',
     steps: ['5 gjëra që sheh', '4 gjëra që prek', '3 zëra që dëgjon', '2 aroma', '1 shije'],
   },
   {

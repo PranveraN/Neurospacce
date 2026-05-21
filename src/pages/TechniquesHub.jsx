@@ -7,19 +7,19 @@ import { ActivityLog } from '../lib/activityLog'
 import { TECHNIQUES } from '../data/mockData'
 
 const CATEGORIES = [
-  { key: 'all',          label: 'Të gjitha'   },
-  { key: 'anxiety',      label: 'Ankth'       },
-  { key: 'stress',       label: 'Stres'       },
-  { key: 'overthinking', label: 'Overthinking' },
-  { key: 'confidence',   label: 'Vetëbesim'   },
+  { key: 'all',          label: 'Të gjitha'         },
+  { key: 'anxiety',      label: 'Ankth'             },
+  { key: 'stress',       label: 'Stres'             },
+  { key: 'overthinking', label: 'Mendime të tepruara' },
+  { key: 'confidence',   label: 'Vetëbesim'         },
 ]
 
 const QUICK_HELP = [
-  { label: 'Jam në ankth',    cat: 'anxiety',      color: '#f87171' },
-  { label: 'Jam nën stres',   cat: 'stress',       color: '#fb923c' },
-  { label: 'Mendoj shumë',    cat: 'overthinking', color: '#818cf8' },
-  { label: 'Ndihem keq',      cat: 'anxiety',      color: '#60a5fa' },
-  { label: 'Dua vetëbesim',   cat: 'confidence',   color: '#fbbf24' },
+  { label: 'Jam në ankth',       cat: 'anxiety',      color: '#f87171' },
+  { label: 'Jam nën stres',      cat: 'stress',       color: '#fb923c' },
+  { label: 'Mendoj tepër',       cat: 'overthinking', color: '#818cf8' },
+  { label: 'Ndihem keq',         cat: 'anxiety',      color: '#60a5fa' },
+  { label: 'Dua të rris vetëbesimin', cat: 'confidence', color: '#fbbf24' },
 ]
 
 function TechniqueModal({ tech, onClose, theme, onComplete }) {
@@ -71,7 +71,7 @@ function TechniqueModal({ tech, onClose, theme, onComplete }) {
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
               <Play size={24} className="text-green-500 rotate-90" />
             </div>
-            <h3 className="font-black text-xl text-gray-800 mb-1">Ushtrim i kryer!</h3>
+            <h3 className="font-black text-xl text-gray-800 mb-1">Bravo! Ushtrim i kryer.</h3>
             <p className="text-gray-500 text-sm mb-4">Si ndihesh tani?</p>
             <div className="flex gap-2 justify-center mb-4">
               {['Më mirë', 'Njëlloj', 'Shumë mirë'].map(r => (

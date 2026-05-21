@@ -320,7 +320,7 @@ export const WEEKLY_INSIGHTS = [
   "Vendimmarrja jote u bë 23% më e shpejtë bazuar në sfidën ditore. Muskuli analitik po forcohet.",
   "Pattern i ri i zbuluar: reagoni intensivisht kur planifikimi prishet. Kjo është informacion, jo defekt.",
   "Kreativiteti yt preku kulmin javën e kaluar — identifikuam 3 momente kur mendes jashtë kufijve.",
-  "Rezistenca jote ndaj stresit po rritet — kjo tregon të dhënat e check-in-it ditor.",
+  "Rezistenca jote ndaj stresit po rritet — kjo e konfirmon gjendja emocionale e regjistruar çdo ditë.",
 ]
 
 // Helper: get challenges for today (deterministic by date + archetype)

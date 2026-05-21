@@ -601,7 +601,7 @@ function AskPaywall({ onClose, onUnlock }) {
               <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0 text-xl">👑</div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <p className="font-black text-[15px]">Pro Plan</p>
+                  <p className="font-black text-[15px]">Plani Pro</p>
                   <span className="text-[9px] font-bold bg-white/20 px-2 py-0.5 rounded-full tracking-wide">POPULLOR</span>
                 </div>
                 <div className="space-y-0.5 text-[11px] text-white/70 mb-2">

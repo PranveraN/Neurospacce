@@ -274,27 +274,27 @@ export default function Auth() {
             </div>
             <div>
               <h1 className="text-xl font-black text-white tracking-tight">NeuroSphera</h1>
-              <p className="text-[11px] text-white/40 font-medium">Mental Wellness Platform</p>
+              <p className="text-[11px] text-white/40 font-medium">Mirëqenia Mendore</p>
             </div>
           </div>
 
           <h2 className="text-4xl font-black text-white leading-tight mb-4">
-            Kujdesu për<br />
+            Kujdesi për mendjen<br />
             <span className="bg-clip-text text-transparent"
               style={{ backgroundImage: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
-              shëndetin tënd mendor.
+              fillon këtu.
             </span>
           </h2>
           <p className="text-white/40 text-sm leading-relaxed mb-10 max-w-xs">
-            Platforma e parë shqiptare e mirëqenies mendore. E ndërtuar mbi shkencë, e dizajnuar për ty.
+            Platforma e parë shqiptare e mirëqenies mendore — e ndërtuar mbi shkencë, e krijuar për ty.
           </p>
 
           {/* Features */}
           <div className="space-y-3">
             {[
-              { icon: Brain,   text: 'NeuroAI të gjen ekspertin e duhur',    sub: 'Udhëzim i personalizuar' },
-              { icon: Shield,  text: 'Hapësirë 100% private',              sub: 'E enkriptuar plotësisht' },
-              { icon: Zap,     text: 'Teknika të provuara shkencërisht',   sub: 'Bazuar në kërkime' },
+              { icon: Brain,   text: 'NeuroAI të gjen ekspertin e duhur',  sub: 'Udhëzim i personalizuar' },
+              { icon: Shield,  text: 'Hapësirë plotësisht private',        sub: 'E koduar nga fundi në fund' },
+              { icon: Zap,     text: 'Teknika të vërtetuara shkencërisht', sub: 'Bazuar në kërkime klinike' },
             ].map(({ icon: Icon, text, sub }) => (
               <div key={text} className="flex items-center gap-3 group">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
@@ -332,8 +332,8 @@ export default function Auth() {
                   className="flex items-center gap-1.5 text-white/40 text-xs font-semibold hover:text-white/70 mb-5 transition-colors">
                   <ArrowLeft size={13} /> Kthehu
                 </button>
-                <h2 className="text-xl font-black text-white mb-1">Zgjidh avatarin</h2>
-                <p className="text-white/40 text-sm mb-5">Personalizoje profilin tënd</p>
+                <h2 className="text-xl font-black text-white mb-1">Zgjidh pamjen tënde</h2>
+                <p className="text-white/40 text-sm mb-5">Personalizoni profilin tuaj</p>
 
                 <div className="flex flex-col items-center mb-5">
                   <div className="w-20 h-20 rounded-2xl overflow-hidden shadow-lg mb-2 ring-2 ring-violet-500/30"
@@ -341,13 +341,13 @@ export default function Auth() {
                     <AvatarDisplay avatar={photoUrl || avatar || 'avatar1'} size={80} />
                   </div>
                   <p className="text-[11px] text-white/30 font-semibold">
-                    {photoUrl ? 'Foto e ngarkuar' : PRESETS.find(p => p.id === (avatar || 'avatar1'))?.label}
+                    {photoUrl ? 'Fotografia u ngarkua' : PRESETS.find(p => p.id === (avatar || 'avatar1'))?.label}
                   </p>
                 </div>
 
                 <label htmlFor="photo-upload"
                   className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-white/40 text-sm font-semibold cursor-pointer hover:border-violet-500/40 hover:text-violet-400 transition-all mb-4">
-                  <Camera size={14} /> Ngarko foton tënde
+                  <Camera size={14} /> Ngarko fotografinë tënde
                   <input id="photo-upload" ref={fileRef} type="file" accept="image/*"
                     className="hidden" onChange={handlePhotoUpload} />
                 </label>
@@ -368,7 +368,7 @@ export default function Auth() {
 
                 <button onClick={handleAutoGenerate}
                   className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-white/5 bg-white/3 text-white/40 text-sm font-semibold hover:border-white/15 hover:text-white/60 transition-all mb-4">
-                  <Shuffle size={13} /> Opsion automatik
+                  <Shuffle size={13} /> Gjenero rastësisht
                 </button>
 
                 <button onClick={handleFinish} disabled={loading}
@@ -389,7 +389,7 @@ export default function Auth() {
                 </div>
                 <h2 className="text-xl font-black text-white mb-2">Konfirmo emailin</h2>
                 <p className="text-white/40 text-sm leading-relaxed mb-6">
-                  Dërguam një link konfirmimi tek<br />
+                  Dërguam një lidhje konfirmimi tek<br />
                   <strong className="text-white/70">{form.email}</strong>
                 </p>
                 <button onClick={() => switchTab('login')}
@@ -397,7 +397,7 @@ export default function Auth() {
                   style={{ background: `linear-gradient(135deg,${theme.start},${theme.end})` }}>
                   Kthehu te hyrja
                 </button>
-                <p className="text-xs text-white/25 mt-3">Nuk e gjetët? Kontrolloni Spam.</p>
+                <p className="text-xs text-white/25 mt-3">Nuk e gjeni? Kontrolloni dosjen e postës së padëshiruar.</p>
               </div>
 
             /* ═══ NEW PASSWORD ═══ */
@@ -448,16 +448,16 @@ export default function Auth() {
                   className="flex items-center gap-1.5 text-white/40 text-xs font-semibold hover:text-white/70 mb-5 transition-colors">
                   <ArrowLeft size={13} /> Kthehu
                 </button>
-                <h2 className="text-xl font-black text-white mb-1">Rivendos fjalëkalimin</h2>
-                <p className="text-white/40 text-sm mb-5">Dërgojmë udhëzime në emailin tënd.</p>
+                <h2 className="text-xl font-black text-white mb-1">Rivendosni fjalëkalimin</h2>
+                <p className="text-white/40 text-sm mb-5">Po dërgojmë udhëzime në adresën tuaj të emailit.</p>
 
                 {resetSent ? (
                   <div className="flex flex-col items-center gap-3 py-6">
                     <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
                       <CheckCircle size={28} className="text-emerald-400" />
                     </div>
-                    <p className="text-white font-bold">Email dërguar!</p>
-                    <p className="text-white/40 text-sm text-center">Kontrolloni kutinë postare (dhe Spam).</p>
+                    <p className="text-white font-bold">Emaili u dërgua!</p>
+                    <p className="text-white/40 text-sm text-center">Kontrolloni kutinë hyrëse dhe dosjen e postës së padëshiruar.</p>
                     <button onClick={() => switchTab('login')} className="mt-2 text-sm font-bold text-violet-400 hover:text-violet-300">
                       Kthehu te hyrja
                     </button>
@@ -492,7 +492,7 @@ export default function Auth() {
                       {tab === 'login' ? 'Mirë se vjen!' : 'Krijo llogarinë'}
                     </h2>
                     <p className="text-white/35 text-sm">
-                      {tab === 'login' ? 'Kyçu në hapësirën tënde' : 'Fillo udhëtimin tënd sot'}
+                      {tab === 'login' ? 'Kyçu në hapësirën tënde' : 'Hap një kapitull të ri sot'}
                     </p>
                   </div>
                   <button onClick={() => switchTab(tab === 'login' ? 'signup' : 'login')}
@@ -514,7 +514,7 @@ export default function Auth() {
                 {/* Divider */}
                 <div className="flex items-center gap-3 my-4">
                   <div className="flex-1 h-px bg-white/6" />
-                  <span className="text-[11px] text-white/20 font-medium tracking-wider uppercase">ose me email</span>
+                  <span className="text-[11px] text-white/20 font-medium tracking-wider uppercase">ose me adresë email</span>
                   <div className="flex-1 h-px bg-white/6" />
                 </div>
 
@@ -564,7 +564,7 @@ export default function Auth() {
                         <button type="button"
                           onClick={() => { setResetEmail(form.email); setResetSent(false); setServErr(''); setStep('reset') }}
                           className="text-[11px] text-white/25 hover:text-violet-400 transition-colors">
-                          Harrove?
+                          E harruat?
                         </button>
                       )}
                     </div>
@@ -611,7 +611,7 @@ export default function Auth() {
                       boxShadow: cooldown > 0 ? 'none' : `0 8px 32px ${theme.start}44`,
                     }}>
                     {loading
-                      ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke u lidhur...</>
+                      ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke hyrë...</>
                       : cooldown > 0
                         ? `Provo pas ${cooldown}s`
                         : tab === 'login' ? 'Kyçu me Email' : 'Regjistrohu me Email'
@@ -628,7 +628,7 @@ export default function Auth() {
                   </div>
                   <button onClick={handleAnonymous} disabled={loading}
                     className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/8 text-white/25 text-sm font-semibold hover:border-white/15 hover:text-white/40 transition-all disabled:opacity-50">
-                    <UserX size={14} /> Vazhdo anonim
+                    <UserX size={14} /> Vazhdo pa llogari
                   </button>
                 </div>
 

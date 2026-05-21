@@ -7,11 +7,11 @@ import { useAuth } from '../contexts/AuthContext'
 import { ActivityLog } from '../lib/activityLog'
 
 const MOOD_LEVELS = [
-  { score: [1,2], icon: Frown,  label: 'Shumë keq', color: '#f87171' },
-  { score: [3,4], icon: Frown,  label: 'Keq',       color: '#fb923c' },
-  { score: [5,6], icon: Meh,    label: 'Ok',         color: '#818cf8' },
-  { score: [7,8], icon: Smile,  label: 'Mirë',       color: '#34d399' },
-  { score: [9,10],icon: Smile,  label: 'Shkëlqyer', color: '#fbbf24' },
+  { score: [1,2], icon: Frown,  label: 'Shumë keq',   color: '#f87171' },
+  { score: [3,4], icon: Frown,  label: 'Keq',         color: '#fb923c' },
+  { score: [5,6], icon: Meh,    label: 'Mesatar',      color: '#818cf8' },
+  { score: [7,8], icon: Smile,  label: 'Mirë',         color: '#34d399' },
+  { score: [9,10],icon: Smile,  label: 'Shkëlqyeshëm', color: '#fbbf24' },
 ]
 
 const ACTIVITIES = [
@@ -92,7 +92,7 @@ export default function MoodTracking() {
           <TrendingUp size={20} />
           <div>
             <h1 className="text-xl font-black leading-tight">Gjurmimi i Humorit</h1>
-            <p className="text-white/70 text-xs">Njoh veten me të dhëna reale</p>
+            <p className="text-white/70 text-xs">Njohë veten përmes të dhënave tuaja</p>
           </div>
         </div>
 

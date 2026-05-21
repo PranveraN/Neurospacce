@@ -12,13 +12,13 @@ import { AvatarDisplay } from '../Avatar'
 
 const NAV = [
   { to: '/home',      icon: Home,      label: 'Ballina',    color: '#8b5cf6' },
-  { to: '/mood',      icon: Radio,     label: 'Humor',      color: '#ec4899' },
-  { to: '/journal',   icon: BookOpen,  label: 'Ditar',      color: '#a78bfa' },
+  { to: '/mood',      icon: Radio,     label: 'Humori',     color: '#ec4899' },
+  { to: '/journal',   icon: BookOpen,  label: 'Ditari',     color: '#a78bfa' },
   { to: '/history',   icon: History,   label: 'Historia',   color: '#38bdf8' },
-  { to: '/techniques',icon: Zap,       label: 'Teknika',    color: '#fbbf24' },
+  { to: '/techniques',icon: Zap,       label: 'Teknikat',   color: '#fbbf24' },
   { to: '/chat',      icon: Wind,      label: 'NeuroAI',    color: '#34d399' },
   { to: '/community', icon: Users,     label: 'Komuniteti', color: '#60a5fa' },
-  { to: '/profile',   icon: User,      label: 'Profil',     color: '#c084fc' },
+  { to: '/profile',   icon: User,      label: 'Profili',    color: '#c084fc' },
 ]
 
 const CARD = 'rgba(255,255,255,0.04)'
@@ -136,7 +136,7 @@ export default function Sidebar() {
             </div>
           ))}
         </div>
-        <p className="text-[9px] text-white/25 text-center mt-2">Bimët e tua po rriten!</p>
+        <p className="text-[9px] text-white/25 text-center mt-2">Bimët e tua rriten çdo ditë.</p>
       </div>
 
       {/* Divider */}
@@ -183,7 +183,7 @@ export default function Sidebar() {
                   <span className="text-purple-400 font-bold">Pro</span></>
               ) : (
                 <><span className="text-white/30">Falas</span>
-                  <span className="text-purple-400 font-bold">· Pro</span></>
+                  <span className="text-purple-400 font-bold">· Zbulo Pro</span></>
               )}
             </p>
           </div>

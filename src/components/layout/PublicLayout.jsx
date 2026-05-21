@@ -251,7 +251,7 @@ function PublicFooter() {
               </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Platforma profesionale e shëndetit mendor. Artikuj, mbështetje nga psikologë, dhe AI i specializuar.
+              Platforma shqiptare e mirëqenies mendore. Artikuj, mbështetje nga psikologë të verifikuar dhe asistent AI i specializuar.
             </p>
           </div>
 
@@ -287,7 +287,7 @@ function PublicFooter() {
             </ul>
             <div className="mt-6 p-4 bg-slate-800 rounded-2xl">
               <p className="text-xs font-bold text-slate-300 mb-1">Keni nevojë për ndihmë urgjente?</p>
-              <p className="text-xs text-slate-400">Shërbimi i emergjencës: <span className="text-violet-400 font-bold">112</span> (24/7)</p>
+              <p className="text-xs text-slate-400">Numri i emergjencës: <span className="text-violet-400 font-bold">112</span> (24/7)</p>
             </div>
           </div>
         </div>
@@ -295,8 +295,8 @@ function PublicFooter() {
         <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-500">© 2026 NeuroSphera. Të gjitha të drejtat e rezervuara.</p>
           <div className="flex gap-4">
-            <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Privatësia</span>
-            <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Kushtet</span>
+            <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Politika e Privatësisë</span>
+            <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Kushtet e Shërbimit</span>
           </div>
         </div>
       </div>

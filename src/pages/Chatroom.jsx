@@ -34,7 +34,7 @@ function RoomCard({ room, onEnter, theme }) {
         : (
           <div className="flex items-center gap-1 shrink-0">
             <Lock size={12} className="text-gray-300" />
-            <span className="text-[10px] text-gray-400 font-semibold">Sësht</span>
+            <span className="text-[10px] text-gray-400 font-semibold">Shpejt</span>
           </div>
         )
       }

@@ -493,9 +493,9 @@ export default function Pricing() {
             <ul className="space-y-3 flex-1 mb-7">
               <Feature text="Gjithçka nga Free, pa limit" />
               <Feature text="15 pyetje private/muaj" sub="Deri 3/ditë · Te psikologë të verifikuar, brenda 24h" highlight />
-              <Feature text="2 mini-sesione online (15 min)/muaj" sub="Check-in emocional me profesionist" highlight />
+              <Feature text="2 sesione të shkurtra online (15 min)/muaj" sub="Kontroll emocional me profesionist" highlight />
               <Feature text="Radhë prioritare me përgjigje brenda 24h" highlight />
-              <Feature text="Rezervim i plotë + priority scheduling" highlight />
+              <Feature text="Rezervim i plotë + radhë prioritare" highlight />
               <Feature text="PersonaMatrix: raport premium 10 seksione" highlight />
               <Feature text="Evolution Dashboard + AI Coach ditor" highlight />
               <Feature text="Analitikë e avancuar & raporte javore" />
@@ -695,8 +695,8 @@ export default function Pricing() {
                 {[
                   { label: 'Kohëzgjatja', mini: '15 min', full: '45–60 min' },
                   { label: 'Formati',     mini: 'Online vetëm', full: 'Online + Fizik' },
-                  { label: 'Qëllimi',     mini: 'Check-in i shpejtë', full: 'Terapi e thelluar' },
-                  { label: 'Frekuenca',   mini: '2/muaj (incluziv)', full: 'Sa herë të dëshirosh' },
+                  { label: 'Qëllimi',     mini: 'Kontroll i shpejtë', full: 'Terapi e thelluar' },
+                  { label: 'Frekuenca',   mini: '2/muaj (përfshihet)', full: 'Sa herë të dëshirosh' },
                   { label: 'Pagesa',      mini: 'Përfshihet në Pro', full: 'Veçmas €20–30' },
                 ].map((r) => (
                   <tr key={r.label} className="hover:bg-slate-50 transition-colors">
@@ -909,8 +909,8 @@ export default function Pricing() {
                 a: 'Çdo përdorues i ri merr 1 pyetje private falas te një psikolog të verifikuar, pa kartë krediti, pa kushte. Psikologu i përgjigjet brenda 24h. Pas kësaj, mund të blejësh pyetje individuale (€0.99) ose të kalosh në Pro për 15/muaj.',
               },
               {
-                q: 'Sa zgjat mini-seanca dhe çfarë mbulon?',
-                a: 'Mini-seanca zgjat 15 minuta online. Është e dizajnuar si "check-in emocional", ideal kur ke diçka specifike për të diskutuar, por nuk ke kohë/nevojë për seancë të plotë. Krijon besim dhe marrëdhënie me psikologun.',
+                q: 'Sa zgjat seanca e shkurtër dhe çfarë mbulon?',
+                a: 'Seanca e shkurtër zgjat 15 minuta online. Është projektuar si kontroll emocional i shpejtë — ideal kur keni diçka specifike për të diskutuar, por nuk keni kohë ose nevojë për seancë të plotë. Ndihmon të krijoni besim dhe marrëdhënie me psikologun.',
               },
               {
                 q: 'A mund të anuloj Pro kurdo?',

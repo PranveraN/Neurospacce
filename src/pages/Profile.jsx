@@ -162,7 +162,7 @@ function NotificationsModal({ onClose }) {
       <div className="space-y-3 mb-4">
         <div className="flex items-center justify-between rounded-2xl px-4 py-3" style={{background:'rgba(255,255,255,0.05)'}}>
           <div>
-            <p className="text-sm font-bold text-white/80">Ora e reminder</p>
+            <p className="text-sm font-bold text-white/80">Ora e njoftimit</p>
             <p className="text-[11px] text-white/35">Njoftime ditore</p>
           </div>
           <input type="time" value={time} onChange={e=>setTime(e.target.value)}
@@ -196,7 +196,7 @@ function PrivacyModal({ onClose }) {
       <div className="space-y-3 text-sm">
         {[
           {c:'#34d399', t:'Të gjitha të dhënat ruhen vetëm në pajisjen tënde. Asnjë server nuk mbledh informacionin tënd personal.'},
-          {c:'#60a5fa', t:'Hyrjet e journalit janë të enkriptuara dhe nuk mund të lexohen nga askush tjetër.'},
+          {c:'#60a5fa', t:'Hyrjet e ditarit janë të koduara dhe nuk mund të lexohen nga askush tjetër.'},
           {c:'#a78bfa', t:'AI Chat nuk ruan biseda pas sesionit. Çdo bisedë fillon nga fillimi.'},
         ].map((item,i)=>(
           <div key={i} className="rounded-2xl p-3 flex gap-2" style={{background:item.c+'12',border:`1px solid ${item.c}22`}}>
@@ -714,7 +714,7 @@ export default function Profile() {
 
         <div className="rounded-3xl p-4 text-center"
           style={{background:'rgba(255,255,255,0.025)',border:'1px solid rgba(255,255,255,0.05)'}}>
-          <p className="text-xs font-bold text-white/15">NeuroSphera v1.0 · AI Mental Wellness</p>
+          <p className="text-xs font-bold text-white/15">NeuroSphera v1.0 · Mirëqenie Mendore</p>
           <p className="text-[10px] text-white/10 mt-1">Nuk zëvendëson terapinë profesionale</p>
         </div>
 

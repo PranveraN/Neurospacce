@@ -188,7 +188,7 @@ function MoodOrbitCard({ onDetailClick }) {
           className="flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-bold text-white/70 hover:text-white transition-all"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
         >
-          Shiko detajet <ArrowRight size={13}/>
+          Zbulo më shumë <ArrowRight size={13}/>
         </button>
 
         <AnimatePresence mode="wait">
@@ -257,12 +257,12 @@ function LivingJournalCard() {
         {/* header */}
         <div className="flex items-start justify-between">
           <div>
-            <p className={`${LABEL_CLS} text-purple-400`}>LIVING JOURNAL</p>
+            <p className={`${LABEL_CLS} text-purple-400`}>DITARI JETUES</p>
             <p className="text-[11px] text-white/35 mt-0.5">Hapësira jote e sigurt</p>
           </div>
           <span className="text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1"
             style={{ background: `${mc}18`, color: mc, border: `1px solid ${mc}44` }}>
-            😟 Mood: {ml}
+            😟 Gjendja: {ml}
           </span>
         </div>
 
@@ -318,8 +318,8 @@ function AIMirrorCard({ onOpen }) {
         style={{ background: 'radial-gradient(ellipse at 50% 55%, rgba(139,92,246,0.12) 0%, transparent 65%)' }}/>
 
       <div className="relative z-10 w-full">
-        <p className={`${LABEL_CLS} text-purple-400`}>AI MIRROR</p>
-        <p className="text-[11px] text-white/35 mt-0.5 mb-4">Pasqyrimi yt ditor</p>
+        <p className={`${LABEL_CLS} text-purple-400`}>PASQYRA AI</p>
+        <p className="text-[11px] text-white/35 mt-0.5 mb-4">Reflektimi yt ditor</p>
       </div>
 
       {/* animated energy rings */}
@@ -352,7 +352,7 @@ function AIMirrorCard({ onOpen }) {
         onClick={onOpen}
         className="relative z-10 flex items-center justify-center gap-2 mt-4 text-[13px] font-bold text-purple-400 hover:text-purple-300 transition-colors"
       >
-        Më trego si <ArrowRight size={13}/>
+        Shfaq udhëzimet <ArrowRight size={13}/>
       </button>
     </div>
   )
@@ -441,7 +441,7 @@ function AiModal({ onClose }) {
           style={{ background: 'rgba(255,255,255,0.06)' }}>
           <X size={14}/>
         </button>
-        <p className={`${LABEL_CLS} text-purple-400 mb-0.5`}>AI MIRROR</p>
+        <p className={`${LABEL_CLS} text-purple-400 mb-0.5`}>PASQYRA AI</p>
         <h2 className="text-lg font-black text-white mb-5">Udhëzimi yt personal</h2>
         <div className="space-y-3">
           {tips.map((t, i) => (
@@ -561,11 +561,11 @@ function NoteModal({ onClose }) {
 ═══════════════════════════════════════════════ */
 
 const NOTIFS = [
-  { id:1, icon:'🧘', title:'Seanca e sotme', body:'Nuk ke bërë meditim sot. 5 minuta mund të ndryshojnë ditën.', time:'Tani', unread:true },
-  { id:2, icon:'📓', title:'Ditar i harruar', body:'Shkruaj si ndihesh — ditari yt pret një hyrje të re.', time:'2h më parë', unread:true },
-  { id:3, icon:'💡', title:'Tip i ri', body:'Provo teknikën 4-7-8 të frymëmarrjes për të ulur ankthin.', time:'6h më parë', unread:true },
-  { id:4, icon:'🎯', title:'Streak aktiv!', body:'Ke 3 ditë rresht me aktivitet. Vazhdo kështu!', time:'1 ditë', unread:false },
-  { id:5, icon:'🌙', title:'Kujtesë mbrëmjeje', body:'Para gjumit, shiko humorin tënd në Mood Tracker.', time:'1 ditë', unread:false },
+  { id:1, icon:'🧘', title:'Seanca e sotme', body:'Nuk ke bërë meditim sot. 5 minuta mund të ndryshojnë gjithë ditën.', time:'Tani', unread:true },
+  { id:2, icon:'📓', title:'Ditari pret', body:'Shkruaj si ndihesh — hapësira jote e sigurt pret një hyrje të re.', time:'2h më parë', unread:true },
+  { id:3, icon:'💡', title:'Teknikë e re', body:'Provo teknikën 4-7-8 të frymëmarrjes për të qetësuar ankthin.', time:'6h më parë', unread:true },
+  { id:4, icon:'🎯', title:'Vazhdim i shkëlqyer!', body:'Ke 3 ditë radhazi me aktivitet. Kjo është fuqi, jo rastësi.', time:'1 ditë', unread:false },
+  { id:5, icon:'🌙', title:'Kujtesë mbrëmjeje', body:'Para gjumit, shëno humorin tënd për ta nisur nesërit më mirë.', time:'1 ditë', unread:false },
 ]
 
 export default function Home() {
@@ -601,10 +601,10 @@ export default function Home() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-[22px] font-black text-white leading-tight">
-            Mirë u ktheve, {firstName}! {timeEmoji}
+            Mirë se erdhe, {firstName}! {timeEmoji}
           </h1>
           <p className="text-[13px] text-white/45 mt-0.5">
-            Si është hapësira jote mendore sot?
+            Si ndihesh sot?
           </p>
         </div>
         <div className="flex items-center gap-2.5">

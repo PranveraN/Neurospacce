@@ -308,7 +308,7 @@ function HubView({ onStart }) {
                   <p className="text-[9px] font-black text-violet-300 uppercase tracking-widest mb-1">Shembull rezultati</p>
                   <p className="text-2xl mb-1">✨</p>
                   <p className="text-base font-black text-white">VEGA</p>
-                  <p className="text-[10px] text-white/50 font-semibold">The Visionary</p>
+                  <p className="text-[10px] text-white/50 font-semibold">Visionari</p>
                   {/* Mini bars */}
                   <div className="mt-3 space-y-1.5">
                     {[{l:'Analitike',p:91,c:'#34d399'},{l:'Kreative',p:84,c:'#a78bfa'},{l:'Sociale',p:72,c:'#60a5fa'}].map(b => (

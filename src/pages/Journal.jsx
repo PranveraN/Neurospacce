@@ -327,7 +327,7 @@ export default function Journal() {
         <div className="flex items-center gap-3 mb-4">
           <PenLine size={20} />
           <div>
-            <h1 className="text-xl font-black">Journal</h1>
+            <h1 className="text-xl font-black">Ditari</h1>
             <p className="text-white/70 text-xs">Hapësira jote private e reflektimit</p>
           </div>
         </div>
@@ -353,7 +353,7 @@ export default function Journal() {
             <button onClick={() => setPromptIdx(i => (i + 1) % PROMPTS.length)}
               className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl text-white"
               style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
-              <RefreshCw size={11} /> Prompt
+              <RefreshCw size={11} /> Ide e re
             </button>
           </div>
           <div className="bg-purple-50 rounded-2xl px-4 py-2.5 mb-3 flex items-start gap-2">

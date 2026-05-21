@@ -11,7 +11,7 @@ export const EMOTION_STARTERS = [
   { id:'stress',       emoji:'😤', label:'Jam nën stres',         color:'#ef4444' },
   { id:'tired',        emoji:'😴', label:'Ndihem i/e lodhur',     color:'#6366f1' },
   { id:'focus',        emoji:'🌀', label:'Kam probleme me fokus', color:'#38bdf8' },
-  { id:'overthinking', emoji:'💭', label:'Mendoj shumë',          color:'#a855f7' },
+  { id:'overthinking', emoji:'💭', label:'Mendoj tepër',           color:'#a855f7' },
   { id:'empty',        emoji:'🫧', label:'Ndihem bosh',           color:'#818cf8' },
   { id:'burnout',      emoji:'🔋', label:'Ndihem i mbingarkuar',  color:'#ec4899' },
 ]
@@ -152,7 +152,7 @@ export const TECHNIQUES = {
       { label:'Gjoksi & Beli',    dur:30, instruction:'Me çdo frymëmarrje, gjoksi zgjerohet dhe relaksohet.' },
       { label:'Krahët & Duart',   dur:30, instruction:'Lëri të rëndë, si letër e lagur.' },
       { label:'Kofshët & Këmbët', dur:30, instruction:'Ndieje tokën nën ty. Ti je i/e sigurt këtu.' },
-      { label:'Trupi tërësor',    dur:30, instruction:'Breathe. Pranoj. Jam i/e pranishëm tani.' },
+      { label:'Trupi tërësor',    dur:30, instruction:'Merr frymë. Pranoj. Jam i/e pranishëm tani.' },
     ],
     benefit:'Redukton tensionin fizik dhe aktivizon sistemin parasympathetik.',
   },
@@ -182,7 +182,7 @@ export const TECHNIQUES = {
     steps: [
       { label:'Cakto detyrën', dur:30,   instruction:'Shkruaj VETËM 1 detyrë konkrete. Jo listë, vetëm 1.' },
       { label:'Eliminimi',     dur:30,   instruction:'Hiqni telefon nga tavolina. Mbyllni tab-et e panevojshëm.' },
-      { label:'25 min punë',   dur:1500, instruction:'Punom. Nëse mendja shkot, shkruaj diku dhe rikthehu.' },
+      { label:'25 min punë',   dur:1500, instruction:'Punoj. Nëse mendja shkon, shkruaj diku dhe rikthehu.' },
       { label:'5 min pushim',  dur:300,  instruction:'Lëvizni! Mos lexoni lajme. Vetëm shtrihuni ose ecni.' },
       { label:'Vlerëso',       dur:30,   instruction:'Sa u bë? Festoni punën e bërë — pa gjykim.' },
     ],
@@ -191,7 +191,7 @@ export const TECHNIQUES = {
   distraction: {
     title:'Anti-Shpërqendrim', subtitle:'Strategji Neuroshkencore', color:'#22c55e', emoji:'📵',
     steps: [
-      { label:'Identifiko burin',  dur:45, instruction:'Cili aparat/app të shpërhap më shumë? Telefoni? Emaili?' },
+      { label:'Identifiko burimin', dur:45, instruction:'Cili aparat/app të shpërhap më shumë? Telefoni? Emaili?' },
       { label:'Faza "Pa telefon"', dur:60, instruction:'Vendoseni telefon në të hyrë ose dhomë tjetër. Jo pocket.' },
       { label:'Njoftimet',         dur:60, instruction:'Çaktivizo të gjitha njoftime veç thirrjeve. Vetem 2x check/ditë.' },
       { label:'Mjedisi',           dur:45, instruction:'Tavolina e pastër = mendje e pastër. Hiqni 5 gjëra nga sytë.' },

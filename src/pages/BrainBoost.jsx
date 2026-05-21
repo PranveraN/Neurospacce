@@ -342,10 +342,10 @@ function SiMesonTruri() {
    6. STUDY BATTLE
 ══════════════════════════════════════════════════════════ */
 const MISSIONS_DATA = [
-  { id:1, icon:'⏱', label:'Bëj 1 Focus Sprint 25 min',    xp:100, flames:2 },
+  { id:1, icon:'⏱', label:'Bëj 1 sprint fokusi 25 min',     xp:100, flames:2 },
   { id:2, icon:'📖', label:'Lexo 1 artikull BrainBoost',    xp:50,  flames:1 },
-  { id:3, icon:'🧪', label:'Kryej Quick Recall Challenge',  xp:75,  flames:1 },
-  { id:4, icon:'🔬', label:'Zgjidh BrainType Test',         xp:60,  flames:1 },
+  { id:3, icon:'🧪', label:'Kryej sfidën e kujtesës',       xp:75,  flames:1 },
+  { id:4, icon:'🔬', label:'Zgjidh testin e trurit',        xp:60,  flames:1 },
   { id:5, icon:'💧', label:'Hid 2 gota ujë tani',           xp:30,  flames:1 },
   { id:6, icon:'😴', label:'Cakto orën e gjumit sonte',     xp:40,  flames:1 },
 ]
@@ -425,7 +425,7 @@ function StudyBattle() {
           style={{background:'rgba(239,68,68,0.1)',border:'1px solid rgba(239,68,68,0.2)'}}>
           <p className="text-lg">⚡</p>
           <p className="text-lg font-black text-red-400">{flames}</p>
-          <p className="text-[10px] text-white/40">Focus Flames</p>
+          <p className="text-[10px] text-white/40">Flakët e Fokusit</p>
         </div>
       </div>
 
@@ -1541,12 +1541,12 @@ export default function BrainBoost() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})
 
   const NAV = [
-    {id:'focus-sprint',   label:'Focus Sprint',   icon:'⏱'},
-    {id:'mental-energy',  label:'Mental Energy',  icon:'⚡'},
-    {id:'anti-dist',      label:'Anti-Distraction',icon:'🛡'},
-    {id:'memory-boost',   label:'Memory Boost',   icon:'🧠'},
-    {id:'si-meson',       label:'Si Mëson Truri?', icon:'🔬'},
-    {id:'study-battle',   label:'Study Battle',   icon:'🏆'},
+    {id:'focus-sprint',   label:'Sprint Fokusi',        icon:'⏱'},
+    {id:'mental-energy',  label:'Energjia Mendore',     icon:'⚡'},
+    {id:'anti-dist',      label:'Kundër Shpërhapjes',   icon:'🛡'},
+    {id:'memory-boost',   label:'Forcimi i Kujtesës',   icon:'🧠'},
+    {id:'si-meson',       label:'Si Mëson Truri?',      icon:'🔬'},
+    {id:'study-battle',   label:'Sfida e Studimit',     icon:'🏆'},
   ]
 
   return (
@@ -1592,20 +1592,20 @@ export default function BrainBoost() {
 
         {/* ── ROW 1: Focus Sprint · Mental Energy · Anti-Distraction ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <Card id="focus-sprint" icon={<Timer size={13} className="text-violet-400"/>} title="Focus Sprint" accent="#7c3aed">
+          <Card id="focus-sprint" icon={<Timer size={13} className="text-violet-400"/>} title="Sprint Fokusi" accent="#7c3aed">
             <FocusSprint/>
           </Card>
-          <Card id="mental-energy" icon={<Battery size={13} className="text-amber-400"/>} title="Mental Energy Scanner" accent="#f59e0b">
+          <Card id="mental-energy" icon={<Battery size={13} className="text-amber-400"/>} title="Skaneri i Energjisë Mendore" accent="#f59e0b">
             <MentalEnergyScanner/>
           </Card>
-          <Card id="anti-dist" icon={<Shield size={13} className="text-red-400"/>} title="Anti-Distraction Mode" accent="#ef4444">
+          <Card id="anti-dist" icon={<Shield size={13} className="text-red-400"/>} title="Mënyra Anti-Shpërhapje" accent="#ef4444">
             <AntiDistraction/>
           </Card>
         </div>
 
         {/* ── ROW 2: Memory Boost full width ── */}
         <div className="mb-4">
-          <Card id="memory-boost" icon={<Brain size={13} className="text-blue-400"/>} title="Memory Boost Techniques" accent="#3b82f6">
+          <Card id="memory-boost" icon={<Brain size={13} className="text-blue-400"/>} title="Teknikat e Forcimit të Kujtesës" accent="#3b82f6">
             <MemoryBoost/>
           </Card>
         </div>
@@ -1613,9 +1613,9 @@ export default function BrainBoost() {
         {/* ── ROW 3: 4 cards ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <Card id="si-meson" icon="🔬" title="Si Mëson Truri?"><SiMesonTruri/></Card>
-          <Card id="study-battle" icon={<Trophy size={13} className="text-violet-400"/>} title="Study Battle" accent="#7c3aed"><StudyBattle/></Card>
-          <Card icon="🌙" title="Sleep & Brain"><SleepBrain/></Card>
-          <Card icon="💡" title="Brain Hacks"><BrainHacks/></Card>
+          <Card id="study-battle" icon={<Trophy size={13} className="text-violet-400"/>} title="Sfida e Studimit" accent="#7c3aed"><StudyBattle/></Card>
+          <Card icon="🌙" title="Gjumi & Truri"><SleepBrain/></Card>
+          <Card icon="💡" title="Truket e Trurit"><BrainHacks/></Card>
         </div>
 
         {/* ── ROW 4: Sounds · Analytics · BrainType ── */}

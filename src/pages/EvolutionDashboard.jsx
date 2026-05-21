@@ -77,8 +77,8 @@ function CheckinModal({ onClose, onSubmit }) {
         style={{ background: '#0f0f1a' }}>
         <div className="h-1" style={{ background: 'linear-gradient(90deg,#8b5cf6,#ec4899)' }} />
         <div className="p-6 text-center">
-          <p className="text-sm text-gray-400 mb-1">Check-in Ditor</p>
-          <EditableText as="h3" className="text-lg font-bold text-white mb-6">Si je sot?</EditableText>
+          <p className="text-sm text-gray-400 mb-1">Gjendja Sot</p>
+          <EditableText as="h3" className="text-lg font-bold text-white mb-6">Si ndihesh sot?</EditableText>
           <div className="flex justify-between gap-2 mb-6">
             {OPTIONS.map((o) => (
               <button key={o.val} onClick={() => setSelected(o.val)}
@@ -148,7 +148,7 @@ export default function EvolutionDashboard() {
         style={{ background: 'linear-gradient(135deg,#0a0a12,#0f0f20,#1a0a2e)' }}>
         <div className="text-center px-6 max-w-sm">
           <div className="text-6xl mb-4">🔮</div>
-          <EditableText as="h2" className="text-2xl font-bold text-white mb-2">Evolution Dashboard</EditableText>
+          <EditableText as="h2" className="text-2xl font-bold text-white mb-2">Paneli i Evolucionit</EditableText>
           <EditableText as="p" className="text-gray-400 text-sm mb-6">
             Plotëso PersonaMatrix Assessment për të filluar udhëtimin tënd të vetë-evolucionit.
           </EditableText>
@@ -268,7 +268,7 @@ export default function EvolutionDashboard() {
                 style={{ background: 'rgba(139,92,246,0.08)' }}>
                 <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2">
                   <Brain size={14} className="text-violet-400" />
-                  <span className="text-xs font-bold text-violet-400 uppercase tracking-wider">Coach AI Ditor</span>
+                  <span className="text-xs font-bold text-violet-400 uppercase tracking-wider">Këshilltari AI Ditor</span>
                 </div>
                 <div className="p-4">
                   <p className="text-sm text-gray-300 leading-relaxed">{todayCoach}</p>
@@ -282,7 +282,7 @@ export default function EvolutionDashboard() {
               <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Heart size={14} className="text-pink-400" />
-                  <span className="text-xs font-bold text-pink-400 uppercase tracking-wider">Check-in Emocional</span>
+                  <span className="text-xs font-bold text-pink-400 uppercase tracking-wider">Kontrolli Emocional</span>
                 </div>
                 {evo.todayCheckin && (
                   <span className="text-xs text-green-400 font-semibold flex items-center gap-1">

@@ -58,7 +58,7 @@ export function AskModal({ onClose }) {
 
           <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Mesazhi</p>
           <textarea value={msg} onChange={e => setMsg(e.target.value)}
-            placeholder="Shruani çfarë ndiheni ose çfarë dëshironi të diskutoni..."
+            placeholder="Shkruani çfarë ndiheni ose çfarë dëshironi të diskutoni..."
             className="w-full rounded-2xl p-4 text-[13px] text-white/80 placeholder-white/20 outline-none resize-none mb-4"
             style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',minHeight:100}}
             rows={4}/>
