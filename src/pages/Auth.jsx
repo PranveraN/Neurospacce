@@ -59,7 +59,7 @@ export default function Auth() {
   const navigate  = useNavigate()
   const location  = useLocation()
   const { theme } = useMood()
-  const { login, signup, goAnonymous, resetPassword } = useAuth()
+  const { login, signup, goAnonymous, resetPassword, user, loading: authLoading } = useAuth()
 
   const [tab, setTab]           = useState('login')
   const [step, setStep]         = useState('form')
@@ -90,11 +90,25 @@ export default function Auth() {
     return () => subscription.unsubscribe()
   }, [])
 
+  // After Google OAuth redirect (?oauth=google), wait for auth to load then
+  // navigate based on role — admin → panel, everyone else → /home
+  const isOAuthRedirect = new URLSearchParams(location.search).get('oauth') === 'google'
+  useEffect(() => {
+    if (!isOAuthRedirect) return
+    if (authLoading) return
+    if (!user) return
+    if (user.role === 'admin') {
+      navigate('/ns-secure-7381/', { replace: true })
+    } else {
+      navigate('/home', { replace: true })
+    }
+  }, [isOAuthRedirect, authLoading, user, navigate])
+
   async function handleGoogleLogin() {
     setLoad(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/home` },
+      options: { redirectTo: `${window.location.origin}/auth?oauth=google` },
     })
     if (error) { setServErr(error.message); setLoad(false) }
   }
@@ -108,7 +122,8 @@ export default function Auth() {
     const { error } = await supabase.auth.updateUser({ password: newPass })
     setLoad(false)
     if (error) { setServErr(error.message); return }
-    navigate('/home', { replace: true })
+    if (user?.role === 'admin') navigate('/ns-secure-7381/', { replace: true })
+    else navigate('/home', { replace: true })
   }
 
   function field(key, val) {

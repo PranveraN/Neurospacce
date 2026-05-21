@@ -60,7 +60,7 @@ export default function AdminLogin() {
     }
     if (res.user.role !== 'admin') { setError('Kjo llogari nuk ka akses admin'); return }
     attempts.current = { count: 0, windowStart: 0 }
-    navigate('/ns-secure-7381')
+    navigate('/ns-secure-7381/', { replace: true })
   }
 
   return (

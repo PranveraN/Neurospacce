@@ -27,19 +27,19 @@ export function SuggestionChips({ chips, onChip, title }) {
 }
 
 export function QuickAdviceCard({ topic, onChip }) {
-  const initial = pickRandomTip(topic)
-  const [tip,     setTip]   = useState(initial)
-  const [usedIds, setUsed]  = useState(new Set([initial.id]))
-  const [phase,   setPhase] = useState('tip')
-  const [saved,   setSaved] = useState(false)
+  const [{ tip, usedIds }, setAdvice] = useState(() => {
+    const first = pickRandomTip(topic)
+    return { tip: first, usedIds: new Set([first.id]) }
+  })
+  const [phase, setPhase] = useState('tip')
+  const [saved, setSaved] = useState(false)
 
   const color = TOPIC_COLOR[topic] || '#8b5cf6'
 
   function nextTip() {
-    setUsed(prev => {
-      const next = pickRandomTip(topic, prev)
-      setTip(next)
-      return new Set([...prev, next.id])
+    setAdvice(prev => {
+      const next = pickRandomTip(topic, prev.usedIds)
+      return { tip: next, usedIds: new Set([...prev.usedIds, next.id]) }
     })
   }
 

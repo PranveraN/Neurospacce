@@ -188,6 +188,10 @@ export function AuthProvider({ children }) {
           return
         }
         if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION')) {
+          // Suppress SIGNED_IN fired by setSession inside login() — login() handles
+          // setUser directly via raw-fetch profile, so this event would overwrite the role.
+          // Google OAuth SIGNED_IN is NOT suppressed (loginStartedAt resets on page load).
+          if (event === 'SIGNED_IN' && Date.now() - loginStartedAt.current < 15_000) return
           writeStoredSession(session) // keep localStorage in sync on every refresh
           const profile = await fetchProfileCached(session.user.id)
           setUser(buildUser(session.user, profile))
@@ -276,28 +280,34 @@ export function AuthProvider({ children }) {
       writeStoredSession({ ...body, user: body.user })
       setAccessToken(body.access_token)
 
-      // Set supabase-js session FIRST so auth.uid() is available for RLS
-      try {
-        await Promise.race([
-          supabase.auth.setSession({
-            access_token:  body.access_token,
-            refresh_token: body.refresh_token,
-          }),
-          new Promise(r => setTimeout(r, 4000)),
-        ])
-      } catch {}
+      // Fire setSession in background — supabase-js needs it for subsequent queries.
+      // We do NOT await it here: awaiting caused a deadlock in the old code because
+      // supabase.from() queued behind the same internal lock that setSession held.
+      // Profile fetch uses raw REST (no lock dependency), so login() returns immediately.
+      supabase.auth.setSession({
+        access_token:  body.access_token,
+        refresh_token: body.refresh_token,
+      }).catch(() => {})
 
-      // Now fetch profile — session is active, RLS auth.uid() = id works correctly
+      // Fetch profile via raw REST — completely independent of the supabase-js lock.
       let profile = profileCache.current[body.user.id] || null
       if (!profile) {
         try {
-          const { data } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', body.user.id)
-            .single()
-          profile = data || null
-          if (profile) profileCache.current[body.user.id] = profile
+          const pr = await fetch(
+            `${SUPA_URL}/rest/v1/profiles?id=eq.${body.user.id}&select=*&limit=1`,
+            {
+              headers: {
+                apikey:        SUPA_KEY,
+                Authorization: `Bearer ${body.access_token}`,
+                Accept:        'application/json',
+              },
+            }
+          )
+          if (pr.ok) {
+            const rows = await pr.json()
+            profile = rows?.[0] || null
+            if (profile) profileCache.current[body.user.id] = profile
+          }
         } catch {}
       }
 
@@ -306,6 +316,7 @@ export function AuthProvider({ children }) {
       }
 
       const u = buildUser(body.user, profile)
+      console.log('[login] buildUser result:', u)
       setUser(u)
 
       return { success: true, user: u }
