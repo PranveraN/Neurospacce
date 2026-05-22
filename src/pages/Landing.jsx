@@ -16,6 +16,7 @@ import { TEAM_DEFAULTS } from './About'
 import { PLATFORM_CATS } from '../data/categoriesData'
 import { useAuth } from '../contexts/AuthContext'
 import NeuroPulse from '../components/NeuroPulse'
+import NeuroPulsePopup from '../components/NeuroPulsePopup'
 import TestsSection      from '../components/landing/TestsSection'
 import ParentingSection  from '../components/landing/ParentingSection'
 import BookingSection    from '../components/landing/BookingSection'
@@ -1901,6 +1902,7 @@ export default function Landing() {
 
   return (
     <div className="bg-white">
+      <NeuroPulsePopup />
       {/* Article modal */}
       {modal && (
         <ArticleModal article={modal === 'new' ? null : modal} onSave={handleSave} onClose={() => setModal(null)}/>

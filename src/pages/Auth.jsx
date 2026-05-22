@@ -120,7 +120,7 @@ export default function Auth() {
   const isOAuthRedirect = new URLSearchParams(location.search).get('oauth') === 'google'
   useEffect(() => {
     if (!isOAuthRedirect || authLoading || !user) return
-    navigate(user.role === 'admin' ? '/ns-secure-7381/' : '/home', { replace: true })
+    navigate(user.role === 'admin' ? '/ns-secure-7381/' : '/', { replace: true })
   }, [isOAuthRedirect, authLoading, user, navigate])
 
   /* ── Handlers ─────────────────────────────────────────────────────────── */
@@ -143,7 +143,7 @@ export default function Auth() {
     const { error } = await supabase.auth.updateUser({ password: newPass })
     setLoad(false)
     if (error) { setServErr('Gabim gjatë ndryshimit. Provo sërish.'); return }
-    navigate(user?.role === 'admin' ? '/ns-secure-7381/' : '/home', { replace: true })
+    navigate(user?.role === 'admin' ? '/ns-secure-7381/' : '/', { replace: true })
   }
 
   function field(key, val) {
@@ -179,7 +179,7 @@ export default function Auth() {
     if (res.requiresConfirmation) { setStep('confirm'); return }
     localStorage.setItem('ns_last_email', form.email)
     const from = location.state?.from?.pathname
-    navigate(from && from !== '/auth' ? from : '/home', { replace: true })
+    navigate(from && from !== '/auth' ? from : '/', { replace: true })
   }
 
   function startCooldown(seconds) {
@@ -219,7 +219,7 @@ export default function Auth() {
     loginAttempts.current = { count: 0, windowStart: 0 }
     localStorage.setItem('ns_last_email', form.email)
     const from = location.state?.from?.pathname
-    navigate(res.user?.role === 'admin' ? '/ns-secure-7381/' : (from && from !== '/auth' ? from : '/home'), { replace: true })
+    navigate(res.user?.role === 'admin' ? '/ns-secure-7381/' : (from && from !== '/auth' ? from : '/'), { replace: true })
   }
 
   async function handleReset(e) {
@@ -233,7 +233,7 @@ export default function Auth() {
 
   async function handleAnonymous() {
     setLoad(true); const res = await goAnonymous(); setLoad(false)
-    navigate(res?.success ? '/home' : '/', { replace: true })
+    navigate(res?.success ? '/' : '/', { replace: true })
   }
 
   function switchTab(t) {
