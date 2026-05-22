@@ -1,19 +1,31 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
-  Mail, Eye, EyeOff, UserX, Brain, Shield, Zap, User,
+  Mail, Eye, EyeOff, UserX, Brain, User,
   AlertCircle, CheckCircle, Camera, ArrowLeft, Shuffle, Sparkles,
 } from 'lucide-react'
-import { useMood } from '../contexts/MoodContext'
 import { useAuth, validateSignup, validatePassword } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 import { AvatarDisplay, MinimalistAvatar, CreativeAvatar, FuturisticAvatar } from '../components/Avatar'
 
 const PRESETS = [
-  { id: 'avatar1', label: 'Minimalist', desc: 'I qetë', Component: MinimalistAvatar },
-  { id: 'avatar2', label: 'Kreativ',    desc: 'Ekspresiv', Component: CreativeAvatar },
-  { id: 'avatar3', label: 'Futuristik', desc: 'Modern',  Component: FuturisticAvatar },
+  { id: 'avatar1', label: 'Minimalist', Component: MinimalistAvatar },
+  { id: 'avatar2', label: 'Kreativ',    Component: CreativeAvatar   },
+  { id: 'avatar3', label: 'Futuristik', Component: FuturisticAvatar },
 ]
+
+// Stable starfield — not random on every render
+const STARS = Array.from({ length: 90 }, (_, i) => ({
+  id: i,
+  x: (i * 137.508) % 100,
+  y: (i * 97.333)  % 100,
+  size: (i % 3) === 0 ? 2 : 1,
+  delay:    (i * 0.37)  % 5,
+  duration: 2 + (i % 4),
+  opacity:  0.08 + (i % 6) * 0.04,
+}))
+
+/* ── Small components ─────────────────────────────────────────────────────── */
 
 function FieldError({ msg }) {
   if (!msg) return null
@@ -28,25 +40,33 @@ function PasswordStrength({ password }) {
   if (!password) return null
   const errors = validatePassword(password)
   const score  = 3 - errors.length
-  const colors = ['bg-red-500', 'bg-orange-400', 'bg-yellow-400', 'bg-emerald-400']
+  const bars   = ['bg-red-500', 'bg-orange-400', 'bg-yellow-400', 'bg-emerald-500']
   const labels = ['Shumë i dobët', 'I dobët', 'I mesëm', 'I fortë']
-  const textCol= ['text-red-400', 'text-orange-400', 'text-yellow-400', 'text-emerald-400']
+  const texts  = ['text-red-400', 'text-orange-400', 'text-yellow-400', 'text-emerald-400']
   return (
     <div className="mt-2">
       <div className="flex gap-1 mb-1">
         {[0,1,2].map(i => (
-          <div key={i} className={`h-0.5 flex-1 rounded-full transition-all duration-300 ${i < score ? colors[score] : 'bg-white/10'}`} />
+          <div key={i} className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${i < score ? bars[score] : 'bg-white/10'}`} />
         ))}
       </div>
-      <p className={`text-[10px] font-semibold ${textCol[score]}`}>{labels[score]}</p>
+      <p className={`text-[10px] font-semibold ${texts[score]}`}>{labels[score]}</p>
     </div>
   )
 }
 
-/* ─── Google SVG ─────────────────────────────────────── */
+function ErrorBanner({ msg }) {
+  return (
+    <div className="flex items-center gap-2.5 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 mb-4">
+      <AlertCircle size={14} className="text-red-400 shrink-0" />
+      <p className="text-sm text-red-300 font-medium leading-snug">{msg}</p>
+    </div>
+  )
+}
+
 function GoogleIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 48 48">
+    <svg width="18" height="18" viewBox="0 0 48 48">
       <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
       <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
       <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -55,33 +75,39 @@ function GoogleIcon() {
   )
 }
 
+/* ── Main component ───────────────────────────────────────────────────────── */
+
 export default function Auth() {
   const navigate  = useNavigate()
   const location  = useLocation()
-  const { theme } = useMood()
   const { login, signup, goAnonymous, resetPassword, user, loading: authLoading } = useAuth()
 
-  const [tab, setTab]           = useState('login')
-  const [step, setStep]         = useState('form')
-  const [showPass, setShow]     = useState(false)
-  const [showConfirm, setShowC] = useState(false)
-  const [loading, setLoad]      = useState(false)
-  const [serverErr, setServErr] = useState('')
-  const [cooldown, setCooldown] = useState(0)
+  const [tab,        setTab]       = useState('login')
+  const [step,       setStep]      = useState('form')
+  const [showPass,   setShow]      = useState(false)
+  const [showConf,   setShowC]     = useState(false)
+  const [loading,    setLoad]      = useState(false)
+  const [serverErr,  setServErr]   = useState('')
+  const [cooldown,   setCooldown]  = useState(0)
 
   const loginAttempts = useRef({ count: 0, windowStart: 0 })
   const cooldownTimer = useRef(null)
 
-  const [form, setForm]     = useState({ email: '', password: '', confirmPassword: '', username: '' })
-  const [errors, setErrors] = useState({})
+  const [form, setForm]           = useState({ email: '', password: '', confirmPassword: '', username: '' })
+  const [errors, setErrors]       = useState({})
+  const [avatar, setAvatar]       = useState('avatar1')
+  const [photoUrl, setPhotoUrl]   = useState(null)
+  const fileRef                   = useRef(null)
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetSent, setResetSent]   = useState(false)
+  const [newPass, setNewPass]       = useState('')
+  const [newPassConf, setNewPassConf] = useState('')
 
-  const [avatar,      setAvatar]     = useState('avatar1')
-  const [photoUrl,    setPhotoUrl]   = useState(null)
-  const fileRef                      = useRef(null)
-  const [resetEmail,  setResetEmail] = useState('')
-  const [resetSent,   setResetSent]  = useState(false)
-  const [newPass,     setNewPass]    = useState('')
-  const [newPassConf, setNewPassConf]= useState('')
+  // Restore last used email
+  useEffect(() => {
+    const saved = localStorage.getItem('ns_last_email')
+    if (saved) setForm(f => ({ ...f, email: saved }))
+  }, [])
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
@@ -90,19 +116,14 @@ export default function Auth() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // After Google OAuth redirect (?oauth=google), wait for auth to load then
-  // navigate based on role — admin → panel, everyone else → /home
+  // Google OAuth redirect handling
   const isOAuthRedirect = new URLSearchParams(location.search).get('oauth') === 'google'
   useEffect(() => {
-    if (!isOAuthRedirect) return
-    if (authLoading) return
-    if (!user) return
-    if (user.role === 'admin') {
-      navigate('/ns-secure-7381/', { replace: true })
-    } else {
-      navigate('/home', { replace: true })
-    }
+    if (!isOAuthRedirect || authLoading || !user) return
+    navigate(user.role === 'admin' ? '/ns-secure-7381/' : '/home', { replace: true })
   }, [isOAuthRedirect, authLoading, user, navigate])
+
+  /* ── Handlers ─────────────────────────────────────────────────────────── */
 
   async function handleGoogleLogin() {
     setLoad(true)
@@ -110,7 +131,7 @@ export default function Auth() {
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/auth?oauth=google` },
     })
-    if (error) { setServErr(error.message); setLoad(false) }
+    if (error) { setServErr('Kyçja me Google dështoi. Provo sërish.'); setLoad(false) }
   }
 
   async function handleNewPassword(e) {
@@ -121,9 +142,8 @@ export default function Auth() {
     setLoad(true)
     const { error } = await supabase.auth.updateUser({ password: newPass })
     setLoad(false)
-    if (error) { setServErr(error.message); return }
-    if (user?.role === 'admin') navigate('/ns-secure-7381/', { replace: true })
-    else navigate('/home', { replace: true })
+    if (error) { setServErr('Gabim gjatë ndryshimit. Provo sërish.'); return }
+    navigate(user?.role === 'admin' ? '/ns-secure-7381/' : '/home', { replace: true })
   }
 
   function field(key, val) {
@@ -133,8 +153,7 @@ export default function Auth() {
   }
 
   function handlePhotoUpload(e) {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0]; if (!file) return
     const reader = new FileReader()
     reader.onload = ev => { setPhotoUrl(ev.target.result); setAvatar(null) }
     reader.readAsDataURL(file)
@@ -142,8 +161,7 @@ export default function Auth() {
 
   function handleAutoGenerate() {
     const picks = ['avatar1', 'avatar2', 'avatar3']
-    setAvatar(picks[Math.floor(Math.random() * picks.length)])
-    setPhotoUrl(null)
+    setAvatar(picks[Math.floor(Math.random() * picks.length)]); setPhotoUrl(null)
   }
 
   function handleSignup(e) {
@@ -155,18 +173,17 @@ export default function Auth() {
 
   async function handleFinish() {
     setLoad(true)
-    const finalAvatar = photoUrl || avatar || 'avatar1'
-    const res = await signup({ email: form.email, password: form.password, username: form.username, avatar: finalAvatar })
+    const res = await signup({ email: form.email, password: form.password, username: form.username, avatar: photoUrl || avatar || 'avatar1' })
     setLoad(false)
-    if (!res.success) { setStep('form'); setServErr(res.error || 'Gabim gjatë regjistrimit'); return }
-    if (res.requiresConfirmation) { setServErr(''); setStep('confirm'); return }
+    if (!res.success) { setStep('form'); setServErr(res.error || 'Gabim gjatë regjistrimit. Provo sërish.'); return }
+    if (res.requiresConfirmation) { setStep('confirm'); return }
+    localStorage.setItem('ns_last_email', form.email)
     const from = location.state?.from?.pathname
     navigate(from && from !== '/auth' ? from : '/home', { replace: true })
   }
 
   function startCooldown(seconds) {
-    setCooldown(seconds)
-    clearInterval(cooldownTimer.current)
+    setCooldown(seconds); clearInterval(cooldownTimer.current)
     cooldownTimer.current = setInterval(() => {
       setCooldown(s => { if (s <= 1) { clearInterval(cooldownTimer.current); return 0 } return s - 1 })
     }, 1000)
@@ -179,31 +196,34 @@ export default function Auth() {
     if (!form.email)    errs.email    = 'Email është i detyrueshëm'
     if (!form.password) errs.password = 'Fjalëkalimi është i detyrueshëm'
     if (Object.keys(errs).length) { setErrors(errs); return }
-    const now = Date.now()
-    const att = loginAttempts.current
+
+    const now = Date.now(), att = loginAttempts.current
     if (now - att.windowStart > 3 * 60 * 1000) { att.count = 0; att.windowStart = now }
     if (att.count >= 5) {
       const wait = Math.ceil((att.windowStart + 3 * 60 * 1000 - now) / 1000)
       setServErr(`Shumë tentativa. Provo pas ${wait} sekondash.`)
       startCooldown(wait); return
     }
+
     setLoad(true)
     const res = await login({ email: form.email, password: form.password })
     setLoad(false)
+
     if (!res.success) {
       att.count++
       if (att.count >= 5) { att.windowStart = Date.now(); setServErr('5 tentativa dështuan. Provo pas 3 minutash.'); startCooldown(180) }
       else setServErr(res.error)
       return
     }
+
     loginAttempts.current = { count: 0, windowStart: 0 }
-    if (res.user?.role === 'admin') navigate('/ns-secure-7381/', { replace: true })
-    else { const from = location.state?.from?.pathname; navigate(from && from !== '/auth' ? from : '/home', { replace: true }) }
+    localStorage.setItem('ns_last_email', form.email)
+    const from = location.state?.from?.pathname
+    navigate(res.user?.role === 'admin' ? '/ns-secure-7381/' : (from && from !== '/auth' ? from : '/home'), { replace: true })
   }
 
   async function handleReset(e) {
-    e.preventDefault()
-    if (!resetEmail) return
+    e.preventDefault(); if (!resetEmail) return
     setLoad(true)
     const res = await resetPassword(resetEmail)
     setLoad(false)
@@ -212,440 +232,401 @@ export default function Auth() {
   }
 
   async function handleAnonymous() {
-    setLoad(true)
-    const res = await goAnonymous()
-    setLoad(false)
-    if (res?.success) navigate('/home', { replace: true })
-    else navigate('/', { replace: true })
+    setLoad(true); const res = await goAnonymous(); setLoad(false)
+    navigate(res?.success ? '/home' : '/', { replace: true })
   }
 
   function switchTab(t) {
     setTab(t); setErrors({}); setServErr('')
-    setForm({ email: '', password: '', confirmPassword: '', username: '' })
+    setForm(f => ({ ...f, password: '', confirmPassword: '', username: '' }))
     setStep('form')
   }
 
-  const selectedPreset = avatar && !photoUrl ? avatar : null
-
-  /* ─── Shared input class ──────────────────────────────── */
   const inp = (hasError) =>
-    `w-full bg-white/5 border rounded-xl px-4 py-3 pr-11 text-sm text-white placeholder-white/25
+    `w-full bg-white/[0.06] border rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/20
      focus:outline-none transition-all duration-200
-     ${hasError ? 'border-red-500/50 focus:border-red-400' : 'border-white/10 focus:border-violet-500/60 focus:bg-white/8'}`
+     ${hasError ? 'border-red-500/50 focus:border-red-400/70' : 'border-white/[0.08] focus:border-violet-500/55 focus:bg-white/[0.09]'}`
+
+  const selectedPreset = avatar && !photoUrl ? avatar : null
+  const btnGrad = { background: 'linear-gradient(135deg,#7c3aed,#3b82f6)', boxShadow: '0 8px 40px rgba(124,58,237,0.50)' }
+
+  /* ── Render ───────────────────────────────────────────────────────────── */
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{ background: 'linear-gradient(160deg,#030711 0%,#0e0525 50%,#030711 100%)' }}>
+      style={{ background: 'linear-gradient(160deg,#020409 0%,#08021a 45%,#050112 75%,#020409 100%)' }}>
 
-      {/* ── Background orbs ── */}
+      {/* ── CSS keyframes ── */}
+      <style>{`
+        @keyframes nf1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(45px,-35px) scale(1.06)} 66%{transform:translate(-25px,25px) scale(0.96)} }
+        @keyframes nf2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-55px,35px) scale(1.05)} 66%{transform:translate(35px,-25px) scale(0.95)} }
+        @keyframes nf3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(35px,45px) scale(1.07)} }
+        @keyframes nf4 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-40px) scale(1.04)} }
+        @keyframes twinkle { 0%,100%{opacity:var(--op)} 50%{opacity:calc(var(--op) * 3)} }
+        @keyframes cardglow { 0%,100%{box-shadow:0 0 50px rgba(124,58,237,0.12),0 30px 70px rgba(0,0,0,0.55)} 50%{box-shadow:0 0 80px rgba(124,58,237,0.22),0 30px 70px rgba(0,0,0,0.55)} }
+        @keyframes logopulse { 0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.5),0 8px 32px rgba(124,58,237,0.4)} 50%{box-shadow:0 0 0 10px rgba(124,58,237,0),0 8px 32px rgba(124,58,237,0.6)} }
+        @keyframes slidein { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+      `}</style>
+
+      {/* ── Nebula orbs ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-20%] left-[-12%] w-[650px] h-[650px] rounded-full opacity-[0.28] blur-[140px]"
+          style={{ background:'radial-gradient(circle,#7c3aed,transparent 70%)', animation:'nf1 30s ease-in-out infinite' }} />
+        <div className="absolute bottom-[-22%] right-[-15%] w-[550px] h-[550px] rounded-full opacity-[0.22] blur-[130px]"
+          style={{ background:'radial-gradient(circle,#3b82f6,transparent 70%)', animation:'nf2 38s ease-in-out infinite' }} />
+        <div className="absolute top-[35%] right-[18%] w-[320px] h-[320px] rounded-full opacity-[0.14] blur-[110px]"
+          style={{ background:'radial-gradient(circle,#ec4899,transparent 70%)', animation:'nf3 24s ease-in-out infinite' }} />
+        <div className="absolute top-[15%] left-[25%] w-[280px] h-[280px] rounded-full opacity-[0.11] blur-[100px]"
+          style={{ background:'radial-gradient(circle,#06b6d4,transparent 70%)', animation:'nf4 44s ease-in-out infinite' }} />
+      </div>
+
+      {/* ── Starfield ── */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-20 blur-[120px]"
-          style={{ background: `radial-gradient(circle, ${theme.start}, transparent)` }} />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] rounded-full opacity-15 blur-[100px]"
-          style={{ background: `radial-gradient(circle, ${theme.end}, transparent)` }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-5 blur-[150px]"
-          style={{ background: 'radial-gradient(circle, #7c3aed, transparent)' }} />
-        {/* Stars */}
-        {[...Array(30)].map((_, i) => (
-          <div key={i}
-            className="absolute rounded-full bg-white animate-pulse"
+        {STARS.map(s => (
+          <div key={s.id} className="absolute rounded-full bg-white"
             style={{
-              width: Math.random() * 2 + 1 + 'px',
-              height: Math.random() * 2 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              opacity: Math.random() * 0.5 + 0.1,
-              animationDelay: Math.random() * 3 + 's',
-              animationDuration: Math.random() * 3 + 2 + 's',
+              '--op': s.opacity,
+              width: s.size + 'px', height: s.size + 'px',
+              top: s.y + '%', left: s.x + '%',
+              opacity: s.opacity,
+              animation: `twinkle ${s.duration}s ${s.delay}s ease-in-out infinite`,
             }} />
         ))}
       </div>
 
-      {/* ── Main container ── */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-8 flex items-center gap-8">
+      {/* ── Card ── */}
+      <div className="relative z-10 w-full max-w-[415px] mx-auto px-4 py-10"
+        style={{ animation: 'slidein 0.45s ease-out' }}>
 
-        {/* ── Left branding (desktop) ── */}
-        <div className="hidden lg:flex flex-col justify-center flex-1 pr-8">
+        <div className="rounded-3xl border border-white/[0.07] px-8 py-9"
+          style={{ background:'rgba(255,255,255,0.033)', backdropFilter:'blur(36px)', animation:'cardglow 7s ease-in-out infinite' }}>
+
           {/* Logo */}
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/30"
-              style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
-              <Brain size={24} color="white" strokeWidth={1.8} />
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-[60px] h-[60px] rounded-[18px] flex items-center justify-center mb-3"
+              style={{ background:'linear-gradient(135deg,#7c3aed,#3b82f6)', animation:'logopulse 3.5s ease-in-out infinite' }}>
+              <Brain size={28} color="white" strokeWidth={1.7} />
             </div>
-            <div>
-              <h1 className="text-xl font-black text-white tracking-tight">NeuroSphera</h1>
-              <p className="text-[11px] text-white/40 font-medium">Mirëqenia Mendore</p>
-            </div>
+            <h1 className="text-[19px] font-black text-white tracking-tight">NeuroSphera</h1>
+            <p className="text-[11px] text-white/30 font-medium mt-0.5">Mirëqenia Mendore</p>
           </div>
 
-          <h2 className="text-4xl font-black text-white leading-tight mb-4">
-            Kujdesi për mendjen<br />
-            <span className="bg-clip-text text-transparent"
-              style={{ backgroundImage: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
-              fillon këtu.
-            </span>
-          </h2>
-          <p className="text-white/40 text-sm leading-relaxed mb-10 max-w-xs">
-            Platforma e parë shqiptare e mirëqenies mendore — e ndërtuar mbi shkencë, e krijuar për ty.
-          </p>
+          {/* ════ AVATAR STEP ════ */}
+          {step === 'avatar' ? (
+            <div>
+              <button onClick={() => setStep('form')}
+                className="flex items-center gap-1.5 text-white/35 text-xs font-semibold hover:text-white/65 mb-5 transition-colors">
+                <ArrowLeft size={13} /> Kthehu
+              </button>
+              <h2 className="text-lg font-black text-white mb-1">Zgjidh pamjen tënde</h2>
+              <p className="text-white/35 text-sm mb-5">Personalizoni profilin tuaj</p>
 
-          {/* Features */}
-          <div className="space-y-3">
-            {[
-              { icon: Brain,   text: 'NeuroAI të gjen ekspertin e duhur',  sub: 'Udhëzim i personalizuar' },
-              { icon: Shield,  text: 'Hapësirë plotësisht private',        sub: 'E koduar nga fundi në fund' },
-              { icon: Zap,     text: 'Teknika të vërtetuara shkencërisht', sub: 'Bazuar në kërkime klinike' },
-            ].map(({ icon: Icon, text, sub }) => (
-              <div key={text} className="flex items-center gap-3 group">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
-                  style={{ background: `linear-gradient(135deg, ${theme.start}22, ${theme.end}22)`, border: `1px solid ${theme.start}33` }}>
-                  <Icon size={15} style={{ color: theme.start }} strokeWidth={2} />
+              <div className="flex flex-col items-center mb-5">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden mb-2"
+                  style={{ background:'rgba(255,255,255,0.05)', boxShadow:'0 0 0 2px rgba(124,58,237,0.4)' }}>
+                  <AvatarDisplay avatar={photoUrl || avatar || 'avatar1'} size={80} />
+                </div>
+              </div>
+
+              <label htmlFor="photo-upload"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-white/35 text-sm font-semibold cursor-pointer hover:border-violet-500/40 hover:text-violet-400 transition-all mb-4">
+                <Camera size={14} /> Ngarko fotografinë
+                <input id="photo-upload" ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+              </label>
+
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {PRESETS.map(({ id, label, Component }) => (
+                  <button key={id} onClick={() => { setAvatar(id); setPhotoUrl(null) }}
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-200 ${
+                      selectedPreset === id ? 'border-violet-500/60 bg-violet-500/10' : 'border-white/5 bg-white/3 hover:border-white/15'
+                    }`}>
+                    <Component size={48} />
+                    <p className="text-[10px] font-bold text-white/55">{label}</p>
+                  </button>
+                ))}
+              </div>
+
+              <button onClick={handleAutoGenerate}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-white/8 text-white/35 text-sm font-semibold hover:border-white/18 hover:text-white/55 transition-all mb-4">
+                <Shuffle size={13} /> Gjenero rastësisht
+              </button>
+
+              <button onClick={handleFinish} disabled={loading}
+                className="w-full py-3.5 rounded-2xl text-white font-black text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 hover:opacity-90"
+                style={btnGrad}>
+                {loading
+                  ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Duke u krijuar...</>
+                  : <><Sparkles size={15} /> Krijo llogarinë</>}
+              </button>
+            </div>
+
+          /* ════ CONFIRM EMAIL ════ */
+          ) : step === 'confirm' ? (
+            <div className="text-center py-4">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 bg-violet-500/10 border border-violet-500/20">
+                <Mail size={28} className="text-violet-400" />
+              </div>
+              <h2 className="text-xl font-black text-white mb-2">Konfirmo emailin</h2>
+              <p className="text-white/40 text-sm leading-relaxed mb-6">
+                Dërguam një lidhje tek<br />
+                <strong className="text-white/70">{form.email}</strong>
+              </p>
+              <button onClick={() => switchTab('login')}
+                className="w-full py-3.5 rounded-2xl text-white font-black text-sm hover:opacity-90 transition-all"
+                style={btnGrad}>
+                Kthehu te hyrja
+              </button>
+              <p className="text-xs text-white/20 mt-3">Nuk e gjeni? Kontrolloni dosjen spam.</p>
+            </div>
+
+          /* ════ NEW PASSWORD ════ */
+          ) : step === 'newpass' ? (
+            <div>
+              <h2 className="text-xl font-black text-white mb-1">Fjalëkalim i ri</h2>
+              <p className="text-white/35 text-sm mb-5">Vendos fjalëkalimin tënd të ri.</p>
+              {serverErr && <ErrorBanner msg={serverErr} />}
+              <form onSubmit={handleNewPassword} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-semibold text-white/35 mb-1.5">Fjalëkalimi i ri</label>
+                  <div className="relative">
+                    <input type={showPass ? 'text' : 'password'} value={newPass}
+                      onChange={e => { setNewPass(e.target.value); setErrors({}) }}
+                      placeholder="••••••••" autoFocus className={inp(errors.newPass)} />
+                    <button type="button" onClick={() => setShow(s => !s)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/55 transition-colors">
+                      {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                  </div>
+                  <FieldError msg={errors.newPass} />
+                  <PasswordStrength password={newPass} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white/80">{text}</p>
-                  <p className="text-[11px] text-white/30">{sub}</p>
+                  <label className="block text-[11px] font-semibold text-white/35 mb-1.5">Konfirmo</label>
+                  <div className="relative">
+                    <input type={showConf ? 'text' : 'password'} value={newPassConf}
+                      onChange={e => { setNewPassConf(e.target.value); setErrors({}) }}
+                      placeholder="••••••••" className={inp(false)} />
+                    <button type="button" onClick={() => setShowC(s => !s)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/55 transition-colors">
+                      {showConf ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-
-        {/* ── Right: Auth card ── */}
-        <div className="w-full lg:w-[420px] shrink-0">
-          <div className="rounded-3xl border border-white/8 p-7 shadow-2xl shadow-black/50"
-            style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(24px)' }}>
-
-            {/* Mobile logo */}
-            <div className="lg:hidden flex items-center gap-3 mb-7">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
-                <Brain size={20} color="white" strokeWidth={1.8} />
-              </div>
-              <h1 className="text-lg font-black text-white">NeuroSphera</h1>
+                <button type="submit" disabled={loading || !newPass || !newPassConf}
+                  className="w-full py-3.5 rounded-2xl text-white font-black text-sm disabled:opacity-50 flex items-center justify-center gap-2 hover:opacity-90 transition-all"
+                  style={btnGrad}>
+                  {loading
+                    ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Duke ruajtur...</>
+                    : 'Ruaj fjalëkalimin'
+                  }
+                </button>
+              </form>
             </div>
 
-            {/* ═══ AVATAR STEP ═══ */}
-            {step === 'avatar' ? (
-              <div>
-                <button onClick={() => setStep('form')}
-                  className="flex items-center gap-1.5 text-white/40 text-xs font-semibold hover:text-white/70 mb-5 transition-colors">
-                  <ArrowLeft size={13} /> Kthehu
-                </button>
-                <h2 className="text-xl font-black text-white mb-1">Zgjidh pamjen tënde</h2>
-                <p className="text-white/40 text-sm mb-5">Personalizoni profilin tuaj</p>
+          /* ════ RESET PASSWORD ════ */
+          ) : step === 'reset' ? (
+            <div>
+              <button onClick={() => { setStep('form'); setResetSent(false); setServErr('') }}
+                className="flex items-center gap-1.5 text-white/35 text-xs font-semibold hover:text-white/65 mb-5 transition-colors">
+                <ArrowLeft size={13} /> Kthehu
+              </button>
+              <h2 className="text-xl font-black text-white mb-1">Rivendos fjalëkalimin</h2>
+              <p className="text-white/35 text-sm mb-5">Dërgo lidhjen e rivendosjes në email.</p>
 
-                <div className="flex flex-col items-center mb-5">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden shadow-lg mb-2 ring-2 ring-violet-500/30"
-                    style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <AvatarDisplay avatar={photoUrl || avatar || 'avatar1'} size={80} />
+              {resetSent ? (
+                <div className="flex flex-col items-center gap-3 py-6 text-center">
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                    <CheckCircle size={28} className="text-emerald-400" />
                   </div>
-                  <p className="text-[11px] text-white/30 font-semibold">
-                    {photoUrl ? 'Fotografia u ngarkua' : PRESETS.find(p => p.id === (avatar || 'avatar1'))?.label}
-                  </p>
-                </div>
-
-                <label htmlFor="photo-upload"
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-white/40 text-sm font-semibold cursor-pointer hover:border-violet-500/40 hover:text-violet-400 transition-all mb-4">
-                  <Camera size={14} /> Ngarko fotografinë tënde
-                  <input id="photo-upload" ref={fileRef} type="file" accept="image/*"
-                    className="hidden" onChange={handlePhotoUpload} />
-                </label>
-
-                <div className="grid grid-cols-3 gap-2 mb-3">
-                  {PRESETS.map(({ id, label, Component }) => (
-                    <button key={id} onClick={() => { setAvatar(id); setPhotoUrl(null) }}
-                      className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-200 ${
-                        selectedPreset === id
-                          ? 'border-violet-500/60 bg-violet-500/10'
-                          : 'border-white/5 bg-white/3 hover:border-white/15'
-                      }`}>
-                      <Component size={48} />
-                      <p className="text-[10px] font-bold text-white/60">{label}</p>
-                    </button>
-                  ))}
-                </div>
-
-                <button onClick={handleAutoGenerate}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-white/5 bg-white/3 text-white/40 text-sm font-semibold hover:border-white/15 hover:text-white/60 transition-all mb-4">
-                  <Shuffle size={13} /> Gjenero rastësisht
-                </button>
-
-                <button onClick={handleFinish} disabled={loading}
-                  className="w-full py-3.5 rounded-xl text-white font-black text-sm shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                  style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})`, boxShadow: `0 8px 32px ${theme.start}44` }}>
-                  {loading
-                    ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke u krijuar...</>
-                    : <><Sparkles size={15} /> Krijo llogarinë</>}
-                </button>
-              </div>
-
-            /* ═══ EMAIL CONFIRM ═══ */
-            ) : step === 'confirm' ? (
-              <div className="text-center py-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
-                  style={{ background: `linear-gradient(135deg, ${theme.start}22, ${theme.end}22)`, border: `1px solid ${theme.start}44` }}>
-                  <Mail size={28} style={{ color: theme.start }} />
-                </div>
-                <h2 className="text-xl font-black text-white mb-2">Konfirmo emailin</h2>
-                <p className="text-white/40 text-sm leading-relaxed mb-6">
-                  Dërguam një lidhje konfirmimi tek<br />
-                  <strong className="text-white/70">{form.email}</strong>
-                </p>
-                <button onClick={() => switchTab('login')}
-                  className="w-full py-3.5 rounded-xl text-white font-black text-sm"
-                  style={{ background: `linear-gradient(135deg,${theme.start},${theme.end})` }}>
-                  Kthehu te hyrja
-                </button>
-                <p className="text-xs text-white/25 mt-3">Nuk e gjeni? Kontrolloni dosjen e postës së padëshiruar.</p>
-              </div>
-
-            /* ═══ NEW PASSWORD ═══ */
-            ) : step === 'newpass' ? (
-              <div>
-                <h2 className="text-xl font-black text-white mb-1">Fjalëkalim i ri</h2>
-                <p className="text-white/40 text-sm mb-5">Vendos fjalëkalimin tënd të ri.</p>
-                {serverErr && <ErrorBanner msg={serverErr} />}
-                <form onSubmit={handleNewPassword} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-white/50 mb-1.5 ml-1">Fjalëkalimi i ri</label>
-                    <div className="relative">
-                      <input type={showPass ? 'text' : 'password'} value={newPass}
-                        onChange={e => { setNewPass(e.target.value); setErrors({}) }}
-                        placeholder="••••••••" autoFocus className={inp(errors.newPass)} />
-                      <button type="button" onClick={() => setShow(!showPass)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50">
-                        {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
-                      </button>
-                    </div>
-                    <FieldError msg={errors.newPass} />
-                    <PasswordStrength password={newPass} />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-white/50 mb-1.5 ml-1">Konfirmo</label>
-                    <div className="relative">
-                      <input type={showConfirm ? 'text' : 'password'} value={newPassConf}
-                        onChange={e => { setNewPassConf(e.target.value); setErrors({}) }}
-                        placeholder="••••••••" className={inp(false)} />
-                      <button type="button" onClick={() => setShowC(!showConfirm)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50">
-                        {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
-                      </button>
-                    </div>
-                  </div>
-                  <button type="submit" disabled={loading || !newPass || !newPassConf}
-                    className="w-full py-3.5 rounded-xl text-white font-black text-sm disabled:opacity-50 flex items-center justify-center gap-2"
-                    style={{ background: `linear-gradient(135deg,${theme.start},${theme.end})` }}>
-                    {loading ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke ruajtur...</> : 'Ruaj fjalëkalimin'}
-                  </button>
-                </form>
-              </div>
-
-            /* ═══ RESET PASSWORD ═══ */
-            ) : step === 'reset' ? (
-              <div>
-                <button onClick={() => { setStep('form'); setResetSent(false); setServErr('') }}
-                  className="flex items-center gap-1.5 text-white/40 text-xs font-semibold hover:text-white/70 mb-5 transition-colors">
-                  <ArrowLeft size={13} /> Kthehu
-                </button>
-                <h2 className="text-xl font-black text-white mb-1">Rivendosni fjalëkalimin</h2>
-                <p className="text-white/40 text-sm mb-5">Po dërgojmë udhëzime në adresën tuaj të emailit.</p>
-
-                {resetSent ? (
-                  <div className="flex flex-col items-center gap-3 py-6">
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                      <CheckCircle size={28} className="text-emerald-400" />
-                    </div>
-                    <p className="text-white font-bold">Emaili u dërgua!</p>
-                    <p className="text-white/40 text-sm text-center">Kontrolloni kutinë hyrëse dhe dosjen e postës së padëshiruar.</p>
-                    <button onClick={() => switchTab('login')} className="mt-2 text-sm font-bold text-violet-400 hover:text-violet-300">
-                      Kthehu te hyrja
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    {serverErr && <ErrorBanner msg={serverErr} />}
-                    <form onSubmit={handleReset} className="space-y-4">
-                      <div className="relative">
-                        <input type="email" value={resetEmail}
-                          onChange={e => { setResetEmail(e.target.value); setServErr('') }}
-                          placeholder="email@example.com" autoFocus className={inp(false)} />
-                        <Mail size={15} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20" />
-                      </div>
-                      <button type="submit" disabled={loading || !resetEmail}
-                        className="w-full py-3.5 rounded-xl text-white font-black text-sm disabled:opacity-50 flex items-center justify-center gap-2"
-                        style={{ background: `linear-gradient(135deg,${theme.start},${theme.end})` }}>
-                        {loading ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke dërguar...</> : 'Dërgo linkun'}
-                      </button>
-                    </form>
-                  </>
-                )}
-              </div>
-
-            /* ═══ MAIN FORM ═══ */
-            ) : (
-              <>
-                {/* Header + tab switch */}
-                <div className="flex items-start justify-between mb-7">
-                  <div>
-                    <h2 className="text-2xl font-black text-white mb-1">
-                      {tab === 'login' ? 'Mirë se vjen!' : 'Krijo llogarinë'}
-                    </h2>
-                    <p className="text-white/35 text-sm">
-                      {tab === 'login' ? 'Kyçu në hapësirën tënde' : 'Hap një kapitull të ri sot'}
-                    </p>
-                  </div>
-                  <button onClick={() => switchTab(tab === 'login' ? 'signup' : 'login')}
-                    className="shrink-0 mt-1 text-xs font-bold px-3 py-1.5 rounded-lg border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 transition-all">
-                    {tab === 'login' ? 'Regjistrohu' : 'Kyçu'}
+                  <p className="text-white font-bold">Emaili u dërgua!</p>
+                  <p className="text-white/35 text-sm">Kontrollo kutinë hyrëse dhe dosjen spam.</p>
+                  <button onClick={() => switchTab('login')}
+                    className="mt-2 text-sm font-bold text-violet-400 hover:text-violet-300 transition-colors">
+                    Kthehu te hyrja
                   </button>
                 </div>
-
-                {/* ── Google button ── */}
-                <button onClick={handleGoogleLogin} disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl border border-white/12 text-white text-sm font-semibold transition-all duration-200 mb-3 disabled:opacity-50 group"
-                  style={{ background: 'rgba(255,255,255,0.06)' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.10)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}>
-                  <GoogleIcon />
-                  {tab === 'login' ? 'Kyçu me Google' : 'Regjistrohu me Google'}
-                </button>
-
-                {/* Divider */}
-                <div className="flex items-center gap-3 my-4">
-                  <div className="flex-1 h-px bg-white/6" />
-                  <span className="text-[11px] text-white/20 font-medium tracking-wider uppercase">ose me adresë email</span>
-                  <div className="flex-1 h-px bg-white/6" />
-                </div>
-
-                {/* Error */}
-                {serverErr && <ErrorBanner msg={serverErr} />}
-
-                {/* Form */}
-                <form onSubmit={tab === 'login' ? handleLogin : handleSignup} className="space-y-3">
-
-                  {tab === 'signup' && (
-                    <div>
-                      <label className="block text-xs font-semibold text-white/30 mb-1.5 ml-0.5">
-                        Emri i përdoruesit <span className="text-white/15">(opsional)</span>
-                      </label>
-                      <div className="relative">
-                        <input type="text" value={form.username}
-                          onChange={e => field('username', e.target.value)}
-                          placeholder="username_yt"
-                          className={inp(errors.username)} />
-                        <User size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
-                      </div>
-                      <FieldError msg={errors.username} />
-                    </div>
-                  )}
-
-                  <div>
-                    <label className="block text-xs font-semibold text-white/30 mb-1.5 ml-0.5">Email</label>
+              ) : (
+                <>
+                  {serverErr && <ErrorBanner msg={serverErr} />}
+                  <form onSubmit={handleReset} className="space-y-4">
                     <div className="relative">
-                      <input type="email" value={form.email}
-                        onChange={e => field('email', e.target.value)}
-                        placeholder="email@example.com"
-                        className={inp(errors.email)} />
-                      {errors.email
-                        ? <AlertCircle size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-red-400" />
-                        : form.email && !errors.email
-                          ? <CheckCircle size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-400" />
-                          : <Mail size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
+                      <input type="email" value={resetEmail}
+                        onChange={e => { setResetEmail(e.target.value); setServErr('') }}
+                        placeholder="email@example.com" autoFocus className={inp(false)} />
+                      <Mail size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20" />
+                    </div>
+                    <button type="submit" disabled={loading || !resetEmail}
+                      className="w-full py-3.5 rounded-2xl text-white font-black text-sm disabled:opacity-50 flex items-center justify-center gap-2 hover:opacity-90 transition-all"
+                      style={btnGrad}>
+                      {loading
+                        ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Duke dërguar...</>
+                        : 'Dërgo linkun'
                       }
-                    </div>
-                    <FieldError msg={errors.email} />
-                  </div>
+                    </button>
+                  </form>
+                </>
+              )}
+            </div>
 
+          /* ════ MAIN FORM ════ */
+          ) : (
+            <>
+              {/* Sliding tab switcher */}
+              <div className="flex rounded-2xl p-1 mb-7 relative"
+                style={{ background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                <div className="absolute top-1 bottom-1 rounded-xl pointer-events-none transition-all duration-300 ease-out"
+                  style={{
+                    width: 'calc(50% - 4px)',
+                    left: tab === 'login' ? '4px' : 'calc(50%)',
+                    background: 'linear-gradient(135deg,rgba(124,58,237,0.45),rgba(59,130,246,0.35))',
+                    border: '1px solid rgba(167,139,250,0.22)',
+                  }} />
+                <button onClick={() => switchTab('login')}
+                  className={`flex-1 text-sm font-bold py-2.5 rounded-xl relative z-10 transition-colors duration-200 ${tab === 'login' ? 'text-white' : 'text-white/38 hover:text-white/65'}`}>
+                  Hyr
+                </button>
+                <button onClick={() => switchTab('signup')}
+                  className={`flex-1 text-sm font-bold py-2.5 rounded-xl relative z-10 transition-colors duration-200 ${tab === 'signup' ? 'text-white' : 'text-white/38 hover:text-white/65'}`}>
+                  Regjistrohu
+                </button>
+              </div>
+
+              {/* Heading */}
+              <div className="mb-6">
+                <h2 className="text-[22px] font-black text-white">
+                  {tab === 'login' ? 'Mirë se vjen!' : 'Fillo udhëtimin'}
+                </h2>
+                <p className="text-white/30 text-sm mt-0.5">
+                  {tab === 'login' ? 'Kyçu në hapësirën tënde mendore' : 'Hap një kapitull të ri sot'}
+                </p>
+              </div>
+
+              {/* Google button */}
+              <button onClick={handleGoogleLogin} disabled={loading}
+                className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl text-white/75 text-sm font-semibold transition-all duration-200 mb-4 disabled:opacity-50 hover:bg-white/[0.09] active:scale-[0.99]"
+                style={{ background:'rgba(255,255,255,0.065)', border:'1px solid rgba(255,255,255,0.09)' }}>
+                <GoogleIcon />
+                {tab === 'login' ? 'Kyçu me Google' : 'Regjistrohu me Google'}
+              </button>
+
+              {/* Divider */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px" style={{ background:'rgba(255,255,255,0.07)' }} />
+                <span className="text-[10px] text-white/18 font-semibold uppercase tracking-widest">ose</span>
+                <div className="flex-1 h-px" style={{ background:'rgba(255,255,255,0.07)' }} />
+              </div>
+
+              {serverErr && <ErrorBanner msg={serverErr} />}
+
+              {/* Form */}
+              <form onSubmit={tab === 'login' ? handleLogin : handleSignup} className="space-y-3">
+
+                {tab === 'signup' && (
                   <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-xs font-semibold text-white/30 ml-0.5">Fjalëkalimi</label>
-                      {tab === 'login' && (
-                        <button type="button"
-                          onClick={() => { setResetEmail(form.email); setResetSent(false); setServErr(''); setStep('reset') }}
-                          className="text-[11px] text-white/25 hover:text-violet-400 transition-colors">
-                          E harruat?
-                        </button>
-                      )}
-                    </div>
+                    <label className="block text-[11px] font-semibold text-white/32 mb-1.5">
+                      Emri <span className="text-white/15">(opsional)</span>
+                    </label>
                     <div className="relative">
-                      <input type={showPass ? 'text' : 'password'} value={form.password}
-                        onChange={e => field('password', e.target.value)}
-                        placeholder="••••••••"
-                        className={inp(errors.password)} />
-                      <button type="button" onClick={() => setShow(!showPass)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15 hover:text-white/50 transition-colors">
-                        {showPass ? <EyeOff size={14} /> : <Eye size={14} />}
-                      </button>
+                      <input type="text" value={form.username}
+                        onChange={e => field('username', e.target.value)}
+                        placeholder="username_yt" className={inp(errors.username)} />
+                      <User size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />
                     </div>
-                    <FieldError msg={errors.password} />
-                    {tab === 'signup' && <PasswordStrength password={form.password} />}
+                    <FieldError msg={errors.username} />
                   </div>
+                )}
 
-                  {tab === 'signup' && (
-                    <div>
-                      <label className="block text-xs font-semibold text-white/30 mb-1.5 ml-0.5">Konfirmo fjalëkalimin</label>
-                      <div className="relative">
-                        <input type={showConfirm ? 'text' : 'password'} value={form.confirmPassword}
-                          onChange={e => field('confirmPassword', e.target.value)}
-                          placeholder="••••••••"
-                          className={inp(errors.confirm)} />
-                        <button type="button" onClick={() => setShowC(!showConfirm)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15 hover:text-white/50">
-                          {showConfirm ? <EyeOff size={14} /> : <Eye size={14} />}
-                        </button>
-                      </div>
-                      {form.confirmPassword && form.password === form.confirmPassword && (
-                        <p className="flex items-center gap-1.5 text-xs text-emerald-400 mt-1.5 ml-1">
-                          <CheckCircle size={11} /> Fjalëkalimet përputhen
-                        </p>
-                      )}
-                      <FieldError msg={errors.confirm} />
-                    </div>
-                  )}
-
-                  <button type="submit" disabled={loading || cooldown > 0}
-                    className="w-full py-3.5 rounded-2xl text-white font-black text-sm shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 !mt-5"
-                    style={{
-                      background: cooldown > 0 ? 'rgba(255,255,255,0.08)' : `linear-gradient(135deg, ${theme.start}, ${theme.end})`,
-                      boxShadow: cooldown > 0 ? 'none' : `0 8px 32px ${theme.start}44`,
-                    }}>
-                    {loading
-                      ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Duke hyrë...</>
-                      : cooldown > 0
-                        ? `Provo pas ${cooldown}s`
-                        : tab === 'login' ? 'Kyçu me Email' : 'Regjistrohu me Email'
-                    }
-                  </button>
-                </form>
-
-                {/* Anonymous */}
-                <div className="mt-4">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="flex-1 h-px bg-white/8" />
-                    <span className="text-[11px] text-white/20 font-semibold">ose</span>
-                    <div className="flex-1 h-px bg-white/8" />
+                <div>
+                  <label className="block text-[11px] font-semibold text-white/32 mb-1.5">Email</label>
+                  <div className="relative">
+                    <input type="email" value={form.email}
+                      onChange={e => field('email', e.target.value)}
+                      placeholder="email@example.com" className={inp(errors.email)} />
+                    {errors.email
+                      ? <AlertCircle size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-red-400" />
+                      : form.email
+                        ? <CheckCircle size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-400" />
+                        : <Mail size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/15" />}
                   </div>
-                  <button onClick={handleAnonymous} disabled={loading}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/8 text-white/25 text-sm font-semibold hover:border-white/15 hover:text-white/40 transition-all disabled:opacity-50">
-                    <UserX size={14} /> Vazhdo pa llogari
-                  </button>
+                  <FieldError msg={errors.email} />
                 </div>
 
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-[11px] font-semibold text-white/32">Fjalëkalimi</label>
+                    {tab === 'login' && (
+                      <button type="button"
+                        onClick={() => { setResetEmail(form.email); setResetSent(false); setServErr(''); setStep('reset') }}
+                        className="text-[11px] text-white/22 hover:text-violet-400 transition-colors">
+                        E harruat?
+                      </button>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input type={showPass ? 'text' : 'password'} value={form.password}
+                      onChange={e => field('password', e.target.value)}
+                      placeholder="••••••••" className={inp(errors.password)} />
+                    <button type="button" onClick={() => setShow(s => !s)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/55 transition-colors">
+                      {showPass ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                  </div>
+                  <FieldError msg={errors.password} />
+                  {tab === 'signup' && <PasswordStrength password={form.password} />}
+                </div>
 
-function ErrorBanner({ msg }) {
-  return (
-    <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-4">
-      <AlertCircle size={14} className="text-red-400 shrink-0" />
-      <p className="text-sm text-red-400 font-medium">{msg}</p>
+                {tab === 'signup' && (
+                  <div>
+                    <label className="block text-[11px] font-semibold text-white/32 mb-1.5">Konfirmo fjalëkalimin</label>
+                    <div className="relative">
+                      <input type={showConf ? 'text' : 'password'} value={form.confirmPassword}
+                        onChange={e => field('confirmPassword', e.target.value)}
+                        placeholder="••••••••" className={inp(errors.confirm)} />
+                      <button type="button" onClick={() => setShowC(s => !s)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/55 transition-colors">
+                        {showConf ? <EyeOff size={14} /> : <Eye size={14} />}
+                      </button>
+                    </div>
+                    {form.confirmPassword && form.password === form.confirmPassword && (
+                      <p className="flex items-center gap-1.5 text-xs text-emerald-400 mt-1.5 ml-1">
+                        <CheckCircle size={11} /> Fjalëkalimet përputhen
+                      </p>
+                    )}
+                    <FieldError msg={errors.confirm} />
+                  </div>
+                )}
+
+                {/* Submit */}
+                <button type="submit" disabled={loading || cooldown > 0}
+                  className="w-full py-4 rounded-2xl text-white font-black text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 !mt-5 hover:opacity-90 active:scale-[0.99]"
+                  style={cooldown > 0
+                    ? { background:'rgba(255,255,255,0.08)' }
+                    : btnGrad
+                  }>
+                  {loading
+                    ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {tab === 'login' ? 'Duke hyrë...' : 'Duke vazhduar...'}</>
+                    : cooldown > 0
+                      ? `Provo pas ${cooldown}s`
+                      : tab === 'login' ? 'Kyçu' : 'Vazhdo →'
+                  }
+                </button>
+              </form>
+
+              {/* Anonymous */}
+              <div className="mt-5 pt-4" style={{ borderTop:'1px solid rgba(255,255,255,0.06)' }}>
+                <button onClick={handleAnonymous} disabled={loading}
+                  className="w-full flex items-center justify-center gap-2 py-2 text-white/22 text-xs font-semibold hover:text-white/42 transition-colors disabled:opacity-50">
+                  <UserX size={13} /> Vazhdo pa llogari
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
+        <p className="text-center text-white/12 text-xs mt-5 font-medium tracking-wide">
+          Platforma e parë shqiptare e mirëqenies mendore
+        </p>
+      </div>
     </div>
   )
 }
