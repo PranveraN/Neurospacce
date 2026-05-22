@@ -243,9 +243,9 @@ export default function Auth() {
   }
 
   const inp = (hasError) =>
-    `w-full bg-white/[0.06] border rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/20
+    `w-full bg-white/[0.13] border rounded-2xl px-4 py-3.5 text-sm text-white placeholder-white/30
      focus:outline-none transition-all duration-200
-     ${hasError ? 'border-red-500/50 focus:border-red-400/70' : 'border-white/[0.08] focus:border-violet-500/55 focus:bg-white/[0.09]'}`
+     ${hasError ? 'border-red-500/50 focus:border-red-400/70 focus:bg-white/[0.17]' : 'border-white/[0.14] focus:border-violet-500/70 focus:bg-white/[0.18]'}`
 
   const selectedPreset = avatar && !photoUrl ? avatar : null
   const btnGrad = { background: 'linear-gradient(135deg,#7c3aed,#3b82f6)', boxShadow: '0 8px 40px rgba(124,58,237,0.50)' }
