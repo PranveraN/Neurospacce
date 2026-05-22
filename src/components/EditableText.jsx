@@ -74,7 +74,7 @@ export default function EditableText({
     }
   }, [editing])
 
-  function startEdit() { if (editMode) setEditing(true) }
+  function startEdit(e) { if (editMode) { e?.stopPropagation(); setEditing(true) } }
 
   async function commit(raw) {
     const val = (raw ?? '').trim() || String(children)

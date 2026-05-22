@@ -574,7 +574,9 @@ function PersonalityRunner({ onResult, onBack }) {
         </div>
 
         {/* Question text */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 leading-snug">{q.text}</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 leading-snug">
+          <EditableText id={`pt_q_${q.id}`} as="span" multiline>{q.text}</EditableText>
+        </h2>
 
         {/* Options */}
         <div className="space-y-3 flex-1">
@@ -599,13 +601,11 @@ function PersonalityRunner({ onResult, onBack }) {
                 >
                   {OPTION_LABELS[idx]}
                 </span>
-                <span
-                  className={`font-medium text-sm ${
-                    isSelected ? 'text-violet-900' : 'text-gray-700'
-                  }`}
+                <EditableText id={`pt_opt_${q.id}_${idx}`} as="span"
+                  className={`font-medium text-sm ${isSelected ? 'text-violet-900' : 'text-gray-700'}`}
                 >
                   {opt.label}
-                </span>
+                </EditableText>
                 {isSelected && (
                   <CheckCircle size={18} className="ml-auto text-violet-600 shrink-0" />
                 )}
@@ -835,7 +835,9 @@ function CognitiveRunner({ onResult, onBack }) {
           </span>
         </div>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-4 leading-snug">{q.text}</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-4 leading-snug">
+          <EditableText id={`cog_q_${q.id}`} as="span" multiline>{q.text}</EditableText>
+        </h2>
 
         {/* Sequence display */}
         {q.display && (
@@ -879,7 +881,7 @@ function CognitiveRunner({ onResult, onBack }) {
                 <span className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${labelClass}`}>
                   {OPTION_LABELS[idx]}
                 </span>
-                <span className="font-medium text-sm text-gray-700">{opt}</span>
+                <EditableText id={`cog_opt_${q.id}_${idx}`} as="span" className="font-medium text-sm text-gray-700">{opt}</EditableText>
                 {revealed && isRight && <CheckCircle size={18} className="ml-auto text-green-500 shrink-0" />}
                 {revealed && isSelected && !isRight && <X size={18} className="ml-auto text-red-500 shrink-0" />}
               </button>
@@ -1230,7 +1232,9 @@ function IQRunner({ onResult, onBack }) {
           </span>
         </div>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-5 leading-snug">{q.text}</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-5 leading-snug">
+          <EditableText id={`iq_q_${q.id}`} as="span" multiline>{q.text}</EditableText>
+        </h2>
 
         <div className="space-y-3">
           {q.options.map((opt, idx) => {
@@ -1260,7 +1264,7 @@ function IQRunner({ onResult, onBack }) {
                 <span className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0 ${labelClass}`}>
                   {OPTION_LABELS[idx]}
                 </span>
-                <span className="font-medium text-sm text-gray-700">{opt}</span>
+                <EditableText id={`iq_opt_${q.id}_${idx}`} as="span" className="font-medium text-sm text-gray-700">{opt}</EditableText>
                 {revealed && isRight    && <CheckCircle size={18} className="ml-auto text-green-500 shrink-0" />}
                 {revealed && isSelected && !isRight && <X size={18} className="ml-auto text-red-500 shrink-0" />}
               </button>

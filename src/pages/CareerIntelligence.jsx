@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, ArrowLeft, CheckCircle, ChevronRight, Brain, Zap, Target, BarChart2, Star } from 'lucide-react'
 import { QUESTIONS, MODULES, DIMENSIONS, ARCHETYPES, CAREERS, scoreAssessment } from '../data/careerAssessment'
+import EditableText from '../components/EditableText'
 
 const BG   = 'linear-gradient(160deg,#030711 0%,#0e0525 55%,#030711 100%)'
 const TOTAL = QUESTIONS.length
@@ -58,19 +59,19 @@ function IntroScreen({ onStart }) {
         {/* badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-bold text-violet-300 uppercase tracking-widest"
           style={{background:'rgba(124,58,237,0.15)', border:'1px solid rgba(124,58,237,0.3)'}}>
-          <Brain size={12}/> NeuroSphera Inteligjenca e Karrierës
+          <Brain size={12}/> <EditableText id="career_badge" as="span">NeuroSphera Inteligjenca e Karrierës</EditableText>
         </div>
 
         <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-5">
-          Zbulo<br/>
+          <EditableText id="career_hero_line1" as="span">Zbulo</EditableText><br/>
           <span className="text-transparent bg-clip-text"
             style={{backgroundImage:'linear-gradient(135deg,#a78bfa,#60a5fa)'}}>
-            Arketipin tënd të Karrierës
+            <EditableText id="career_hero_line2" as="span">Arketipin tënd të Karrierës</EditableText>
           </span>
         </h1>
-        <p className="text-white/45 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+        <EditableText id="career_hero_desc" as="p" multiline className="text-white/45 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
           Vlerësim psikometrik që mat 15 dimensione kognitive — duke prodhuar NeuroScore™ tëndin, arketipin e karrierës dhe rekomandime karriere të përputhura me AI.
-        </p>
+        </EditableText>
 
         {/* stat pills */}
         <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -131,12 +132,13 @@ function QuestionScreen({ q, qIndex, answers, onAnswer, onNext, onBack }) {
           </div>
 
           {/* question */}
-          <h2 className="text-xl md:text-2xl font-bold text-white leading-snug mb-3 whitespace-pre-line">
-            {q.q}
+          <h2 className="text-xl md:text-2xl font-bold text-white leading-snug mb-3">
+            <EditableText id={`career_q_${q.id}`} as="span" multiline>{q.q}</EditableText>
           </h2>
           {q.n && (
             <p className="text-sm text-white/35 mb-6 flex items-start gap-2">
-              <span className="text-violet-400 font-bold shrink-0">→</span> {q.n}
+              <span className="text-violet-400 font-bold shrink-0">→</span>
+              <EditableText id={`career_q_${q.id}_note`} as="span">{q.n}</EditableText>
             </p>
           )}
 
@@ -159,10 +161,11 @@ function QuestionScreen({ q, qIndex, answers, onAnswer, onNext, onBack }) {
                         ? <CheckCircle size={13} className="text-white"/>
                         : <span className="text-[9px] font-black text-white/30">{opt.id.toUpperCase()}</span>}
                     </div>
-                    <p className="text-sm text-white/75 leading-relaxed group-hover:text-white/95 transition-colors"
+                    <EditableText id={`career_opt_${q.id}_${opt.id}`} as="p"
+                      className="text-sm text-white/75 leading-relaxed group-hover:text-white/95 transition-colors"
                       style={isSelected ? {color:'rgba(255,255,255,0.95)'} : {}}>
                       {opt.t}
-                    </p>
+                    </EditableText>
                   </div>
                 </button>
               )
