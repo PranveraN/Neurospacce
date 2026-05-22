@@ -134,7 +134,7 @@ export default function NeuroPulsePopup() {
 
             {/* Description */}
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Çdo ditë, NeuroPulse mëson prej teje — gjurmon humorin, adapton udhëzimet dhe ndihmon të rriturit gradualisht.
+              Mbështetja që meriton — çdo ditë, pa gjykim. NeuroPulse të ofron udhëzim të personalizuar, pikërisht kur ke nevojë.
             </p>
 
             {/* Feature list */}
