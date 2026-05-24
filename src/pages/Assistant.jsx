@@ -1307,6 +1307,233 @@ function WeeklyDietCard() {
   )
 }
 
+// ─── Exercise Mood Card ───────────────────────────────────────────────────────
+const EXERCISES = [
+  {
+    id: 1,
+    name: 'Ecje e shpejtë',
+    emoji: '🚶',
+    time: '20–30 min',
+    intensity: 'E ulët',
+    benefit: 'Serotonin ↑  Kortizol ↓',
+    benefitColor: '#34d399',
+    photo: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=640&h=300&fit=crop&auto=format',
+    steps: [
+      'Ec me ritëm të qëndrueshëm mesatar',
+      'Mbaj shpinën drejt, shikimet përpara',
+      'Frymëmarrje e thellë me hundë — nxjerr me gojë',
+      'Prefero park, natyrë ose rrugë të qetë',
+    ],
+    science: 'Ecja 20 min/ditë rrit serotonin me 30% dhe ul kortizolin (Sharma et al., 2006)',
+  },
+  {
+    id: 2,
+    name: 'Joga',
+    emoji: '🧘',
+    time: '15–25 min',
+    intensity: 'E ulët',
+    benefit: 'Ankth ↓  GABA ↑',
+    benefitColor: '#8b5cf6',
+    photo: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=640&h=300&fit=crop&auto=format',
+    steps: [
+      'Pozicioni i fëmijës — 2 min (relaksim i thellë)',
+      'Cat-Cow stretch — 10 lëvizje (shpina)',
+      'Warrior II — 5 frymëmarrje çdo anë',
+      'Shavasana — 5 min (integrimi)',
+    ],
+    science: 'Joga rrit GABA me 27% — po aq efektive sa ilaçet anxiolitike (Streeter et al., 2010)',
+  },
+  {
+    id: 3,
+    name: 'HIIT',
+    emoji: '⚡',
+    time: '12–15 min',
+    intensity: 'E lartë',
+    benefit: 'Dopaminë ↑  Endorfina ↑',
+    benefitColor: '#f43f5e',
+    photo: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=640&h=300&fit=crop&auto=format',
+    steps: [
+      '30 sek Squat Jumps → 15 sek pushim',
+      '30 sek Mountain Climbers → 15 sek pushim',
+      '30 sek Burpees → 15 sek pushim',
+      'Përsërit 4–5 herë — nxehë para & ftoh pas',
+    ],
+    science: 'HIIT rrit BDNF (faktori i rritjes neuronal) me 32% — "jogging for your brain" (Raichlen & Alexander, 2017)',
+  },
+  {
+    id: 4,
+    name: 'Vallëzim i lirë',
+    emoji: '💃',
+    time: '10–20 min',
+    intensity: 'Mesatare',
+    benefit: 'Dopaminë ↑  Izolim ↓',
+    benefitColor: '#f59e0b',
+    photo: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=640&h=300&fit=crop&auto=format',
+    steps: [
+      'Zgjidh muzikën që të bën të lumtur',
+      'Lëviz trupin spontanisht — mos gjyko',
+      'Fokusohu tek ritmi, jo tek forma',
+      'Mbyll sytë nëse ndihesh e/i lirë',
+    ],
+    science: 'Vallëzimi aktivizon reward circuits njëlloj si dashuria romantike (Brown et al., 2006 · NeuroImage)',
+  },
+  {
+    id: 5,
+    name: 'Stërvitje forcash',
+    emoji: '💪',
+    time: '25–35 min',
+    intensity: 'Mesatare-lartë',
+    benefit: 'Testosteron ↑  Vetëbesim ↑',
+    benefitColor: '#14b8a6',
+    photo: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=640&h=300&fit=crop&auto=format',
+    steps: [
+      '3×10 Push-ups (gjoks & krahë)',
+      '3×15 Squats me peshën e trupit',
+      '3×10 Dips (karikë ose karrige)',
+      '3×30 sek Plank (bark & brez)',
+    ],
+    science: 'Stërvitja e forcës ul simptomat depresive me 45% (Gordon et al., 2018 · JAMA Psychiatry)',
+  },
+  {
+    id: 6,
+    name: 'Frymëmarrje 4-7-8',
+    emoji: '🌬️',
+    time: '5–10 min',
+    intensity: 'Shumë e ulët',
+    benefit: 'Stresin ↓↓  Melatonin ↑',
+    benefitColor: '#3b82f6',
+    photo: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=640&h=300&fit=crop&auto=format',
+    steps: [
+      'Ul veten komod — mbyll sytë',
+      'Thith frymë me hundë — 4 sekonda',
+      'Mbaj frymën — 7 sekonda',
+      'Nxjerr ngadalë me gojë — 8 sekonda · Përsërit 4×',
+    ],
+    science: 'Teknika 4-7-8 aktivizon nervus vagus — ul frekuencën kardiake brenda 60 sekondave (Zaccaro et al., 2018)',
+  },
+]
+
+const INTENSITY_META = {
+  'E ulët':           { bg: 'rgba(52,211,153,0.12)',  color: '#34d399' },
+  'Mesatare':         { bg: 'rgba(245,158,11,0.12)',  color: '#f59e0b' },
+  'Mesatare-lartë':   { bg: 'rgba(20,184,166,0.12)',  color: '#14b8a6' },
+  'E lartë':          { bg: 'rgba(244,63,94,0.12)',   color: '#f43f5e' },
+  'Shumë e ulët':     { bg: 'rgba(59,130,246,0.12)',  color: '#3b82f6' },
+}
+
+function ExerciseMoodCard() {
+  const [sel, setSel] = useState(0)
+  const ex = EXERCISES[sel]
+  const im = INTENSITY_META[ex.intensity] || INTENSITY_META['Mesatare']
+
+  return (
+    <div className="rounded-3xl overflow-hidden flex flex-col" style={{
+      background: 'linear-gradient(160deg,#0e1a26 0%,#0a1520 60%,#070d18 100%)',
+      border: '1px solid rgba(59,130,246,0.18)',
+      boxShadow: '0 8px 40px rgba(59,130,246,0.12)',
+    }}>
+      {/* Header */}
+      <div className="relative px-5 pt-5 pb-4 overflow-hidden">
+        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
+          style={{ background: 'radial-gradient(circle,rgba(99,102,241,0.22),transparent 70%)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: 'linear-gradient(90deg,transparent,rgba(99,102,241,0.30),transparent)' }} />
+        <div className="relative flex items-start justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2.5 mb-1">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-lg shrink-0"
+                style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.20),rgba(59,130,246,0.15))', border: '1px solid rgba(99,102,241,0.25)' }}>
+                🏃
+              </div>
+              <div>
+                <p className="text-base font-black leading-tight" style={{ color: 'rgba(255,255,255,0.95)' }}>Ushtrime Mendore</p>
+                <p className="text-[10px] font-semibold" style={{ color: '#818cf8' }}>Lëvizje · Humor · Shëndet mendor</p>
+              </div>
+            </div>
+            <p className="text-[10px] mt-1 leading-relaxed" style={{ color: A.textMut }}>
+              Ushtrime të verifikuara shkencërisht që balancojnë dopaminën, serotonin &amp; kortizol
+            </p>
+          </div>
+          <div className="shrink-0 text-right">
+            <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: A.textMut }}>Nr</p>
+            <p className="text-2xl font-black leading-none" style={{ color: '#818cf8' }}>{sel + 1}</p>
+            <p className="text-[8px]" style={{ color: A.textMut }}>/ 6</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Exercise selector — horizontal pills */}
+      <div className="flex gap-1.5 px-4 py-2.5 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+        {EXERCISES.map((e, i) => (
+          <button key={e.id} onClick={() => setSel(i)}
+            className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[10px] font-black transition-all duration-200"
+            style={sel === i
+              ? { background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', color: 'white', boxShadow: '0 4px 14px rgba(79,70,229,0.40)', transform: 'scale(1.05)' }
+              : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: A.textMut }
+            }>
+            <span>{e.emoji}</span>
+            <span className="hidden sm:inline">{e.name}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Photo */}
+      <div className="relative mx-4 rounded-2xl overflow-hidden" style={{ height: 180 }}>
+        <img
+          src={ex.photo}
+          alt={ex.name}
+          className="w-full h-full object-cover transition-all duration-500"
+          style={{ filter: 'brightness(0.82) saturate(1.1)' }}
+        />
+        {/* Overlay gradient */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(7,13,24,0.85) 0%,transparent 55%)' }} />
+        {/* Bottom info overlay */}
+        <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
+          <div className="flex items-end justify-between gap-2">
+            <div>
+              <p className="text-lg font-black leading-tight text-white">{ex.emoji} {ex.name}</p>
+              <p className="text-xs font-semibold mt-0.5" style={{ color: ex.benefitColor }}>{ex.benefit}</p>
+            </div>
+            <div className="flex flex-col items-end gap-1 shrink-0">
+              <span className="text-[10px] font-black px-2.5 py-1 rounded-full text-white"
+                style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                ⏱ {ex.time}
+              </span>
+              <span className="text-[9px] font-black px-2 py-0.5 rounded-full"
+                style={{ background: im.bg, color: im.color, border: `1px solid ${im.color}30` }}>
+                {ex.intensity}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Steps */}
+      <div className="px-4 pt-3 pb-2">
+        <p className="text-[10px] font-black uppercase tracking-widest mb-2.5" style={{ color: '#818cf8' }}>Si e bëj</p>
+        <div className="space-y-2">
+          {ex.steps.map((step, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', fontSize: 9, fontWeight: 900, color: 'white' }}>
+                {i + 1}
+              </div>
+              <p className="text-[11px] leading-snug flex-1" style={{ color: 'rgba(255,255,255,0.80)' }}>{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Science note */}
+      <div className="mx-4 mb-4 mt-2 rounded-xl px-3 py-2.5 flex items-start gap-2"
+        style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.18)' }}>
+        <span className="text-[11px] shrink-0 mt-0.5">🔬</span>
+        <p className="text-[9px] leading-relaxed italic" style={{ color: 'rgba(255,255,255,0.38)' }}>{ex.science}</p>
+      </div>
+    </div>
+  )
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 const CENTER_TABS = [
   { id: 'calendar',   label: 'Kalendari',    icon: CalendarDays },
@@ -1339,8 +1566,9 @@ export default function Assistant() {
           <div className="flex gap-5 items-start">
 
             {/* ── LEFT ── */}
-            <div className="hidden lg:block w-72 shrink-0 sticky top-6">
+            <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6 max-h-[calc(100vh-5rem)] overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
               <LeftGreeting tasks={tasks} />
+              <CalendarView tasks={tasks} onAddTask={() => goTab('tasks')} />
             </div>
 
             {/* ── CENTER ── */}
@@ -1392,9 +1620,9 @@ export default function Assistant() {
               {/* Tab content */}
               <div>
                 {tab === 'calendar' && (
-                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4">
-                    <CalendarView tasks={tasks} onAddTask={() => goTab('tasks')} />
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                     <WeeklyDietCard />
+                    <ExerciseMoodCard />
                   </div>
                 )}
                 {tab === 'tasks'     && <TasksView     tasks={tasks}  setTasks={setTasks} />}
@@ -1405,6 +1633,11 @@ export default function Assistant() {
               {/* Mobile AI button */}
               <div className="lg:hidden">
                 <AISuggest tasks={tasks} routines={routines} />
+              </div>
+
+              {/* Mobile calendar (visible only on mobile) */}
+              <div className="lg:hidden">
+                <CalendarView tasks={tasks} onAddTask={() => goTab('tasks')} />
               </div>
 
               {/* Mobile right panels */}
