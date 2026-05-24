@@ -114,7 +114,6 @@ function PublicHeader() {
   const links = [
     { to: '/library',    label: 'NeuroArtikuj' },
     { to: '/brainboost', label: 'BrainBoost' },
-    { to: '/career',     label: 'Karriera IQ' },
     { to: '/psikologu',  label: 'Psikologu yt' },
     { to: '/tests',      label: 'Teste' },
     { to: '/parenting',  label: 'Familje' },

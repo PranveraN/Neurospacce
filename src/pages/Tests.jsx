@@ -407,6 +407,85 @@ function HubView({ onStart }) {
         </div>
       </div>
 
+      {/* ── Karriera IQ Featured Card ── */}
+      <div className="max-w-6xl mx-auto px-4 pb-4">
+        <div
+          className="relative rounded-3xl overflow-hidden cursor-pointer group"
+          onClick={() => navigate('/career')}
+          style={{ boxShadow: '0 8px 40px rgba(5,150,105,0.22), 0 2px 8px rgba(0,0,0,0.12)' }}
+        >
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg,#022c22 0%,#064e3b 45%,#065f46 100%)' }} />
+          <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full blur-[70px] pointer-events-none"
+            style={{ background: 'radial-gradient(circle,rgba(52,211,153,0.45),transparent 70%)' }} />
+          <div className="absolute bottom-0 left-1/4 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
+            style={{ background: 'radial-gradient(circle,rgba(16,185,129,0.30),transparent 70%)' }} />
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ backgroundImage: 'radial-gradient(circle,rgba(110,231,183,0.09) 1px,transparent 1px)', backgroundSize: '24px 24px' }} />
+          <div className="absolute inset-0 rounded-3xl pointer-events-none"
+            style={{ border: '1px solid rgba(110,231,183,0.18)' }} />
+          <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+            style={{ border: '1px solid rgba(110,231,183,0.45)' }} />
+
+          <div className="relative flex flex-col md:flex-row gap-0 p-7 md:p-8 items-start">
+            {/* Left */}
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0"
+                  style={{ background: 'rgba(5,150,105,0.35)', border: '1px solid rgba(110,231,183,0.30)' }}>
+                  💼
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-emerald-300 uppercase tracking-[0.15em]">Inteligjenca e Karrierës</p>
+                  <h2 className="text-2xl font-black text-white leading-tight">Karriera IQ</h2>
+                </div>
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed mb-5 max-w-md">
+                60 pyetje · 15 dimensione kognitive · 12 arketipe karriere · Zbulon stilin tënd të punës, vendimmarrjes dhe udhëheqjes.
+              </p>
+              <div className="flex gap-3 mb-5 flex-wrap">
+                {[
+                  { n: '60',  sub: 'Pyetje' },
+                  { n: '30',  sub: 'Minuta' },
+                  { n: '15',  sub: 'Dimensione' },
+                  { n: '12',  sub: 'Arketipe' },
+                ].map(s => (
+                  <div key={s.sub} className="rounded-xl px-3 py-2 text-center"
+                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <p className="text-base font-black text-emerald-300">{s.n}</p>
+                    <p className="text-[9px] font-bold text-white/30 uppercase tracking-wide">{s.sub}</p>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={e => { e.stopPropagation(); navigate('/career') }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold text-white hover:opacity-90 hover:-translate-y-0.5 active:scale-95 transition-all"
+                style={{ background: 'linear-gradient(135deg,#059669,#047857)', boxShadow: '0 4px 20px rgba(5,150,105,0.4)' }}
+              >
+                <TrendingUp size={15} /> Fillo Karriera IQ
+              </button>
+            </div>
+
+            {/* Right — module list (desktop only) */}
+            <div className="hidden md:flex flex-col justify-center w-48 shrink-0 gap-2 mt-1">
+              {[
+                { e: '🧠', l: 'Modelet Kognitive' },
+                { e: '♟',  l: 'Inteligjenca Strategjike' },
+                { e: '⚡', l: 'Stili i Punës' },
+                { e: '🎯', l: 'Udhëheqja' },
+                { e: '💡', l: 'Inovacioni' },
+              ].map(d => (
+                <div key={d.l} className="flex items-center gap-2 rounded-xl px-3 py-2"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <span className="text-sm">{d.e}</span>
+                  <span className="text-xs font-semibold text-white/50">{d.l}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── Classic Tests Grid ── */}
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex items-center gap-2 mb-5">

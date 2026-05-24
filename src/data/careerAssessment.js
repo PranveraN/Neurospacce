@@ -57,7 +57,7 @@ export const QUESTIONS = [
   },
   {
     id:3, module:'cognitive', type:'i shpejtë',
-    q:'Numëro shkronjën "N" në frazën e mëposhtme — ke 20 sekonda:\n"NONLINEAR INNOVATION ENGINE NETWORK"',
+    q:'Sa herë shfaqet shkronja "N" në frazën e mëposhtme? Ke 20 sekonda:\n"NONLINEAR INNOVATION ENGINE NETWORK"',
     n:'Saktësi nën presionin e kohës.',
     opts:[
       { id:'a', t:'7',  s:{focus_consistency:1, execution_speed:0} },
@@ -78,14 +78,14 @@ export const QUESTIONS = [
     ],
   },
   {
-    id:5, module:'cognitive', type:'zbritëse',
-    q:'Të gjitha kompanitë teknologjike janë agile. Disa kompani agile janë fitimprurëse. Prandaj:',
-    n:'Apliko logjikë të rreptë zbritëse — mos supuzo përtej asaj që thuhet.',
+    id:5, module:'cognitive', type:'deduktive',
+    q:'Të gjitha kompanitë teknologjike janë fleksibël. Disa kompani fleksibël janë fitimprurëse. Prandaj:',
+    n:'Apliko logjikë të rreptë deduktive — mos supuzo përtej asaj që thuhet.',
     opts:[
       { id:'a', t:'Të gjitha kompanitë teknologjike janë fitimprurëse',       s:{analytical_depth:0, systems_thinking:0} },
       { id:'b', t:'Asnjë kompani teknologjike nuk është fitimprurëse',        s:{analytical_depth:0, systems_thinking:0} },
       { id:'c', t:'Disa kompani teknologjike mund të jenë fitimprurëse',      s:{analytical_depth:5, systems_thinking:4}, c:true },
-      { id:'d', t:'Të gjitha kompanitë fitimprurëse janë agile',             s:{analytical_depth:1, systems_thinking:1} },
+      { id:'d', t:'Të gjitha kompanitë fitimprurëse janë fleksibël',          s:{analytical_depth:1, systems_thinking:1} },
     ],
   },
   {
@@ -94,7 +94,7 @@ export const QUESTIONS = [
     n:'Identifiko elementin struktural që nuk i përket.',
     opts:[
       { id:'a', t:'Iterim',       s:{pattern_recognition:1, analytical_depth:1} },
-      { id:'b', t:'Lak Reagimi',  s:{pattern_recognition:2, analytical_depth:2} },
+      { id:'b', t:'Lak i Reagimit', s:{pattern_recognition:2, analytical_depth:2} },
       { id:'c', t:'Rekursion',    s:{pattern_recognition:2, analytical_depth:2} },
       { id:'d', t:'Hierarki',     s:{pattern_recognition:5, analytical_depth:4}, c:true },
     ],
@@ -147,19 +147,19 @@ export const QUESTIONS = [
   /* ══ MODULI 2: INTELIGJENCA STRATEGJIKE (P11–18) ═══════════════════════════ */
   {
     id:11, module:'strategic', type:'skenar',
-    q:'Konkurenti yt kryesor sapo uli çmimet me 30% me një produkt pothuajse identik. Ke 6 javë të reagosh. Çfarë qasjeje mbështet?',
+    q:'Konkurenti yt kryesor sapo uli çmimet me 30% me një produkt pothuajse identik. Ke 6 javë të reagosh. Çfarë qasje zgjedh?',
     opts:[
       { id:'a', t:'Përshtat çmimin menjëherë — mbajtja e pjesës së tregut është prioriteti.',                                                          s:{execution_speed:4, risk_orientation:2, strategic_thinking:1} },
       { id:'b', t:'Lësh nivel premium dhe ricaktoji kategorinë — bëje krahasimin e çmimeve krejtësisht irelevant.',                                    s:{strategic_thinking:5, innovation_potential:4, risk_orientation:4} },
       { id:'c', t:'Kryej hulumtim të shpejtë me klientët për të kuptuar cilin segment rrezikon para çdo veprimi.',                                     s:{analytical_depth:5, systems_thinking:4, strategic_thinking:3} },
-      { id:'d', t:'Përshpejto planin e produktit për të dërguar veçori që rrisin varësinë brenda 90 ditëve.',                                         s:{execution_speed:5, strategic_thinking:3, leadership_drive:3} },
+      { id:'d', t:'Përshpejto planin e produktit për të nxjerrë funksionalitete që rrisin varësinë brenda 90 ditëve.',                               s:{execution_speed:5, strategic_thinking:3, leadership_drive:3} },
     ],
   },
   {
     id:12, module:'strategic', type:'skenar',
     q:'Duhet të shpërndarësh buxhet të kufizuar R&D midis katër iniciativave të mundshme. Si vendos?',
     opts:[
-      { id:'a', t:'Shpërndan barabartë — shmang politikën e brendshme dhe ruan opsionalitetin.',                                                      s:{systems_thinking:2, strategic_thinking:2, focus_consistency:2} },
+      { id:'a', t:'Shpërndaj barabartë — shmang politikën e brendshme dhe ruaj fleksibilitetin.',                                                     s:{systems_thinking:2, strategic_thinking:2, focus_consistency:2} },
       { id:'b', t:'Gjithçka tek iniciativa me potencialin më të lartë — përqendrimi mposht diversifikimin.',                                          s:{risk_orientation:5, innovation_potential:4, strategic_thinking:3} },
       { id:'c', t:'Ndërto model portfolio të kuantifikuar: ROI × harmonim strategjik × kohë deri tek vlera.',                                         s:{analytical_depth:5, systems_thinking:5, strategic_thinking:4} },
       { id:'d', t:'Financo iniciativën me rrugën më të shpejtë drejt validimit të tregut.',                                                           s:{execution_speed:5, risk_orientation:3, strategic_thinking:2} },
@@ -167,11 +167,11 @@ export const QUESTIONS = [
   },
   {
     id:13, module:'strategic', type:'skenar',
-    q:'Ke 18 muaj runway dhe mundësi reale për të hyrë në treg të ri të madh ngjitur. Si e qasesh hyrjen?',
+    q:'Ke 18 muaj rezervë financiare dhe mundësi reale për të hyrë në treg të ri të madh ngjitur. Si e qasesh hyrjen?',
     opts:[
       { id:'a', t:'Hulumtim i gjerë i tregut para çdo angazhimi — saktësia ka prioritet mbi shpejtësinë.',                                            s:{analytical_depth:5, focus_consistency:4, strategic_thinking:3} },
-      { id:'b', t:'Lësh MVP shpejt, valido me përdorues realë dhe itero mbi sinjalin — shpejtësia është strategjia.',                                 s:{risk_orientation:5, adaptability:4, innovation_potential:3} },
-      { id:'c', t:'Bli lojtar lokal për të kolapsuar kurbën e të mësuarit dhe shko direkt te shkalla.',                                               s:{strategic_thinking:5, leadership_drive:3, risk_orientation:4} },
+      { id:'b', t:'Lësh MVP shpejt, valido me përdorues realë dhe rregulloje sipas reagimeve — shpejtësia është strategjia.',                        s:{risk_orientation:5, adaptability:4, innovation_potential:3} },
+      { id:'c', t:'Bli lojtar lokal për të shkurtuar kurbën e të nxënit dhe shko direkt te shkalla.',                                                s:{strategic_thinking:5, leadership_drive:3, risk_orientation:4} },
       { id:'d', t:'Bashkëpuno me shpërndarës të vendosur — redukto rrezikun, ndaj avantazhin.',                                                       s:{social_intelligence:4, strategic_thinking:4, risk_orientation:2} },
     ],
   },
@@ -179,7 +179,7 @@ export const QUESTIONS = [
     id:14, module:'strategic', type:'skenar',
     q:'Teknologji kritike që ju nevojitet për shkallëzim është e disponueshme për blerje ose ndërtim të brendshëm. Si vendos?',
     opts:[
-      { id:'a', t:'Gjithmonë ndërto — kontrolli strategjik mbi infrastrukturën bazë është i pa-negociueshëm.',                                        s:{independent_solving:5, leadership_drive:4, risk_orientation:3} },
+      { id:'a', t:'Gjithmonë ndërto — kontrolli strategjik mbi infrastrukturën bazë është i panegociueshëm.',                                         s:{independent_solving:5, leadership_drive:4, risk_orientation:3} },
       { id:'b', t:'Gjithmonë bli — shpejtësia drejt tregut krijon më shumë vlerë se pronësia.',                                                       s:{execution_speed:5, risk_orientation:3, strategic_thinking:2} },
       { id:'c', t:'Varet tërësisht nga rëndësia strategjike, kostoja totale dhe fleksibiliteti i ardhshëm — modeloje.',                               s:{strategic_thinking:5, analytical_depth:5, systems_thinking:4} },
       { id:'d', t:'Bli për ta validuar, pastaj rindërtoje brendësisht ndërsa shkalla justifikon.',                                                    s:{strategic_thinking:4, systems_thinking:4, independent_solving:3} },
@@ -231,7 +231,7 @@ export const QUESTIONS = [
     id:19, module:'workstyle', type:'preferencë',
     q:'Sapo të është caktuar projekt kompleks 3-mujor. Cila është lëvizja jote e parë?',
     opts:[
-      { id:'a', t:'E zbërthen në hapa kryesore dhe hartoj grafikun e varësive të strukturuara.',                                                      s:{focus_consistency:5, systems_thinking:4, execution_speed:3} },
+      { id:'a', t:'E zbërthej në hapa kryesore dhe hartoj grafikun e varësive të strukturuara.',                                                      s:{focus_consistency:5, systems_thinking:4, execution_speed:3} },
       { id:'b', t:'Filloj me komponentin më të vështirë dhe më të paqartë — zgjidh pasigurinë para ndërtimit.',                                       s:{independent_solving:5, risk_orientation:3, adaptability:4} },
       { id:'c', t:'Hartoj të gjitha palët e interesuara dhe varësitë para se të prek ndonjë punë.',                                                   s:{systems_thinking:5, analytical_depth:4, strategic_thinking:3} },
       { id:'d', t:'Ndërtoj prototip të shpejtë të produktit kryesor për të zbuluar të panjohurat.',                                                   s:{innovation_potential:4, execution_speed:4, adaptability:3} },
@@ -303,7 +303,7 @@ export const QUESTIONS = [
     opts:[
       { id:'a', t:'Hulumtoj si industritë dhe fushat ngjitur e kanë zgjidhur version të ngjashëm të problemit.',                                     s:{analytical_depth:4, systems_thinking:4, pattern_recognition:4} },
       { id:'b', t:'Filloj nga parimet e para — zgjidhjet e jashtme mund të kodifikojnë supozimet e gabuara.',                                        s:{independent_solving:5, analytical_depth:5, innovation_potential:4} },
-      { id:'c', t:'Mblodh grupin më shumëllojshëm kognitiv të disponueshëm dhe punojmë bashkë.',                                                    s:{social_intelligence:5, leadership_drive:4, communication_precision:4} },
+      { id:'c', t:'Mbledh grupin më shumëllojshëm kognitiv të disponueshëm dhe punojmë bashkë.',                                                    s:{social_intelligence:5, leadership_drive:4, communication_precision:4} },
       { id:'d', t:'Ndërtoj eksperiment të shpejtë me kosto të ulët për të testuar hipotezën kryesore.',                                             s:{innovation_potential:5, risk_orientation:4, adaptability:4} },
     ],
   },
@@ -323,7 +323,7 @@ export const QUESTIONS = [
     id:28, module:'leadership', type:'skenar',
     q:'Dy nga performuesit më të lartë duan të drejtojnë të njëjtën iniciativë. Çfarë bën?',
     opts:[
-      { id:'a', t:'Jepjane atij kujt i nevojitet më shumë ky zhvillim karriere tani.',                                                               s:{social_intelligence:5, leadership_drive:5, emotional_stability:4} },
+      { id:'a', t:'Jepia atij kujt i nevojitet më shumë ky zhvillim karriere tani.',                                                                 s:{social_intelligence:5, leadership_drive:5, emotional_stability:4} },
       { id:'b', t:'Bëji të bashkëpunojnë mbi propozim të përbashkët dhe lëri udhëheqësin natyral të dalë.',                                          s:{social_intelligence:4, adaptability:4, leadership_drive:3} },
       { id:'c', t:'Cakto bazuar tërësisht mbi përputhshmërinë me projektin dhe aftësinë — ndjenjat janë dytësore.',                                  s:{analytical_depth:5, strategic_thinking:4, independent_solving:4} },
       { id:'d', t:'Krijo gjurmë pronësie të ndryshme brenda iniciativës që të dyja drejtojnë me kuptim real.',                                       s:{systems_thinking:5, leadership_drive:5, strategic_thinking:4} },
@@ -375,7 +375,7 @@ export const QUESTIONS = [
     opts:[
       { id:'a', t:'Ndërtoj protokoll formal të autoritetit të vendimeve dhe merr miratim para konfliktit tjetër.',                                    s:{systems_thinking:5, communication_precision:5, leadership_drive:4} },
       { id:'b', t:'Investo në marrëdhënien — fito besimin e tyre gradualisht deri sa shfuqizimet bëhen të panevojshme.',                             s:{social_intelligence:5, communication_precision:4, strategic_thinking:4} },
-      { id:'c', t:'Para-harmonizo çdo vendim të rëndësishëm me të dhëna — elimino surprizat plotësisht.',                                           s:{analytical_depth:5, strategic_thinking:4, communication_precision:5} },
+      { id:'c', t:'Harmonizoj paraprakisht çdo vendim të rëndësishëm me të dhëna — eliminoj surprizat plotësisht.',                                 s:{analytical_depth:5, strategic_thinking:4, communication_precision:5} },
       { id:'d', t:'Adresoje drejtpërdrejt — strukturat e paqarta të autoritetit gërryjnë performancën e ekipit.',                                    s:{leadership_drive:5, communication_precision:5, emotional_stability:4} },
     ],
   },
@@ -385,9 +385,9 @@ export const QUESTIONS = [
     id:34, module:'innovation', type:'skenar',
     q:'Duhet të zgjidhësh problem që nuk ka zgjidhje të njohur në industrinë tënde. Ku fillon?',
     opts:[
-      { id:'a', t:'Studion fusha dhe disiplina ngjitur ku problem analog është zgjidhur.',                                                            s:{pattern_recognition:5, analytical_depth:4, systems_thinking:4} },
+      { id:'a', t:'Studioj fusha dhe disiplina ngjitur ku problem analog është zgjidhur.',                                                            s:{pattern_recognition:5, analytical_depth:4, systems_thinking:4} },
       { id:'b', t:'Apliko kufizime ekstreme për të krijuar presion kreativ — nevoja krijon çfarë logjika nuk mund.',                                  s:{creative_intelligence:5, innovation_potential:5, risk_orientation:3} },
-      { id:'c', t:'Mblodh ekip me diversitet maksimal — zgjidhja jeton në ndërlëshimin kognitiv.',                                                   s:{social_intelligence:4, innovation_potential:4, leadership_drive:4} },
+      { id:'c', t:'Mbledh ekip me diversitet maksimal — zgjidhja jeton në ndërlëshimin kognitiv.',                                                   s:{social_intelligence:4, innovation_potential:4, leadership_drive:4} },
       { id:'d', t:'Puno mbrapsht nga rezultati ideal dhe hartoj çdo supozim midis këtu dhe atje.',                                                    s:{strategic_thinking:5, systems_thinking:4, analytical_depth:4} },
     ],
   },
@@ -416,7 +416,7 @@ export const QUESTIONS = [
     q:'Iniciativa jote më inovative dështon në validimin e tregut pas 6 muajsh punë. Si e përpunon?',
     opts:[
       { id:'a', t:'Kryej post-mortem rigoroz për të kuptuar saktësisht çfarë po thotë e dhëna.',                                                     s:{analytical_depth:5, focus_consistency:4, systems_thinking:4} },
-      { id:'b', t:'Itero shpejt mbi feedback-in — dështimi është pikë të dhënash me densitet të lartë, jo fund.',                                   s:{adaptability:5, risk_orientation:4, innovation_potential:4} },
+      { id:'b', t:'Rregulloj shpejt sipas reagimeve — dështimi është pikë të dhënash me densitet të lartë, jo fund.',                               s:{adaptability:5, risk_orientation:4, innovation_potential:4} },
       { id:'c', t:'Hiqe prapa dhe pyet nëse problemi meritonte zgjidhur fare.',                                                                      s:{strategic_thinking:5, analytical_depth:4, independent_solving:4} },
       { id:'d', t:'Pranoje koston, ekstrakto të mësuarit dhe ridrejtoje energjinë tek basti tjetër.',                                               s:{risk_orientation:4, adaptability:4, emotional_stability:4} },
     ],
@@ -435,7 +435,7 @@ export const QUESTIONS = [
     id:39, module:'innovation', type:'preferencë',
     q:'Si e qasesh pasigurinë e natyrshme të punës kreative?',
     opts:[
-      { id:'a', t:'Krijon strukturë — paqartësia është armiku i ekzekutimit dhe e eliminoj herët.',                                                  s:{focus_consistency:5, systems_thinking:4, execution_speed:4} },
+      { id:'a', t:'Krijoj strukturë — paqartësia është armiku i ekzekutimit dhe e eliminoj herët.',                                                  s:{focus_consistency:5, systems_thinking:4, execution_speed:4} },
       { id:'b', t:'E përqafoj — rezultatet më të mira dolën nga qëndrimi vërtetë i hapur ndaj pasigurisë.',                                         s:{adaptability:5, creative_intelligence:4, innovation_potential:4} },
       { id:'c', t:'E kufizoj me kohë — eksploro lirisht brenda dritares së përcaktuar, pastaj angazhohu.',                                          s:{strategic_thinking:5, focus_consistency:4, adaptability:4} },
       { id:'d', t:'Përdor kuadre për të kufizuar pasigurinë pa eliminuar hapësirën kreative.',                                                       s:{systems_thinking:5, analytical_depth:4, strategic_thinking:4} },
@@ -443,7 +443,7 @@ export const QUESTIONS = [
   },
   {
     id:40, module:'innovation', type:'skenar',
-    q:'Të jepet brief "blue-sky" i vërtetë: buxhet i pakufizuar, pa afat, pa kufizime. Çfarë bën fillimisht?',
+    q:'Të jepet briefing kreativ pa kufizime: buxhet i pakufizuar, pa afat, pa kufizime. Çfarë bën fillimisht?',
     opts:[
       { id:'a', t:'Vendo menjëherë kufizime vetjake — briefet e pakufizuara prodhojnë punë mediokre.',                                               s:{independent_solving:5, focus_consistency:4, analytical_depth:4} },
       { id:'b', t:'Mendo në shkallën më të madhe të imagjinueshme fillimisht, pastaj kalo tek fizibiliteti.',                                        s:{strategic_thinking:5, creative_intelligence:5, innovation_potential:4} },
@@ -455,9 +455,9 @@ export const QUESTIONS = [
   /* ══ MODULI 6: BASHKËPUNIMI & KOMUNIKIMI (P41–47) ══════════════════════════ */
   {
     id:41, module:'collaboration', type:'skenar',
-    q:'Po drejtosh iniciativë cross-functional ku palë kyçe kanë prioritete drejtpërdrejt konfliktuale. Si vazhdon?',
+    q:'Po drejtosh iniciativë ndër-funksionale ku palë kyçe kanë prioritete drejtpërdrejt konfliktuale. Si vazhdon?',
     opts:[
-      { id:'a', t:'Harto interesat e secilit dhe arkitekto harmonimin strukturor para çdo pune.',                                                     s:{strategic_thinking:5, systems_thinking:5, communication_precision:4} },
+      { id:'a', t:'Harto interesat e secilit dhe ndërtoj harmonimin strukturor para çdo pune.',                                                      s:{strategic_thinking:5, systems_thinking:5, communication_precision:4} },
       { id:'b', t:'Vendos metrika të suksesit të ndarë në fillim — divergjenca tek rezultatet bllokon çdo progres.',                                  s:{communication_precision:5, strategic_thinking:4, leadership_drive:4} },
       { id:'c', t:'Kryej seanca të strukturuara zgjidhje konflikti për të nxjerrë dhe zgjidhur tensionet.',                                          s:{social_intelligence:5, communication_precision:5, leadership_drive:4} },
       { id:'d', t:'Vepro me autonomi maksimale — menaxhimi i tepërt i palëve krijon më shumë fërkime se çka zgjidh.',                               s:{independent_solving:5, analytical_depth:4, execution_speed:4} },
@@ -478,7 +478,7 @@ export const QUESTIONS = [
     q:'Duhet të ofrosh lajm të keq të rëndësishëm tek palë e lartë e interesuar. Si e strukturon komunikimin?',
     opts:[
       { id:'a', t:'Fillo me të dhëna, pastaj implikimi, pastaj rruga përpara — qartësia përshpejton zgjidhjen.',                                     s:{communication_precision:5, analytical_depth:5, strategic_thinking:4} },
-      { id:'b', t:'Kontekstualizoje fillimisht — sigurohu ta kuptojnë mjedisin para se të marrin lajmin.',                                           s:{communication_precision:5, social_intelligence:4, strategic_thinking:4} },
+      { id:'b', t:'Jepi kontekst fillimisht — sigurohu ta kuptojnë mjedisin para se të marrin lajmin.',                                             s:{communication_precision:5, social_intelligence:4, strategic_thinking:4} },
       { id:'c', t:'Ji i drejtpërdrejtë dhe i menjëhershëm — vonesa dhe zbutja shtojnë dëmin.',                                                      s:{communication_precision:5, emotional_stability:4, execution_speed:4} },
       { id:'d', t:'Harto bashkë mesazhin me dikë që i njeh mirë palën e interesuar.',                                                               s:{social_intelligence:5, communication_precision:4, strategic_thinking:3} },
     ],
@@ -497,7 +497,7 @@ export const QUESTIONS = [
     id:45, module:'collaboration', type:'skenar',
     q:'Koleg merr kreditet publikisht për punën që ti drejtove, para drejtuesve seniorë. Reagimi?',
     opts:[
-      { id:'a', t:'Korrekto rekordin profesionalisht dhe menjëherë — qartësia duhet vendosur.',                                                      s:{communication_precision:5, leadership_drive:5, emotional_stability:4} },
+      { id:'a', t:'Sqaroj situatën profesionalisht dhe menjëherë — qartësia duhet vendosur.',                                                        s:{communication_precision:5, leadership_drive:5, emotional_stability:4} },
       { id:'b', t:'Adresoje privatisht me kolegun fillimisht, para çdo eskalimi.',                                                                   s:{social_intelligence:5, communication_precision:4, emotional_stability:5} },
       { id:'c', t:'Rrit dukshmërinë e kontributeve tua vazhdimisht në të ardhmen — krijo kredit strukturor.',                                       s:{analytical_depth:4, independent_solving:4, focus_consistency:4} },
       { id:'d', t:'Lëri të shkojë — rekordi i punës tënde do flasë me kalimin e kohës.',                                                            s:{emotional_stability:5, independent_solving:4, risk_orientation:2} },
@@ -505,7 +505,7 @@ export const QUESTIONS = [
   },
   {
     id:46, module:'collaboration', type:'skenar',
-    q:'Po bashkohesh me ekip të ri me performancë të lartë ku besimi është mirë-vendosur. Si integrohen?',
+    q:'Po bashkohesh me ekip të ri me performancë të lartë ku besimi është mirë-vendosur. Si integrohesh?',
     opts:[
       { id:'a', t:'Dëgjo shumë në 30 ditët e para para se të shprehësh ndonjë mendim ose drejtim.',                                                 s:{social_intelligence:5, analytical_depth:4, emotional_stability:4} },
       { id:'b', t:'Demonstro vlerë menjëherë përmes rezultateve — performanca fiton përfshirjen më shpejt.',                                         s:{execution_speed:5, independent_solving:5, leadership_drive:4} },
@@ -517,7 +517,7 @@ export const QUESTIONS = [
     id:47, module:'collaboration', type:'preferencë',
     q:'Duhet të bashkëpunosh ngushtë me dikë stilin komunikues të të cilit është drejtpërdrejt i kundërt me tëndin. Çfarë bën?',
     opts:[
-      { id:'a', t:'Diskuto eksplicit preferencat dhe bie dakord mbi normat e punës — emëro ndryshimet dhe uraji.',                                   s:{communication_precision:5, social_intelligence:5, emotional_stability:4} },
+      { id:'a', t:'Diskuto eksplicitisht preferencat dhe bie dakord mbi normat e punës — emërtoj ndryshimet dhe uraji.',                            s:{communication_precision:5, social_intelligence:5, emotional_stability:4} },
       { id:'b', t:'Adaptohu ndaj stilit të tyre — përgjegjësia e komunikimit është e imja.',                                                        s:{social_intelligence:5, adaptability:5, communication_precision:4} },
       { id:'c', t:'Minimizon komunikimin tek shkëmbimet e fokusuara tek prodhimi — fërkimi i stilit është irelevant.',                              s:{independent_solving:4, execution_speed:4, communication_precision:3} },
       { id:'d', t:'Dokumento gjithçka tepër — redukto varësinë nga komunikimi drejtpërdrejt me strukturë.',                                         s:{communication_precision:4, systems_thinking:4, focus_consistency:4} },
@@ -540,7 +540,7 @@ export const QUESTIONS = [
     q:'Jesh 3 muaj brenda projektit pa kërkesa të qarta dhe të rëna dakord. Si e trajton?',
     opts:[
       { id:'a', t:'Detyro seancë harmonimi të kërkesave — paqartësia strategjike kaq vonë është e papranueshme.',                                   s:{leadership_drive:4, communication_precision:5, systems_thinking:4} },
-      { id:'b', t:'Përcakto metrikën tënde të veriut veriut brendësisht dhe ndërto drejt saj deri sa korrigjohet.',                                 s:{independent_solving:5, strategic_thinking:5, risk_orientation:4} },
+      { id:'b', t:'Përcakto treguesin tim udhëzues brendësisht dhe ndërtoj drejt tij deri sa korrigjohet.',                                        s:{independent_solving:5, strategic_thinking:5, risk_orientation:4} },
       { id:'c', t:'Rriti frekuencën e komunikimit me palët e interesuara për të formuar aktivisht drejtimin.',                                       s:{communication_precision:5, social_intelligence:4, strategic_thinking:3} },
       { id:'d', t:'Ekzekuto rrjedha paralele pune mbi hipotezat më të mundshme dhe lëri më të mirën të fitojë.',                                    s:{innovation_potential:4, risk_orientation:5, adaptability:4} },
     ],
@@ -571,7 +571,7 @@ export const QUESTIONS = [
     opts:[
       { id:'a', t:'Përdore ndërprerjen si levë për të ridizajnuar diçka strukturalisht më të mirë.',                                                s:{innovation_potential:4, risk_orientation:5, strategic_thinking:4} },
       { id:'b', t:'Ankoroje ekipin tek prioritetet e qarta të punës ndërsa zhurma strukturore zgjidhet.',                                           s:{leadership_drive:5, emotional_stability:5, focus_consistency:4} },
-      { id:'c', t:'Navigo lart shpejt për të kuptuar dinamikat e reja të pushtetit dhe arkitekturën e vendimmarrjes.',                              s:{strategic_thinking:4, social_intelligence:4, analytical_depth:4} },
+      { id:'c', t:'Komunikoj shpejt me drejtuesit për të kuptuar dinamikat e reja të pushtetit dhe arkitekturën e vendimmarrjes.',                 s:{strategic_thinking:4, social_intelligence:4, analytical_depth:4} },
       { id:'d', t:'Ruaj prodhimtari të jashtëzakonshme — performanca është mbrojtja më e besueshme në tranzicion.',                                 s:{execution_speed:5, focus_consistency:5, emotional_stability:4} },
     ],
   },
@@ -579,7 +579,7 @@ export const QUESTIONS = [
     id:53, module:'stress', type:'preferencë',
     q:'Në situatë me presion të lartë që kërkon performancë kognitive kulmore — çfarë bën?',
     opts:[
-      { id:'a', t:'Aktivizo protokoll mendor të qëllimshëm — frymëmarrje e strukturuar, prioritet i vetëm, hiq të gjitha inputet.',                 s:{emotional_stability:5, focus_consistency:5, independent_solving:4} },
+      { id:'a', t:'Aktivizoj protokoll mendor të qëllimshëm — frymëmarrje e strukturuar, prioritet i vetëm, hiq të gjitha ndikimet e jashtme.',    s:{emotional_stability:5, focus_consistency:5, independent_solving:4} },
       { id:'b', t:'Presioni më aktivizon — vazhdimisht performoj në nivelin tim më të lartë nën kushte të kufizuara.',                             s:{emotional_stability:4, risk_orientation:4, adaptability:4} },
       { id:'c', t:'Ndaj qartë çfarë mund të kontrolloj nga çfarë nuk mund — pastaj veproj vetëm mbi të parin.',                                     s:{emotional_stability:5, systems_thinking:4, analytical_depth:4} },
       { id:'d', t:'Komunikoi presionin tek palët kryesore — qartësia e ndarë shumëfishon kapacitetin e reagimit.',                                  s:{communication_precision:4, social_intelligence:4, leadership_drive:3} },
@@ -604,7 +604,7 @@ export const QUESTIONS = [
       { id:'a', t:'Zotërimi — të bëhem vërtetë i klasit botëror në diçka të vështirë.',                                                             s:{independent_solving:5, focus_consistency:5, analytical_depth:4} },
       { id:'b', t:'Ndikimi — ndryshimi i diçkaje të rëndësishme në botë përmes punës sime.',                                                        s:{leadership_drive:4, innovation_potential:4, risk_orientation:4} },
       { id:'c', t:'Ndërtimi — krijimi i gjërave që mbijetojnë përfshirjes sime.',                                                                   s:{innovation_potential:5, strategic_thinking:4, systems_thinking:4} },
-      { id:'d', t:'Influenca — formimi i mënyrës si të tjerët mendojnë, vendosin dhe veprojnë.',                                                    s:{leadership_drive:5, communication_precision:4, social_intelligence:4} },
+      { id:'d', t:'Ndikimi — formimi i mënyrës si të tjerët mendojnë, vendosin dhe veprojnë.',                                                    s:{leadership_drive:5, communication_precision:4, social_intelligence:4} },
     ],
   },
   {

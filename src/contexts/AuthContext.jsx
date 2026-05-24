@@ -368,13 +368,24 @@ export function AuthProvider({ children }) {
       return { success: false, error: msg }
     }
 
-    // If email confirmation is disabled in Supabase → user is immediately active
-    // If enabled → data.session will be null until confirmed
+    // Confirmation disabled → session returned immediately
     if (data.session) {
       const profile = await fetchProfile(data.user.id)
       const u = buildUser(data.user, profile)
       setUser(u)
       return { success: true, user: u, requiresConfirmation: false }
+    }
+
+    // Fallback: some Supabase configs don't return session on signUp even when
+    // confirmation is disabled — attempt explicit sign-in right away.
+    if (data.user) {
+      const { data: sd } = await supabase.auth.signInWithPassword({ email, password })
+      if (sd?.session) {
+        const profile = await fetchProfile(sd.user.id)
+        const u = buildUser(sd.user, profile)
+        setUser(u)
+        return { success: true, user: u, requiresConfirmation: false }
+      }
     }
 
     return { success: true, requiresConfirmation: true }

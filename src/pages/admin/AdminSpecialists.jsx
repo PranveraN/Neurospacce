@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '../../lib/supabase'
-import { EXPERTS } from '../../data/expertsData'
+import {
+  EXPERTS,
+  fetchExpertsFromDB,
+  upsertSpecialistToDB,
+  deleteSpecialistFromDB,
+} from '../../data/expertsData'
 import {
   Plus, Search, Edit2, Trash2, ToggleLeft, ToggleRight,
   Star, CheckCircle, XCircle, Loader2, X, Save,
@@ -77,31 +81,33 @@ function SpecialistModal({ specialist, onClose, onSave }) {
     setSaving(true)
     setError(null)
     const payload = {
+      // Preserve existing id or generate a stable string id for new specialists
+      id: specialist?.id || `expert-${Date.now()}`,
       name: form.name.trim(),
       title: form.title.trim(),
       email: form.email.trim(),
-      phone: form.phone.trim(),
-      category: form.category,
-      short_bio: form.shortBio.trim(),
+      phone: (form.phone || '').trim(),
+      category: form.category || '',
+      shortBio: form.shortBio.trim(),
       education: form.education.trim(),
       specialties: form.specialties,
       rating: parseFloat(form.rating) || 4.5,
-      review_count: parseInt(form.reviewCount) || 0,
-      response_time: form.responseTime,
+      reviewCount: parseInt(form.reviewCount) || 0,
+      responseTime: form.responseTime,
       price_per_session: parseFloat(form.price_per_session) || 30,
       is_active: form.is_active,
       status: form.status,
-      updated_at: new Date().toISOString(),
+      // Preserve rich fields from original if editing
+      image: specialist?.image ?? null,
+      avatarGrad: specialist?.avatarGrad ?? 'linear-gradient(155deg,#6d28d9,#7c3aed,#4c1d95)',
+      fullBio: specialist?.fullBio ?? '',
+      education_detail: specialist?.education_detail ?? [],
+      experience: specialist?.experience ?? [],
+      answeredQuestions: specialist?.answeredQuestions ?? 0,
     }
-    let err
-    if (specialist?.id && typeof specialist.id === 'number') {
-      ;({ error: err } = await supabase.from('specialists').update(payload).eq('id', specialist.id))
-    } else {
-      payload.created_at = new Date().toISOString()
-      ;({ error: err } = await supabase.from('specialists').insert(payload))
-    }
+    const ok = await upsertSpecialistToDB(payload, 0)
     setSaving(false)
-    if (err) { setError(err.message); return }
+    if (!ok) { setError('Gabim gjatë ruajtjes në server.'); return }
     onSave()
   }
 
@@ -110,7 +116,7 @@ function SpecialistModal({ specialist, onClose, onSave }) {
       <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-5 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
           <h3 className="font-black text-white text-base">
-            {specialist?.id && typeof specialist.id === 'number' ? 'Ndrysho Specialistin' : 'Shto Specialist të Ri'}
+            {specialist?.id ? 'Ndrysho Specialistin' : 'Shto Specialist të Ri'}
           </h3>
           <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
             <X size={18} />
@@ -304,16 +310,18 @@ export default function AdminSpecialists() {
   const load = useCallback(async () => {
     setLoading(true)
     setError(null)
-    const { data, error: err } = await supabase.from('specialists').select('*').order('created_at', { ascending: false })
-    if (err || !data) {
+    const dbList = await fetchExpertsFromDB()
+    if (dbList === null || dbList.length === 0) {
+      // DB unreachable or empty — show static data read-only
       setUsingStatic(true)
-      setSpecialists(EXPERTS.map((e, i) => ({ ...e, id: `static-${i}`, is_active: true, price_per_session: 30 })))
-    } else if (data.length === 0) {
-      setUsingStatic(true)
-      setSpecialists(EXPERTS.map((e, i) => ({ ...e, id: `static-${i}`, is_active: true, price_per_session: 30 })))
+      setSpecialists(EXPERTS.map(e => ({
+        ...e, is_active: e.is_active ?? true, price_per_session: e.price_per_session ?? 30,
+      })))
     } else {
       setUsingStatic(false)
-      setSpecialists(data)
+      setSpecialists(dbList.map(e => ({
+        ...e, is_active: e.is_active ?? true, price_per_session: e.price_per_session ?? 30,
+      })))
     }
     setLoading(false)
   }, [])
@@ -322,14 +330,15 @@ export default function AdminSpecialists() {
 
   async function handleToggleActive(spec) {
     if (usingStatic) return
-    await supabase.from('specialists').update({ is_active: !spec.is_active }).eq('id', spec.id)
+    const idx = specialists.findIndex(s => s.id === spec.id)
+    await upsertSpecialistToDB({ ...spec, is_active: !spec.is_active }, idx)
     load()
   }
 
   async function handleDelete() {
     if (!deleteTarget || usingStatic) return
     setDeleting(true)
-    await supabase.from('specialists').delete().eq('id', deleteTarget.id)
+    await deleteSpecialistFromDB(deleteTarget.id)
     setDeleting(false)
     setDeleteTarget(null)
     load()

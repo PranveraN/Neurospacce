@@ -360,23 +360,24 @@ export default function Auth() {
               </button>
             </div>
 
-          /* ════ CONFIRM EMAIL ════ */
+          /* ════ CONFIRM EMAIL (fallback — shfaqet vetëm nëse Supabase ende kërkon konfirmim) ════ */
           ) : step === 'confirm' ? (
             <div className="text-center py-4">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 bg-violet-500/10 border border-violet-500/20">
-                <Mail size={28} className="text-violet-400" />
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 bg-amber-500/10 border border-amber-500/20">
+                <Mail size={28} className="text-amber-400" />
               </div>
-              <h2 className="text-xl font-black text-white mb-2">Konfirmo emailin</h2>
-              <p className="text-white/40 text-sm leading-relaxed mb-6">
-                Dërguam një lidhje tek<br />
+              <h2 className="text-xl font-black text-white mb-2">Një hap i fundit</h2>
+              <p className="text-white/40 text-sm leading-relaxed mb-2">
+                Llogaria u krijua! Konfirmo emailin tek<br />
                 <strong className="text-white/70">{form.email}</strong>
               </p>
+              <p className="text-white/25 text-xs mb-6">pastaj kthehu dhe kyçu normalisht.</p>
               <button onClick={() => switchTab('login')}
                 className="w-full py-3.5 rounded-2xl text-white font-black text-sm hover:opacity-90 transition-all"
                 style={btnGrad}>
-                Kthehu te hyrja
+                Kyçu
               </button>
-              <p className="text-xs text-white/20 mt-3">Nuk e gjeni? Kontrolloni dosjen spam.</p>
+              <p className="text-xs text-white/20 mt-3">Nuk e gjeni emailin? Kontrolloni dosjen spam.</p>
             </div>
 
           /* ════ NEW PASSWORD ════ */
