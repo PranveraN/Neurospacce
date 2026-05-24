@@ -1291,110 +1291,97 @@ function DietModal({ initialDay = 0, onClose }) {
       {/* ── RIGHT main area ── */}
       <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
 
-        {/* Hero — first meal photo of the day */}
-        <div className="relative w-full" style={{ height: 240 }}>
-          <img src={getMealPhoto(selDay, 0, day.meals[0].photo)} alt={day.day} key={selDay}
-            className="w-full h-full object-cover transition-all duration-500"
-            style={{ filter: 'brightness(0.65) saturate(1.10)' }} />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,12,8,1) 0%,rgba(4,12,8,0.30) 55%,transparent 100%)' }} />
+        {/* Header bar — no big hero photo */}
+        <div className="px-8 py-5 flex items-center gap-4" style={{ borderBottom: '1px solid rgba(52,211,153,0.12)', background: 'rgba(8,20,16,0.80)' }}>
+          <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shrink-0"
+            style={{ background: 'linear-gradient(135deg,#059669,#047857)', boxShadow: '0 4px 18px rgba(5,150,105,0.40)' }}>🥗</div>
+          <div className="flex-1">
+            <p className="text-xl font-black text-white leading-tight">{day.day}</p>
+            <p className="text-sm mt-0.5" style={{ color: '#34d399' }}>Ekuilibër hormonal · Disponim pozitiv</p>
+          </div>
+          {selDay === todayIdx && (
+            <span className="text-xs font-black px-3 py-1.5 rounded-full"
+              style={{ background: 'rgba(52,211,153,0.15)', color: '#34d399', border: '1px solid rgba(52,211,153,0.30)' }}>
+              ● Sot
+            </span>
+          )}
           <button onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
-            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', color: 'white' }}>
+            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110 ml-2"
+            style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.60)' }}>
             <X size={15} />
           </button>
-          <div className="absolute bottom-0 left-0 right-0 px-8 pb-5">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-3xl font-black text-white leading-tight drop-shadow">🥗 {day.day}</p>
-                <p className="text-sm font-bold mt-1" style={{ color: '#34d399' }}>Ekuilibër hormonal · Disponim pozitiv</p>
-              </div>
-              {selDay === todayIdx && (
-                <span className="text-xs font-black px-3 py-1.5 rounded-full text-white"
-                  style={{ background: 'rgba(5,150,105,0.70)', backdropFilter: 'blur(8px)', border: '1px solid rgba(52,211,153,0.40)' }}>
-                  ● Sot
-                </span>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Content */}
         <div className="px-8 py-6">
 
           {/* Meals header */}
-          <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-4">
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(52,211,153,0.35),transparent)' }} />
-            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: '#34d399' }}>3 vakte · foto + ngarkuese</p>
+            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: '#34d399' }}>3 vakte ditore</p>
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.35))' }} />
           </div>
 
-          {/* Meal cards — 1-col (full width in modal) */}
-          <div className="space-y-4 mb-6">
+          {/* Meal cards — horizontal: small photo left, text right */}
+          <div className="space-y-3 mb-6">
             {day.meals.map((m, mealIdx) => {
               const mc = MEAL_COLORS[m.label]
               const customPhoto = photos[`${selDay}_${mealIdx}`]
               const src = customPhoto || m.photo
               const isCustom = !!customPhoto
               return (
-                <div key={m.label} className="rounded-2xl overflow-hidden group/meal flex flex-col"
-                  style={{ background: mc.bg, border: `1px solid ${isCustom ? mc.border.replace('0.20','0.50') : mc.border}` }}>
-                  {/* Meal photo */}
-                  <div className="relative" style={{ height: 180 }}>
+                <div key={m.label} className="rounded-2xl overflow-hidden group/meal flex flex-row items-stretch"
+                  style={{ background: mc.bg, border: `1px solid ${isCustom ? mc.border.replace('0.20','0.50') : mc.border}`, minHeight: 100 }}>
+
+                  {/* Small photo — left side */}
+                  <div className="relative shrink-0" style={{ width: 110 }}>
                     <img src={src} alt={m.label}
                       className="w-full h-full object-cover transition-all duration-300"
-                      style={{ filter: 'brightness(0.78) saturate(1.10)' }} />
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,12,8,0.80) 0%,transparent 60%)' }} />
-
-                    {/* Meal emoji + label badge */}
-                    <div className="absolute top-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-xl"
-                      style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', border: `1px solid ${mc.border}` }}>
-                      <span className="text-base leading-none">{m.emoji}</span>
-                      <span className="text-xs font-black" style={{ color: mc.dot }}>{m.label}</span>
-                    </div>
+                      style={{ filter: 'brightness(0.75) saturate(1.10)' }} />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right,transparent 60%,rgba(4,12,8,0.60))' }} />
 
                     {/* Custom badge */}
                     {isCustom && (
-                      <div className="absolute top-3 right-3 text-[9px] font-black px-2 py-0.5 rounded-full"
-                        style={{ background: 'rgba(5,150,105,0.80)', color: 'white', backdropFilter: 'blur(6px)' }}>
-                        ✓ E ngarkuar
+                      <div className="absolute top-2 left-2 text-[8px] font-black px-1.5 py-0.5 rounded-full"
+                        style={{ background: 'rgba(5,150,105,0.85)', color: 'white' }}>
+                        ✓
                       </div>
                     )}
 
                     {/* Upload overlay — visible on hover */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover/meal:opacity-100 transition-opacity duration-200"
-                      style={{ background: 'rgba(4,10,18,0.65)', backdropFilter: 'blur(4px)' }}>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 opacity-0 group-hover/meal:opacity-100 transition-opacity duration-200"
+                      style={{ background: 'rgba(4,10,18,0.72)', backdropFilter: 'blur(4px)' }}>
                       <button
                         onClick={() => openUpload(selDay, mealIdx)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black text-white transition-all active:scale-95"
-                        style={{ background: 'linear-gradient(135deg,#059669,#047857)', boxShadow: '0 4px 14px rgba(5,150,105,0.50)' }}>
-                        📤 Ngarko foto
+                        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-black text-white transition-all active:scale-95"
+                        style={{ background: 'linear-gradient(135deg,#059669,#047857)' }}>
+                        📤 Ngarko
                       </button>
                       {isCustom && (
                         <button
                           onClick={() => removePhoto(selDay, mealIdx)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all"
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-bold transition-all"
                           style={{ background: 'rgba(244,63,94,0.25)', color: '#f87171', border: '1px solid rgba(244,63,94,0.35)' }}>
-                          🗑 Hiq foton
+                          🗑 Hiq
                         </button>
                       )}
                     </div>
                   </div>
 
-                  {/* Foods + note */}
-                  <div className="px-5 py-4 flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <p className="text-sm font-bold leading-snug mb-2" style={{ color: 'rgba(255,255,255,0.90)' }}>{m.foods}</p>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[9px]" style={{ color: mc.dot }}>✦</span>
-                        <p className="text-[11px] italic" style={{ color: 'rgba(255,255,255,0.45)' }}>{m.note}</p>
+                  {/* Text — right side */}
+                  <div className="flex-1 px-4 py-3 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-lg leading-none">{m.emoji}</span>
+                        <span className="text-xs font-black" style={{ color: mc.dot }}>{m.label}</span>
+                        <div className="w-1.5 h-1.5 rounded-full ml-auto" style={{ background: mc.dot, boxShadow: `0 0 5px ${mc.dot}` }} />
                       </div>
+                      <p className="text-[15px] font-bold leading-snug" style={{ color: 'rgba(255,255,255,0.92)' }}>{m.foods}</p>
                     </div>
-                    <button onClick={() => openUpload(selDay, mealIdx)}
-                      className="shrink-0 mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
-                      style={{ background: `${mc.bg}`, border: `1px solid ${mc.border}`, color: mc.dot }}
-                      title="Ngarko foto">
-                      <Plus size={12} />
-                    </button>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <span className="text-[9px]" style={{ color: mc.dot }}>✦</span>
+                      <p className="text-[11px] italic" style={{ color: 'rgba(255,255,255,0.50)' }}>{m.note}</p>
+                    </div>
                   </div>
                 </div>
               )
@@ -1698,108 +1685,87 @@ function ExerciseModal({ initialIdx = 0, onClose }) {
       {/* ── RIGHT main area ── */}
       <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
 
-        {/* Hero photo */}
-        <div className="relative w-full" style={{ height: 280 }}>
-          <img src={ex.photo} alt={ex.name} key={ex.id}
-            className="w-full h-full object-cover transition-all duration-500"
-            style={{ filter: 'brightness(0.70) saturate(1.15)' }} />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,10,18,1) 0%,rgba(4,10,18,0.30) 55%,transparent 100%)' }} />
-          {/* Close button (also on hero) */}
-          <button onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
-            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', color: 'white' }}>
-            <X size={15} />
-          </button>
-          {/* Info overlay */}
-          <div className="absolute bottom-0 left-0 right-0 px-8 pb-6">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-3xl font-black text-white leading-tight drop-shadow">{ex.emoji} {ex.name}</p>
-                <p className="text-sm font-bold mt-1" style={{ color: ex.benefitColor }}>{ex.benefit}</p>
-              </div>
-              <div className="flex flex-col items-end gap-1.5 shrink-0">
-                <span className="text-xs font-black px-3 py-1.5 rounded-full text-white"
-                  style={{ background: 'rgba(0,0,0,0.60)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.18)' }}>
-                  ⏱ {ex.time}
-                </span>
-                <span className="text-[10px] font-black px-3 py-1 rounded-full"
-                  style={{ background: im.bg, color: im.color, border: `1px solid ${im.color}40` }}>
-                  {ex.intensity}
-                </span>
-              </div>
+        {/* Header bar — compact, no big hero */}
+        <div className="px-8 py-5 flex items-center gap-4" style={{ borderBottom: '1px solid rgba(99,102,241,0.15)', background: 'rgba(10,14,26,0.80)' }}>
+          <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0" style={{ border: '2px solid rgba(99,102,241,0.30)' }}>
+            <img src={ex.photo} alt={ex.name} className="w-full h-full object-cover" style={{ filter: 'brightness(0.85) saturate(1.15)' }} />
+          </div>
+          <div className="flex-1">
+            <p className="text-xl font-black text-white leading-tight">{ex.emoji} {ex.name}</p>
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <span className="text-xs font-bold" style={{ color: ex.benefitColor }}>{ex.benefit}</span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: im.bg, color: im.color }}>⏱ {ex.time}</span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: im.bg, color: im.color }}>{ex.intensity}</span>
             </div>
           </div>
+          <button onClick={onClose}
+            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110 ml-2"
+            style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.60)' }}>
+            <X size={15} />
+          </button>
         </div>
 
         {/* Content */}
         <div className="px-8 py-6">
 
           {/* Steps header */}
-          <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-4">
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(99,102,241,0.35),transparent)' }} />
-            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: '#818cf8' }}>Si e bëj — hap pas hapi</p>
+            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: '#818cf8' }}>Hap pas hapi</p>
             <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,transparent,rgba(99,102,241,0.35))' }} />
           </div>
 
-          {/* Steps 2-col grid with photos */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          {/* Steps — horizontal cards: small photo left, text right */}
+          <div className="space-y-3 mb-6">
             {ex.steps.map((step, i) => {
               const customPhoto = photos[`${ex.id}_${i}`]
               const src = customPhoto || step.photo
               const isCustom = !!customPhoto
               return (
-                <div key={i} className="rounded-2xl overflow-hidden flex flex-col group/step"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${isCustom ? 'rgba(99,102,241,0.45)' : 'rgba(99,102,241,0.18)'}` }}>
-                  {/* Step photo */}
-                  <div className="relative" style={{ height: 180 }}>
+                <div key={i} className="rounded-2xl overflow-hidden flex flex-row items-stretch group/step"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${isCustom ? 'rgba(99,102,241,0.45)' : 'rgba(99,102,241,0.18)'}`, minHeight: 100 }}>
+
+                  {/* Small photo — left */}
+                  <div className="relative shrink-0" style={{ width: 110 }}>
                     <img src={src} alt={`Hapi ${i+1}`}
                       className="w-full h-full object-cover transition-all duration-300"
-                      style={{ filter: 'brightness(0.78) saturate(1.10)' }} />
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(14,26,38,0.70) 0%,transparent 60%)' }} />
+                      style={{ filter: 'brightness(0.75) saturate(1.10)' }} />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right,transparent 60%,rgba(14,26,38,0.55))' }} />
 
-                    {/* Step number badge */}
-                    <div className="absolute top-3 left-3 w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black text-white"
-                      style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 4px 14px rgba(79,70,229,0.50)' }}>
+                    {/* Step number */}
+                    <div className="absolute top-2 left-2 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white"
+                      style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 3px 10px rgba(79,70,229,0.55)' }}>
                       {i + 1}
                     </div>
 
-                    {/* Custom badge */}
                     {isCustom && (
-                      <div className="absolute top-3 right-3 text-[9px] font-black px-2 py-0.5 rounded-full"
-                        style={{ background: 'rgba(79,70,229,0.80)', color: 'white', backdropFilter: 'blur(6px)' }}>
-                        ✓ E ngarkuar
-                      </div>
+                      <div className="absolute bottom-2 left-2 text-[8px] font-black px-1.5 py-0.5 rounded-full"
+                        style={{ background: 'rgba(79,70,229,0.85)', color: 'white' }}>✓</div>
                     )}
 
-                    {/* Upload overlay — visible on hover */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover/step:opacity-100 transition-opacity duration-200"
-                      style={{ background: 'rgba(4,10,18,0.65)', backdropFilter: 'blur(4px)' }}>
+                    {/* Upload overlay */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 opacity-0 group-hover/step:opacity-100 transition-opacity duration-200"
+                      style={{ background: 'rgba(4,10,18,0.72)', backdropFilter: 'blur(4px)' }}>
                       <button
                         onClick={() => openUpload(ex.id, i)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black text-white transition-all active:scale-95"
-                        style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 4px 14px rgba(79,70,229,0.50)' }}>
-                        📤 Ngarko foto
+                        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-black text-white transition-all active:scale-95"
+                        style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)' }}>
+                        📤 Ngarko
                       </button>
                       {isCustom && (
                         <button
                           onClick={() => removePhoto(ex.id, i)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all"
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-bold transition-all"
                           style={{ background: 'rgba(244,63,94,0.25)', color: '#f87171', border: '1px solid rgba(244,63,94,0.35)' }}>
-                          🗑 Hiq foton
+                          🗑 Hiq
                         </button>
                       )}
                     </div>
                   </div>
 
-                  {/* Step text */}
-                  <div className="px-4 py-3 flex items-start justify-between gap-2">
-                    <p className="text-sm leading-relaxed flex-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{step.text}</p>
-                    <button onClick={() => openUpload(ex.id, i)}
-                      className="shrink-0 mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
-                      style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8' }}
-                      title="Ngarko foto">
-                      <Plus size={12} />
-                    </button>
+                  {/* Text — right */}
+                  <div className="flex-1 px-4 py-3 flex items-center">
+                    <p className="text-[15px] font-semibold leading-relaxed" style={{ color: 'rgba(255,255,255,0.90)' }}>{step.text}</p>
                   </div>
                 </div>
               )
