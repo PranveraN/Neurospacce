@@ -108,13 +108,13 @@ import NeuroPulse from '../NeuroPulse'
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
   const [showSearch, setShowSearch] = useState(false)
-  const { user, logout } = useAuth()
+  const { user, logout, isAdmin } = useAuth()
   const navigate = useNavigate()
 
   const links = [
     { to: '/library',    label: 'NeuroArtikuj' },
     { to: '/brainboost', label: 'BrainBoost' },
-    { to: '/psikologu',  label: 'Psikologu yt' },
+    { to: '/psikologu',  label: 'Psikologu yt', adminOnly: true },
     { to: '/tests',      label: 'Teste' },
     { to: '/parenting',  label: 'Familje' },
     { to: '/pricing',    label: 'Planet' },
@@ -153,15 +153,26 @@ function PublicHeader() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-0 flex-1">
-            {links.map(l => (
-              <NavLink key={l.to} to={l.to}
-                className={({ isActive }) =>
-                  `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`
-                }>
-                {l.label}
-              </NavLink>
-            ))}
-            <div className="relative group px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap text-gray-400 cursor-default select-none">
+            {links.map(l => {
+              if (l.adminOnly && !isAdmin) return (
+                <div key={l.to} className="relative px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap text-gray-400 cursor-default select-none">
+                  {l.label}
+                  <span className="absolute -top-1 -right-1 text-[8px] font-black px-1 py-0.5 rounded-full text-white leading-none"
+                    style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
+                    soon
+                  </span>
+                </div>
+              )
+              return (
+                <NavLink key={l.to} to={l.to}
+                  className={({ isActive }) =>
+                    `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`
+                  }>
+                  {l.label}
+                </NavLink>
+              )
+            })}
+            <div className="relative px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap text-gray-400 cursor-default select-none">
               Asistenti
               <span className="absolute -top-1 -right-1 text-[8px] font-black px-1 py-0.5 rounded-full text-white leading-none"
                 style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
@@ -206,14 +217,25 @@ function PublicHeader() {
         {/* Mobile menu */}
         {open && (
           <div className="md:hidden border-t border-gray-100 bg-white px-5 py-4 space-y-1">
-            {links.map(l => (
-              <NavLink key={l.to} to={l.to} onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `block px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-700 hover:bg-gray-50'}`
-                }>
-                {l.label}
-              </NavLink>
-            ))}
+            {links.map(l => {
+              if (l.adminOnly && !isAdmin) return (
+                <div key={l.to} className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 cursor-default select-none">
+                  <span>{l.label}</span>
+                  <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white"
+                    style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
+                    Se shpejti
+                  </span>
+                </div>
+              )
+              return (
+                <NavLink key={l.to} to={l.to} onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-700 hover:bg-gray-50'}`
+                  }>
+                  {l.label}
+                </NavLink>
+              )
+            })}
             <div className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 cursor-default select-none">
               <span>Asistenti</span>
               <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white"
