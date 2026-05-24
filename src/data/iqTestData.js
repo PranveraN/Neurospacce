@@ -23,7 +23,7 @@ export const IQ_TEST = {
     {
       min: 130, max: 160,
       label: 'Shumë i Lartë',
-      desc:  'Aftësi kognitive jashtëzakonisht të zhvilluara. Arsyetim i shpejtë, analizë thellë dhe zgjidhje krijuese problemesh.',
+      desc:  'Aftësi kognitive jashtëzakonisht të zhvilluara. Arsyetim i shpejtë, analizë e thellë dhe zgjidhje krijuese të problemeve.',
       color: '#7c3aed',
     },
     {
