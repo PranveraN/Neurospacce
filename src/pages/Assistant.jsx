@@ -1132,6 +1132,143 @@ function AISuggest({ tasks, routines }) {
   )
 }
 
+// ─── Weekly Hormone-Balancing Diet ───────────────────────────────────────────
+const DIET_DAYS = [
+  {
+    day: 'E Hënë', short: 'Hën',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Tërshëra + banane + arra greku', note: 'Triptofani → serotonin' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Salmon i pjekur + oriz kaf + brokoli', note: 'Omega-3 ul kortizolin' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Vezë + avokado + spinaq', note: 'B6 + magnez → gjumë cilësor' },
+    ],
+  },
+  {
+    day: 'E Martë', short: 'Mar',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Kos grek + luleshtrydhe + fara liri', note: 'Probiotikë + fitoestroge­në' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Gjeldeti i gatuar + patate të embla + fasule jeshile', note: 'Triptofan + krom → insulinë stabile' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Supë thjerrëzash + bukë gruri integral', note: 'Hekur + fibra → energji e qëndrueshme' },
+    ],
+  },
+  {
+    day: 'E Mërkurë', short: 'Mër',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Smoothie: spinaq + banane + bajame + fara kia', note: 'Magnez + K + serotonin' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Sardele + quinoa + asparagus', note: 'D3 + selenë → tiroide e shëndetshme' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Mish pule i lehtë + brokoli + ulliri', note: 'Indol-3-karbinol balanton estrogjenin' },
+    ],
+  },
+  {
+    day: 'E Enjte', short: 'Enj',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Vezë të ziera + avokado + bukë thekre', note: 'Kolina → funksion i trurit' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Tofu + perime të kaluara + oriz kaf', note: 'Izoflavonet + zink → hormon seksuale' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Mish viçi i ligët + spinaq + arra', note: 'Hekuri + B12 → dopaminë' },
+    ],
+  },
+  {
+    day: 'E Premte', short: 'Pre',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Tërshëra + manaferrat + fara liri + mjalt', note: 'Antooksidantë ulin inflamimin' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Salmon + sallatë avokado + ulliri', note: 'Omega-3 + E → kortizol i ulët' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Gjeldeti + batatë + brokoli', note: 'Triptofan + karbohidrate → relaksim' },
+    ],
+  },
+  {
+    day: 'E Shtunë', short: 'Sht',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Frittata me spinaq + kerpudha + djathë dhie', note: 'B2 + D + proteina → qetësi' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Peshk i pjekur + sallatë me gruar + ulliri', note: 'Jodi + magnez → tiroide' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Çokollatë e zezë 85% + arra brazilje + kos', note: 'Magnez + selenë → melatonin' },
+    ],
+  },
+  {
+    day: 'E Diel', short: 'Die',
+    meals: [
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Smoothie bowl: fara kia + manaferra + bajame', note: 'Omega-3 + antioks → humor pozitiv' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Mish qengji i ligët + perime të pjekura + oriz kaf', note: 'Zink + hekur → testosteron & energji' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Supë miso + tofu + alga deti', note: 'Jodi + probiotikë → tiroide & zorre' },
+    ],
+  },
+]
+
+const MEAL_COLORS = {
+  'Mëngjes': { bg: 'rgba(251,191,36,0.10)', border: 'rgba(251,191,36,0.20)', dot: '#fbbf24' },
+  'Drekë':   { bg: 'rgba(52,211,153,0.10)', border: 'rgba(52,211,153,0.20)', dot: '#34d399' },
+  'Darkë':   { bg: 'rgba(139,92,246,0.10)', border: 'rgba(139,92,246,0.20)', dot: '#8b5cf6' },
+}
+
+function WeeklyDietCard() {
+  const todayIdx = (() => { const d = new Date().getDay(); return d === 0 ? 6 : d - 1 })()
+  const [selDay, setSelDay] = useState(todayIdx)
+  const day = DIET_DAYS[selDay]
+
+  return (
+    <div className="rounded-2xl overflow-hidden" style={{ background: A.card, border: `1px solid ${A.border}` }}>
+      {/* Header */}
+      <div className="px-4 pt-4 pb-3" style={{ borderBottom: `1px solid ${A.border}` }}>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-base">🥗</span>
+          <span className="text-sm font-black" style={{ color: A.textPri }}>Dieta Javore</span>
+        </div>
+        <p className="text-[10px]" style={{ color: A.textMut }}>Ushqime që balancojnë hormonet &amp; disponimin · Bazuar shkencërisht</p>
+      </div>
+
+      {/* Day selector */}
+      <div className="flex gap-1 px-3 pt-3 pb-1 overflow-x-auto scrollbar-none">
+        {DIET_DAYS.map((d, i) => (
+          <button key={i} onClick={() => setSelDay(i)}
+            className="flex-shrink-0 flex flex-col items-center px-2.5 py-1.5 rounded-xl transition-all duration-150"
+            style={selDay === i
+              ? { background: A.btn, boxShadow: A.btnGlow }
+              : { background: 'rgba(255,255,255,0.04)', border: `1px solid ${A.border}` }
+            }>
+            <span className="text-[9px] font-black" style={{ color: selDay === i ? 'white' : A.textMut }}>{d.short}</span>
+            {i === todayIdx && (
+              <span className="w-1 h-1 rounded-full mt-0.5" style={{ background: selDay === i ? 'rgba(255,255,255,0.7)' : A.accent }} />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Day label */}
+      <div className="px-4 pt-2 pb-1">
+        <span className="text-[11px] font-black" style={{ color: A.accent }}>{day.day}</span>
+        {selDay === todayIdx && (
+          <span className="ml-2 text-[9px] font-black px-1.5 py-0.5 rounded-full"
+            style={{ background: 'rgba(52,211,153,0.15)', color: A.accent }}>sot</span>
+        )}
+      </div>
+
+      {/* Meals */}
+      <div className="px-3 pb-4 space-y-2">
+        {day.meals.map((m) => {
+          const mc = MEAL_COLORS[m.label]
+          return (
+            <div key={m.label} className="rounded-xl p-3"
+              style={{ background: mc.bg, border: `1px solid ${mc.border}` }}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-sm leading-none">{m.emoji}</span>
+                <span className="text-[10px] font-black" style={{ color: A.textPri }}>{m.label}</span>
+                <span className="ml-auto w-1.5 h-1.5 rounded-full shrink-0" style={{ background: mc.dot }} />
+              </div>
+              <p className="text-[11px] font-semibold mb-0.5" style={{ color: A.textPri }}>{m.foods}</p>
+              <p className="text-[10px] italic" style={{ color: A.textMut }}>✦ {m.note}</p>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Footer */}
+      <div className="px-4 py-2.5 text-center" style={{ borderTop: `1px solid ${A.border}` }}>
+        <p className="text-[9px]" style={{ color: A.textMut }}>
+          Bazuar në studime: J. Psychiatry Neurosci. · Nutrients · Frontiers in Endocrinology
+        </p>
+      </div>
+    </div>
+  )
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 const CENTER_TABS = [
   { id: 'calendar',   label: 'Kalendari',    icon: CalendarDays },
@@ -1231,6 +1368,7 @@ export default function Assistant() {
               <div className="lg:hidden space-y-4">
                 <div className="h-px" style={{ background: A.border }} />
                 <DailyQuote />
+                <WeeklyDietCard />
                 <RemindersWidget reminders={reminders} onViewAll={() => goTab('reminders')} />
                 <RoutinesWidget routines={routines} setRoutines={setRoutines} />
                 <WeeklyGoalsWidget tasks={tasks} />
@@ -1240,6 +1378,7 @@ export default function Assistant() {
             {/* ── RIGHT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6">
               <DailyQuote />
+              <WeeklyDietCard />
               <RecentNotesWidget notes={notes} onViewAll={() => goTab('notes')} />
               <RemindersWidget reminders={reminders} onViewAll={() => goTab('reminders')} />
               <RoutinesWidget routines={routines} setRoutines={setRoutines} />
