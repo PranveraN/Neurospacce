@@ -117,6 +117,7 @@ function PublicHeader() {
     { to: '/psikologu',  label: 'Psikologu yt', adminOnly: true },
     { to: '/tests',      label: 'Teste' },
     { to: '/parenting',  label: 'Familje' },
+    { to: '/assistant',  label: 'Asistenti', adminOnly: true },
     { to: '/pricing',    label: 'Planet' },
     { to: '/about',      label: 'Rreth nesh' },
   ]
@@ -172,13 +173,6 @@ function PublicHeader() {
                 </NavLink>
               )
             })}
-            <div className="relative px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap text-gray-400 cursor-default select-none">
-              Asistenti
-              <span className="absolute -top-1 -right-1 text-[8px] font-black px-1 py-0.5 rounded-full text-white leading-none"
-                style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
-                soon
-              </span>
-            </div>
           </nav>
 
           {/* Search + CTAs */}
@@ -236,13 +230,6 @@ function PublicHeader() {
                 </NavLink>
               )
             })}
-            <div className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 cursor-default select-none">
-              <span>Asistenti</span>
-              <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white"
-                style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
-                Se shpejti
-              </span>
-            </div>
             <div className="pt-3 flex flex-col gap-2 border-t border-gray-100 mt-2">
               {user ? (
                 <>
