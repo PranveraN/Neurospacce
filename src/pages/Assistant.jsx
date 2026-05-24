@@ -1132,57 +1132,57 @@ const DIET_DAYS = [
   {
     day: 'E Hënë', short: 'Hën',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Tërshëra + banane + arra greku', note: 'Triptofani → serotonin' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Salmon i pjekur + oriz kaf + brokoli', note: 'Omega-3 ul kortizolin' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Vezë + avokado + spinaq', note: 'B6 + magnez → gjumë cilësor' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Tërshëra + banane + arra greku', note: 'Triptofani → serotonin', photo: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Salmon i pjekur + oriz kaf + brokoli', note: 'Omega-3 ul kortizolin', photo: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Vezë + avokado + spinaq', note: 'B6 + magnez → gjumë cilësor', photo: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&h=340&fit=crop&auto=format' },
     ],
   },
   {
     day: 'E Martë', short: 'Mar',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Kos grek + luleshtrydhe + fara liri', note: 'Probiotikë + fitoestroge­në' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Gjeldeti i gatuar + patate të embla + fasule jeshile', note: 'Triptofan + krom → insulinë stabile' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Supë thjerrëzash + bukë gruri integral', note: 'Hekur + fibra → energji e qëndrueshme' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Kos grek + luleshtrydhe + fara liri', note: 'Probiotikë + fitoestrogenë', photo: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Gjeldeti i gatuar + patate të embla + fasule jeshile', note: 'Triptofan + krom → insulinë stabile', photo: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Supë thjerrëzash + bukë gruri integral', note: 'Hekur + fibra → energji e qëndrueshme', photo: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=340&fit=crop&auto=format' },
     ],
   },
   {
     day: 'E Mërkurë', short: 'Mër',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Smoothie: spinaq + banane + bajame + fara kia', note: 'Magnez + K + serotonin' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Sardele + quinoa + asparagus', note: 'D3 + selenë → tiroide e shëndetshme' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Mish pule i lehtë + brokoli + ulliri', note: 'Indol-3-karbinol balanton estrogjenin' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Smoothie: spinaq + banane + bajame + fara kia', note: 'Magnez + K + serotonin', photo: 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Sardele + quinoa + asparagus', note: 'D3 + selenë → tiroide e shëndetshme', photo: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Mish pule i lehtë + brokoli + ulliri', note: 'Indol-3-karbinol balanton estrogjenin', photo: 'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=600&h=340&fit=crop&auto=format' },
     ],
   },
   {
     day: 'E Enjte', short: 'Enj',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Vezë të ziera + avokado + bukë thekre', note: 'Kolina → funksion i trurit' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Tofu + perime të kaluara + oriz kaf', note: 'Izoflavonet + zink → hormon seksuale' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Mish viçi i ligët + spinaq + arra', note: 'Hekuri + B12 → dopaminë' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Vezë të ziera + avokado + bukë thekre', note: 'Kolina → funksion i trurit', photo: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Tofu + perime të kaluara + oriz kaf', note: 'Izoflavonet + zink → hormon seksuale', photo: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Mish viçi i ligët + spinaq + arra', note: 'Hekuri + B12 → dopaminë', photo: 'https://images.unsplash.com/photo-1544025162-d76538b2a5d0?w=600&h=340&fit=crop&auto=format' },
     ],
   },
   {
     day: 'E Premte', short: 'Pre',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Tërshëra + manaferrat + fara liri + mjalt', note: 'Antooksidantë ulin inflamimin' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Salmon + sallatë avokado + ulliri', note: 'Omega-3 + E → kortizol i ulët' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Gjeldeti + batatë + brokoli', note: 'Triptofan + karbohidrate → relaksim' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Tërshëra + manaferrat + fara liri + mjalt', note: 'Antooksidantë ulin inflamimin', photo: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Salmon + sallatë avokado + ulliri', note: 'Omega-3 + E → kortizol i ulët', photo: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Gjeldeti + batatë + brokoli', note: 'Triptofan + karbohidrate → relaksim', photo: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&h=340&fit=crop&auto=format' },
     ],
   },
   {
     day: 'E Shtunë', short: 'Sht',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Frittata me spinaq + kerpudha + djathë dhie', note: 'B2 + D + proteina → qetësi' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Peshk i pjekur + sallatë me gruar + ulliri', note: 'Jodi + magnez → tiroide' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Çokollatë e zezë 85% + arra brazilje + kos', note: 'Magnez + selenë → melatonin' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Frittata me spinaq + kerpudha + djathë dhie', note: 'B2 + D + proteina → qetësi', photo: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Peshk i pjekur + sallatë me gruar + ulliri', note: 'Jodi + magnez → tiroide', photo: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Çokollatë e zezë 85% + arra brazilje + kos', note: 'Magnez + selenë → melatonin', photo: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=600&h=340&fit=crop&auto=format' },
     ],
   },
   {
     day: 'E Diel', short: 'Die',
     meals: [
-      { label: 'Mëngjes', emoji: '🌅', foods: 'Smoothie bowl: fara kia + manaferra + bajame', note: 'Omega-3 + antioks → humor pozitiv' },
-      { label: 'Drekë',   emoji: '☀️', foods: 'Mish qengji i ligët + perime të pjekura + oriz kaf', note: 'Zink + hekur → testosteron & energji' },
-      { label: 'Darkë',   emoji: '🌙', foods: 'Supë miso + tofu + alga deti', note: 'Jodi + probiotikë → tiroide & zorre' },
+      { label: 'Mëngjes', emoji: '🌅', foods: 'Smoothie bowl: fara kia + manaferra + bajame', note: 'Omega-3 + antioks → humor pozitiv', photo: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Drekë',   emoji: '☀️', foods: 'Mish qengji i ligët + perime të pjekura + oriz kaf', note: 'Zink + hekur → testosteron & energji', photo: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=340&fit=crop&auto=format' },
+      { label: 'Darkë',   emoji: '🌙', foods: 'Supë miso + tofu + alga deti', note: 'Jodi + probiotikë → tiroide & zorre', photo: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=340&fit=crop&auto=format' },
     ],
   },
 ]
@@ -1193,117 +1193,326 @@ const MEAL_COLORS = {
   'Darkë':   { bg: 'rgba(139,92,246,0.10)', border: 'rgba(139,92,246,0.20)', dot: '#8b5cf6' },
 }
 
-function WeeklyDietCard() {
+// ─── Diet Full-Screen Modal ───────────────────────────────────────────────────
+function DietModal({ initialDay = 0, onClose }) {
   const todayIdx = (() => { const d = new Date().getDay(); return d === 0 ? 6 : d - 1 })()
-  const [selDay, setSelDay] = useState(todayIdx)
+  const [selDay, setSelDay]   = useState(initialDay)
+  const [photos, setPhotos]   = useLS('ns_diet_custom_photos', () => ({}))
+  const fileRef               = useRef(null)
+  const uploadTarget          = useRef(null) // { dayIdx, mealIdx }
+
   const day = DIET_DAYS[selDay]
 
-  return (
-    <div className="rounded-3xl overflow-hidden" style={{
-      background: 'linear-gradient(160deg,#0a1f18 0%,#0d2a1e 60%,#091710 100%)',
-      border: '1px solid rgba(52,211,153,0.20)',
-      boxShadow: '0 8px 40px rgba(5,150,105,0.18)',
-    }}>
-      {/* Hero header */}
-      <div className="relative px-5 pt-5 pb-4 overflow-hidden">
-        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(52,211,153,0.25),transparent 70%)' }} />
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.25),transparent)' }} />
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const fn = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', fn)
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', fn) }
+  }, [onClose])
 
-        <div className="relative flex items-start justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-lg shrink-0"
-                style={{ background: 'linear-gradient(135deg,rgba(52,211,153,0.20),rgba(5,150,105,0.15))', border: '1px solid rgba(52,211,153,0.25)' }}>
-                🥗
-              </div>
-              <div>
-                <p className="text-base font-black leading-tight" style={{ color: 'rgba(255,255,255,0.95)' }}>Dieta Javore</p>
-                <p className="text-[10px] font-semibold" style={{ color: A.accent }}>Ekuilibër hormonal · Disponim pozitiv</p>
-              </div>
-            </div>
-            <p className="text-[10px] mt-1 leading-relaxed" style={{ color: A.textMut }}>
-              Ushqime të verifikuara shkencërisht që rregullojnë serotonin, kortizol &amp; dopaminë
-            </p>
+  function openUpload(dayIdx, mealIdx) {
+    uploadTarget.current = { dayIdx, mealIdx }
+    fileRef.current.value = ''
+    fileRef.current.click()
+  }
+
+  function handleFile(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const key = `${uploadTarget.current.dayIdx}_${uploadTarget.current.mealIdx}`
+      setPhotos(prev => ({ ...prev, [key]: ev.target.result }))
+    }
+    reader.readAsDataURL(file)
+  }
+
+  function getMealPhoto(dayIdx, mealIdx, fallback) {
+    return photos[`${dayIdx}_${mealIdx}`] || fallback
+  }
+
+  function removePhoto(dayIdx, mealIdx) {
+    const key = `${dayIdx}_${mealIdx}`
+    setPhotos(prev => { const n = { ...prev }; delete n[key]; return n })
+  }
+
+  return (
+    <div className="fixed inset-0 z-[300] flex" style={{ background: 'rgba(4,10,18,0.94)', backdropFilter: 'blur(14px)' }}>
+      {/* Hidden file input */}
+      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+
+      {/* ── LEFT sidebar: days list ── */}
+      <div className="w-64 shrink-0 flex flex-col overflow-y-auto" style={{ background: 'rgba(8,20,16,0.97)', borderRight: '1px solid rgba(52,211,153,0.15)' }}>
+        {/* top bar */}
+        <div className="px-4 py-4 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(52,211,153,0.15)' }}>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center text-base shrink-0"
+            style={{ background: 'linear-gradient(135deg,#059669,#047857)' }}>🥗</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-black text-white leading-tight">Dieta Javore</p>
+            <p className="text-[9px]" style={{ color: '#34d399' }}>7 ditë · 3 vakte · me foto</p>
           </div>
-          <div className="shrink-0 text-right">
-            <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: A.textMut }}>Dita</p>
-            <p className="text-2xl font-black leading-none" style={{ color: A.accent }}>{selDay + 1}</p>
-            <p className="text-[8px]" style={{ color: A.textMut }}>/ 7</p>
-          </div>
+          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors hover:bg-white/10"
+            style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <X size={14} />
+          </button>
+        </div>
+
+        {/* Day list */}
+        <div className="flex-1 p-3 space-y-2">
+          {DIET_DAYS.map((d, i) => {
+            const active = selDay === i
+            const firstMealPhoto = getMealPhoto(i, 0, d.meals[0].photo)
+            return (
+              <button key={i} onClick={() => setSelDay(i)}
+                className="w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-all duration-200"
+                style={active
+                  ? { background: 'linear-gradient(135deg,rgba(5,150,105,0.28),rgba(52,211,153,0.12))', border: '1px solid rgba(52,211,153,0.40)' }
+                  : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }
+                }>
+                {/* thumbnail */}
+                <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0">
+                  <img src={firstMealPhoto} alt={d.day} className="w-full h-full object-cover" style={{ filter: 'brightness(0.80)' }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-black truncate" style={{ color: active ? 'white' : 'rgba(255,255,255,0.75)' }}>
+                    {d.day}
+                  </p>
+                  {i === todayIdx && (
+                    <span className="text-[9px] font-bold" style={{ color: '#34d399' }}>● sot</span>
+                  )}
+                </div>
+                {active && <div className="w-1 h-6 rounded-full shrink-0" style={{ background: 'linear-gradient(180deg,#059669,#34d399)' }} />}
+              </button>
+            )
+          })}
         </div>
       </div>
 
-      {/* Day selector pills */}
-      <div className="flex gap-1.5 px-5 py-3 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-        {DIET_DAYS.map((d, i) => (
-          <button key={i} onClick={() => setSelDay(i)}
-            className="flex-shrink-0 relative flex flex-col items-center gap-0.5 px-3 py-2 rounded-2xl transition-all duration-200"
-            style={selDay === i
-              ? { background: A.btn, boxShadow: A.btnGlow, transform: 'scale(1.05)' }
-              : { background: 'rgba(255,255,255,0.05)', border: `1px solid rgba(255,255,255,0.08)` }
-            }>
-            <span className="text-[10px] font-black" style={{ color: selDay === i ? 'white' : A.textMut }}>{d.short}</span>
-            {i === todayIdx && (
-              <span className="w-1 h-1 rounded-full" style={{ background: selDay === i ? 'rgba(255,255,255,0.7)' : A.accent }} />
-            )}
+      {/* ── RIGHT main area ── */}
+      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+
+        {/* Hero — first meal photo of the day */}
+        <div className="relative w-full" style={{ height: 240 }}>
+          <img src={getMealPhoto(selDay, 0, day.meals[0].photo)} alt={day.day} key={selDay}
+            className="w-full h-full object-cover transition-all duration-500"
+            style={{ filter: 'brightness(0.65) saturate(1.10)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,12,8,1) 0%,rgba(4,12,8,0.30) 55%,transparent 100%)' }} />
+          <button onClick={onClose}
+            className="absolute top-4 right-4 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', color: 'white' }}>
+            <X size={15} />
           </button>
-        ))}
-      </div>
-
-      {/* Selected day label */}
-      <div className="px-5 pb-2 flex items-center gap-2">
-        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(52,211,153,0.25),transparent)' }} />
-        <span className="text-xs font-black" style={{ color: A.accent }}>{day.day}</span>
-        {selDay === todayIdx && (
-          <span className="text-[9px] font-black px-2 py-0.5 rounded-full"
-            style={{ background: 'rgba(52,211,153,0.15)', color: A.accent, border: '1px solid rgba(52,211,153,0.25)' }}>
-            ● sot
-          </span>
-        )}
-        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.25))' }} />
-      </div>
-
-      {/* Meals — full width cards */}
-      <div className="px-4 pb-4 space-y-2.5">
-        {day.meals.map((m) => {
-          const mc = MEAL_COLORS[m.label]
-          return (
-            <div key={m.label} className="rounded-2xl overflow-hidden"
-              style={{ background: mc.bg, border: `1px solid ${mc.border}` }}>
-              {/* Meal header bar */}
-              <div className="flex items-center gap-3 px-4 py-2.5"
-                style={{ borderBottom: `1px solid ${mc.border}` }}>
-                <span className="text-xl leading-none">{m.emoji}</span>
-                <div className="flex-1">
-                  <p className="text-xs font-black" style={{ color: 'rgba(255,255,255,0.90)' }}>{m.label}</p>
-                </div>
-                <div className="w-2 h-2 rounded-full" style={{ background: mc.dot, boxShadow: `0 0 6px ${mc.dot}` }} />
+          <div className="absolute bottom-0 left-0 right-0 px-8 pb-5">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-3xl font-black text-white leading-tight drop-shadow">🥗 {day.day}</p>
+                <p className="text-sm font-bold mt-1" style={{ color: '#34d399' }}>Ekuilibër hormonal · Disponim pozitiv</p>
               </div>
-              {/* Foods */}
-              <div className="px-4 py-3">
-                <p className="text-sm font-bold leading-snug mb-1.5" style={{ color: 'rgba(255,255,255,0.88)' }}>
-                  {m.foods}
-                </p>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[9px]" style={{ color: mc.dot }}>✦</span>
-                  <p className="text-[10px] italic" style={{ color: 'rgba(255,255,255,0.45)' }}>{m.note}</p>
-                </div>
-              </div>
+              {selDay === todayIdx && (
+                <span className="text-xs font-black px-3 py-1.5 rounded-full text-white"
+                  style={{ background: 'rgba(5,150,105,0.70)', backdropFilter: 'blur(8px)', border: '1px solid rgba(52,211,153,0.40)' }}>
+                  ● Sot
+                </span>
+              )}
             </div>
-          )
-        })}
-      </div>
+          </div>
+        </div>
 
-      {/* Science footer */}
-      <div className="mx-4 mb-4 rounded-xl px-3 py-2.5 flex items-center gap-2"
-        style={{ background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.12)' }}>
-        <span className="text-[11px] shrink-0">🔬</span>
-        <p className="text-[9px] leading-relaxed" style={{ color: A.textMut }}>
-          Burime: <span style={{ color: 'rgba(255,255,255,0.40)' }}>J. Psychiatry Neurosci. · Nutrients · Frontiers in Endocrinology · PubMed</span>
-        </p>
+        {/* Content */}
+        <div className="px-8 py-6">
+
+          {/* Meals header */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(52,211,153,0.35),transparent)' }} />
+            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: '#34d399' }}>3 vakte · foto + ngarkuese</p>
+            <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.35))' }} />
+          </div>
+
+          {/* Meal cards — 1-col (full width in modal) */}
+          <div className="space-y-4 mb-6">
+            {day.meals.map((m, mealIdx) => {
+              const mc = MEAL_COLORS[m.label]
+              const customPhoto = photos[`${selDay}_${mealIdx}`]
+              const src = customPhoto || m.photo
+              const isCustom = !!customPhoto
+              return (
+                <div key={m.label} className="rounded-2xl overflow-hidden group/meal flex flex-col"
+                  style={{ background: mc.bg, border: `1px solid ${isCustom ? mc.border.replace('0.20','0.50') : mc.border}` }}>
+                  {/* Meal photo */}
+                  <div className="relative" style={{ height: 180 }}>
+                    <img src={src} alt={m.label}
+                      className="w-full h-full object-cover transition-all duration-300"
+                      style={{ filter: 'brightness(0.78) saturate(1.10)' }} />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,12,8,0.80) 0%,transparent 60%)' }} />
+
+                    {/* Meal emoji + label badge */}
+                    <div className="absolute top-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-xl"
+                      style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', border: `1px solid ${mc.border}` }}>
+                      <span className="text-base leading-none">{m.emoji}</span>
+                      <span className="text-xs font-black" style={{ color: mc.dot }}>{m.label}</span>
+                    </div>
+
+                    {/* Custom badge */}
+                    {isCustom && (
+                      <div className="absolute top-3 right-3 text-[9px] font-black px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(5,150,105,0.80)', color: 'white', backdropFilter: 'blur(6px)' }}>
+                        ✓ E ngarkuar
+                      </div>
+                    )}
+
+                    {/* Upload overlay — visible on hover */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover/meal:opacity-100 transition-opacity duration-200"
+                      style={{ background: 'rgba(4,10,18,0.65)', backdropFilter: 'blur(4px)' }}>
+                      <button
+                        onClick={() => openUpload(selDay, mealIdx)}
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black text-white transition-all active:scale-95"
+                        style={{ background: 'linear-gradient(135deg,#059669,#047857)', boxShadow: '0 4px 14px rgba(5,150,105,0.50)' }}>
+                        📤 Ngarko foto
+                      </button>
+                      {isCustom && (
+                        <button
+                          onClick={() => removePhoto(selDay, mealIdx)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all"
+                          style={{ background: 'rgba(244,63,94,0.25)', color: '#f87171', border: '1px solid rgba(244,63,94,0.35)' }}>
+                          🗑 Hiq foton
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Foods + note */}
+                  <div className="px-5 py-4 flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <p className="text-sm font-bold leading-snug mb-2" style={{ color: 'rgba(255,255,255,0.90)' }}>{m.foods}</p>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[9px]" style={{ color: mc.dot }}>✦</span>
+                        <p className="text-[11px] italic" style={{ color: 'rgba(255,255,255,0.45)' }}>{m.note}</p>
+                      </div>
+                    </div>
+                    <button onClick={() => openUpload(selDay, mealIdx)}
+                      className="shrink-0 mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
+                      style={{ background: `${mc.bg}`, border: `1px solid ${mc.border}`, color: mc.dot }}
+                      title="Ngarko foto">
+                      <Plus size={12} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Science footer */}
+          <div className="rounded-2xl px-5 py-4 flex items-start gap-3"
+            style={{ background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.18)' }}>
+            <span className="text-xl shrink-0 mt-0.5">🔬</span>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#34d399' }}>Burime shkencore</p>
+              <p className="text-sm leading-relaxed italic" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                J. Psychiatry Neurosci. · Nutrients · Frontiers in Endocrinology · PubMed
+              </p>
+            </div>
+          </div>
+
+          {/* Day navigation */}
+          <div className="flex gap-3 mt-5">
+            <button onClick={() => setSelDay(s => Math.max(0, s - 1))}
+              disabled={selDay === 0}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all disabled:opacity-30"
+              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.70)', border: '1px solid rgba(255,255,255,0.10)' }}>
+              <ChevronLeft size={14} /> Dita e kaluar
+            </button>
+            <div className="flex items-center gap-1.5 flex-1 justify-center">
+              {DIET_DAYS.map((_, i) => (
+                <button key={i} onClick={() => setSelDay(i)}
+                  className="rounded-full transition-all duration-200"
+                  style={{ width: selDay === i ? 20 : 6, height: 6, background: selDay === i ? 'linear-gradient(90deg,#059669,#34d399)' : 'rgba(255,255,255,0.18)' }} />
+              ))}
+            </div>
+            <button onClick={() => setSelDay(s => Math.min(DIET_DAYS.length - 1, s + 1))}
+              disabled={selDay === DIET_DAYS.length - 1}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all disabled:opacity-30"
+              style={{ background: 'linear-gradient(135deg,#059669,#047857)', color: 'white', boxShadow: '0 4px 14px rgba(5,150,105,0.35)' }}>
+              Dita tjetër <ChevronRight size={14} />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+  )
+}
+
+// ─── Diet Preview Card (clickable → opens DietModal) ─────────────────────────
+function WeeklyDietCard() {
+  const todayIdx = (() => { const d = new Date().getDay(); return d === 0 ? 6 : d - 1 })()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalDay,  setModalDay]  = useState(todayIdx)
+
+  function open(i = todayIdx) { setModalDay(i); setModalOpen(true) }
+
+  return (
+    <>
+      {modalOpen && <DietModal initialDay={modalDay} onClose={() => setModalOpen(false)} />}
+
+      <div className="rounded-3xl overflow-hidden flex flex-col cursor-pointer group transition-all duration-200 hover:scale-[1.01]"
+        onClick={() => open(todayIdx)}
+        style={{
+          background: 'linear-gradient(160deg,#0a1f18 0%,#0d2a1e 60%,#091710 100%)',
+          border: '1px solid rgba(52,211,153,0.20)',
+          boxShadow: '0 8px 40px rgba(5,150,105,0.18)',
+        }}>
+
+        {/* Header */}
+        <div className="relative px-5 pt-5 pb-4 overflow-hidden">
+          <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
+            style={{ background: 'radial-gradient(circle,rgba(52,211,153,0.25),transparent 70%)' }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px"
+            style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.30),transparent)' }} />
+          <div className="relative flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xl shrink-0"
+              style={{ background: 'linear-gradient(135deg,rgba(52,211,153,0.22),rgba(5,150,105,0.16))', border: '1px solid rgba(52,211,153,0.28)' }}>
+              🥗
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-black" style={{ color: 'rgba(255,255,255,0.95)' }}>Dieta Javore</p>
+              <p className="text-[10px]" style={{ color: A.accent }}>Hormonet · Serotonin · Disponim</p>
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0 text-[10px] font-black px-3 py-1.5 rounded-xl transition-all group-hover:scale-105"
+              style={{ background: A.btn, color: 'white', boxShadow: A.btnGlow }}>
+              Hap <ChevronRight size={11} />
+            </div>
+          </div>
+        </div>
+
+        {/* Meal photo grid preview — 3 meals × today */}
+        <div className="grid grid-cols-3 gap-1.5 px-4 pb-2">
+          {DIET_DAYS.map((d, i) => (
+            <button key={i}
+              onClick={ev => { ev.stopPropagation(); open(i) }}
+              className="relative rounded-xl overflow-hidden transition-all duration-200 hover:scale-105 hover:z-10"
+              style={{ height: 80 }}>
+              <img src={d.meals[0].photo} alt={d.day} className="w-full h-full object-cover"
+                style={{ filter: 'brightness(0.70) saturate(1.1)' }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,12,8,0.85),transparent 55%)' }} />
+              <div className="absolute bottom-1.5 left-0 right-0 text-center">
+                <p className="text-[9px] font-black text-white leading-tight px-1 truncate">{d.short}</p>
+                {i === todayIdx && (
+                  <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: '#34d399' }} />
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Footer CTA */}
+        <div className="mx-4 mb-4 rounded-xl px-4 py-2.5 flex items-center justify-between"
+          style={{ background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.18)' }}>
+          <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            7 ditë · 21 vakte · foto + ngarkuese · bazuar shkencërisht
+          </p>
+          <ChevronRight size={13} style={{ color: A.accent }} />
+        </div>
+      </div>
+    </>
   )
 }
 
