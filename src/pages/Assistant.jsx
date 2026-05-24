@@ -302,59 +302,58 @@ function CalendarView({ tasks, onAddTask }) {
   const cells = Array.from({ length: firstDay }, () => null).concat(Array.from({ length: daysInMonth }, (_, i) => i + 1))
 
   return (
-    <div className="space-y-4">
-      {/* Calendar header */}
+    <div className="rounded-2xl p-4 space-y-3" style={{ background: A.card, border: `1px solid ${A.border}` }}>
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <button onClick={prevMonth} className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+          <button onClick={prevMonth} className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
             style={{ background: 'rgba(255,255,255,0.06)', color: A.textSec }}>
-            <ChevronLeft size={14} />
+            <ChevronLeft size={12} />
           </button>
-          <h3 className="text-base font-black" style={{ color: A.textPri }}>
+          <h3 className="text-sm font-black" style={{ color: A.textPri }}>
             {MONTHS_AL[month]} {year}
           </h3>
-          <button onClick={nextMonth} className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+          <button onClick={nextMonth} className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
             style={{ background: 'rgba(255,255,255,0.06)', color: A.textSec }}>
-            <ChevronRight size={14} />
+            <ChevronRight size={12} />
           </button>
         </div>
         <button onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth()); setSelDay(today.getDate()) }}
-          className="text-[10px] font-black px-3 py-1.5 rounded-xl transition-all"
+          className="text-[9px] font-black px-2.5 py-1 rounded-lg transition-all"
           style={{ background: 'rgba(52,211,153,0.12)', color: A.accent, border: `1px solid rgba(52,211,153,0.20)` }}>
           Sot
         </button>
       </div>
 
       {/* Week day headers */}
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-0.5">
         {WEEK_DAYS.map(d => (
-          <div key={d} className="text-center text-[9px] font-black uppercase tracking-wide py-1" style={{ color: A.textMut }}>{d}</div>
+          <div key={d} className="text-center text-[8px] font-black uppercase tracking-wide py-0.5" style={{ color: A.textMut }}>{d}</div>
         ))}
       </div>
 
-      {/* Day grid */}
-      <div className="grid grid-cols-7 gap-1">
+      {/* Day grid — compact */}
+      <div className="grid grid-cols-7 gap-0.5">
         {cells.map((d, i) => {
           if (!d) return <div key={`e${i}`} />
-          const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear()
-          const isSel   = d === selDay
+          const isToday  = d === today.getDate() && month === today.getMonth() && year === today.getFullYear()
+          const isSel    = d === selDay
           const dayTasks = getDayTasks(d)
-          const hasDone  = dayTasks.some(t => t.done)
           const hasPend  = dayTasks.some(t => !t.done)
+          const hasDone  = dayTasks.some(t => t.done)
           return (
             <button key={d} onClick={() => setSelDay(d)}
-              className="relative flex flex-col items-center py-2 rounded-xl transition-all hover:scale-105"
+              className="relative flex flex-col items-center py-1.5 rounded-lg transition-all hover:scale-105"
               style={{
                 background: isToday ? A.btn : isSel ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.03)',
                 border: `1px solid ${isToday ? 'transparent' : isSel ? 'rgba(52,211,153,0.35)' : A.border}`,
                 boxShadow: isToday ? A.btnGlow : 'none',
               }}>
-              <span className="text-xs font-bold" style={{ color: isToday ? 'white' : isSel ? A.accent : A.textSec }}>{d}</span>
-              {/* Dots */}
+              <span className="text-[11px] font-bold leading-none" style={{ color: isToday ? 'white' : isSel ? A.accent : A.textSec }}>{d}</span>
               {dayTasks.length > 0 && (
                 <div className="flex gap-0.5 mt-0.5">
-                  {hasPend && <div className="w-1 h-1 rounded-full" style={{ background: isToday ? 'rgba(255,255,255,0.7)' : A.accent }} />}
-                  {hasDone && <div className="w-1 h-1 rounded-full" style={{ background: isToday ? 'rgba(255,255,255,0.4)' : 'rgba(52,211,153,0.40)' }} />}
+                  {hasPend && <div className="w-[3px] h-[3px] rounded-full" style={{ background: isToday ? 'rgba(255,255,255,0.8)' : A.accent }} />}
+                  {hasDone && <div className="w-[3px] h-[3px] rounded-full" style={{ background: 'rgba(52,211,153,0.45)' }} />}
                 </div>
               )}
             </button>
@@ -362,44 +361,40 @@ function CalendarView({ tasks, onAddTask }) {
         })}
       </div>
 
-      {/* Selected day tasks */}
-      <div className="rounded-2xl p-4" style={{ background: 'rgba(52,211,153,0.04)', border: `1px solid rgba(52,211,153,0.12)` }}>
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-sm font-black" style={{ color: A.textPri }}>
-            Detyrat e {selDay > 0 ? `${selDay} ${MONTHS_AL[month]}` : 'ditës'}
+      {/* Selected day — mini strip */}
+      <div className="pt-2" style={{ borderTop: `1px solid ${A.border}` }}>
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[11px] font-black" style={{ color: A.textPri }}>
+            {selDay} {MONTHS_AL[month]}
           </p>
-          <span className="text-[10px]" style={{ color: A.textMut }}>
-            {selTasks.filter(t => t.done).length} nga {selTasks.length} të kryera
+          <span className="text-[9px]" style={{ color: A.textMut }}>
+            {selTasks.filter(t => t.done).length}/{selTasks.length} ✓
           </span>
         </div>
         {selTasks.length === 0 ? (
-          <div className="text-center py-3">
-            <p className="text-[11px]" style={{ color: A.textMut }}>Asnjë aktivitet për këtë ditë</p>
-            <button onClick={() => onAddTask(todaySelStr)}
-              className="mt-2 text-[10px] font-black flex items-center gap-1 mx-auto transition-colors"
-              style={{ color: A.accent }}>
-              <Plus size={11} /> Shto aktivitet
-            </button>
-          </div>
+          <button onClick={() => onAddTask(todaySelStr)}
+            className="w-full text-[10px] font-bold py-1.5 rounded-lg flex items-center justify-center gap-1"
+            style={{ background: 'rgba(52,211,153,0.07)', color: A.accent, border: `1px solid rgba(52,211,153,0.15)` }}>
+            <Plus size={10} /> Shto aktivitet
+          </button>
         ) : (
-          <div className="space-y-2">
-            {selTasks.map(t => {
+          <div className="space-y-1">
+            {selTasks.slice(0, 3).map(t => {
               const cm = CAT_META[t.cat] || CAT_META.personal
               return (
-                <div key={t.id} className="flex items-center gap-3 p-2.5 rounded-xl"
+                <div key={t.id} className="flex items-center gap-2 px-2 py-1.5 rounded-lg"
                   style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${A.border}` }}>
-                  <div className="w-2 h-2 rounded-full shrink-0" style={{ background: cm.color }} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold truncate" style={{ color: t.done ? A.textMut : A.textPri, textDecoration: t.done ? 'line-through' : 'none' }}>
-                      {t.title}
-                    </p>
-                    {t.desc && <p className="text-[10px] truncate" style={{ color: A.textMut }}>{t.desc}</p>}
-                  </div>
-                  <span className="text-[10px] shrink-0 font-semibold" style={{ color: A.textMut }}>{t.time}</span>
-                  {t.done && <CheckCircle size={13} style={{ color: A.accentD }} className="shrink-0" />}
+                  <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: cm.color }} />
+                  <p className="text-[10px] font-semibold truncate flex-1" style={{ color: t.done ? A.textMut : A.textPri, textDecoration: t.done ? 'line-through' : 'none' }}>
+                    {t.title}
+                  </p>
+                  {t.time && <span className="text-[9px] shrink-0" style={{ color: A.textMut }}>{t.time}</span>}
                 </div>
               )
             })}
+            {selTasks.length > 3 && (
+              <p className="text-[9px] text-center" style={{ color: A.textMut }}>+{selTasks.length - 3} të tjera</p>
+            )}
           </div>
         )}
       </div>
@@ -1204,65 +1199,108 @@ function WeeklyDietCard() {
   const day = DIET_DAYS[selDay]
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ background: A.card, border: `1px solid ${A.border}` }}>
-      {/* Header */}
-      <div className="px-4 pt-4 pb-3" style={{ borderBottom: `1px solid ${A.border}` }}>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-base">🥗</span>
-          <span className="text-sm font-black" style={{ color: A.textPri }}>Dieta Javore</span>
+    <div className="rounded-3xl overflow-hidden" style={{
+      background: 'linear-gradient(160deg,#0a1f18 0%,#0d2a1e 60%,#091710 100%)',
+      border: '1px solid rgba(52,211,153,0.20)',
+      boxShadow: '0 8px 40px rgba(5,150,105,0.18)',
+    }}>
+      {/* Hero header */}
+      <div className="relative px-5 pt-5 pb-4 overflow-hidden">
+        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
+          style={{ background: 'radial-gradient(circle,rgba(52,211,153,0.25),transparent 70%)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.25),transparent)' }} />
+
+        <div className="relative flex items-start justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-lg shrink-0"
+                style={{ background: 'linear-gradient(135deg,rgba(52,211,153,0.20),rgba(5,150,105,0.15))', border: '1px solid rgba(52,211,153,0.25)' }}>
+                🥗
+              </div>
+              <div>
+                <p className="text-base font-black leading-tight" style={{ color: 'rgba(255,255,255,0.95)' }}>Dieta Javore</p>
+                <p className="text-[10px] font-semibold" style={{ color: A.accent }}>Ekuilibër hormonal · Disponim pozitiv</p>
+              </div>
+            </div>
+            <p className="text-[10px] mt-1 leading-relaxed" style={{ color: A.textMut }}>
+              Ushqime të verifikuara shkencërisht që rregullojnë serotonin, kortizol &amp; dopaminë
+            </p>
+          </div>
+          <div className="shrink-0 text-right">
+            <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: A.textMut }}>Dita</p>
+            <p className="text-2xl font-black leading-none" style={{ color: A.accent }}>{selDay + 1}</p>
+            <p className="text-[8px]" style={{ color: A.textMut }}>/ 7</p>
+          </div>
         </div>
-        <p className="text-[10px]" style={{ color: A.textMut }}>Ushqime që balancojnë hormonet &amp; disponimin · Bazuar shkencërisht</p>
       </div>
 
-      {/* Day selector */}
-      <div className="flex gap-1 px-3 pt-3 pb-1 overflow-x-auto scrollbar-none">
+      {/* Day selector pills */}
+      <div className="flex gap-1.5 px-5 py-3 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
         {DIET_DAYS.map((d, i) => (
           <button key={i} onClick={() => setSelDay(i)}
-            className="flex-shrink-0 flex flex-col items-center px-2.5 py-1.5 rounded-xl transition-all duration-150"
+            className="flex-shrink-0 relative flex flex-col items-center gap-0.5 px-3 py-2 rounded-2xl transition-all duration-200"
             style={selDay === i
-              ? { background: A.btn, boxShadow: A.btnGlow }
-              : { background: 'rgba(255,255,255,0.04)', border: `1px solid ${A.border}` }
+              ? { background: A.btn, boxShadow: A.btnGlow, transform: 'scale(1.05)' }
+              : { background: 'rgba(255,255,255,0.05)', border: `1px solid rgba(255,255,255,0.08)` }
             }>
-            <span className="text-[9px] font-black" style={{ color: selDay === i ? 'white' : A.textMut }}>{d.short}</span>
+            <span className="text-[10px] font-black" style={{ color: selDay === i ? 'white' : A.textMut }}>{d.short}</span>
             {i === todayIdx && (
-              <span className="w-1 h-1 rounded-full mt-0.5" style={{ background: selDay === i ? 'rgba(255,255,255,0.7)' : A.accent }} />
+              <span className="w-1 h-1 rounded-full" style={{ background: selDay === i ? 'rgba(255,255,255,0.7)' : A.accent }} />
             )}
           </button>
         ))}
       </div>
 
-      {/* Day label */}
-      <div className="px-4 pt-2 pb-1">
-        <span className="text-[11px] font-black" style={{ color: A.accent }}>{day.day}</span>
+      {/* Selected day label */}
+      <div className="px-5 pb-2 flex items-center gap-2">
+        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(52,211,153,0.25),transparent)' }} />
+        <span className="text-xs font-black" style={{ color: A.accent }}>{day.day}</span>
         {selDay === todayIdx && (
-          <span className="ml-2 text-[9px] font-black px-1.5 py-0.5 rounded-full"
-            style={{ background: 'rgba(52,211,153,0.15)', color: A.accent }}>sot</span>
+          <span className="text-[9px] font-black px-2 py-0.5 rounded-full"
+            style={{ background: 'rgba(52,211,153,0.15)', color: A.accent, border: '1px solid rgba(52,211,153,0.25)' }}>
+            ● sot
+          </span>
         )}
+        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,transparent,rgba(52,211,153,0.25))' }} />
       </div>
 
-      {/* Meals */}
-      <div className="px-3 pb-4 space-y-2">
+      {/* Meals — full width cards */}
+      <div className="px-4 pb-4 space-y-2.5">
         {day.meals.map((m) => {
           const mc = MEAL_COLORS[m.label]
           return (
-            <div key={m.label} className="rounded-xl p-3"
+            <div key={m.label} className="rounded-2xl overflow-hidden"
               style={{ background: mc.bg, border: `1px solid ${mc.border}` }}>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-sm leading-none">{m.emoji}</span>
-                <span className="text-[10px] font-black" style={{ color: A.textPri }}>{m.label}</span>
-                <span className="ml-auto w-1.5 h-1.5 rounded-full shrink-0" style={{ background: mc.dot }} />
+              {/* Meal header bar */}
+              <div className="flex items-center gap-3 px-4 py-2.5"
+                style={{ borderBottom: `1px solid ${mc.border}` }}>
+                <span className="text-xl leading-none">{m.emoji}</span>
+                <div className="flex-1">
+                  <p className="text-xs font-black" style={{ color: 'rgba(255,255,255,0.90)' }}>{m.label}</p>
+                </div>
+                <div className="w-2 h-2 rounded-full" style={{ background: mc.dot, boxShadow: `0 0 6px ${mc.dot}` }} />
               </div>
-              <p className="text-[11px] font-semibold mb-0.5" style={{ color: A.textPri }}>{m.foods}</p>
-              <p className="text-[10px] italic" style={{ color: A.textMut }}>✦ {m.note}</p>
+              {/* Foods */}
+              <div className="px-4 py-3">
+                <p className="text-sm font-bold leading-snug mb-1.5" style={{ color: 'rgba(255,255,255,0.88)' }}>
+                  {m.foods}
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px]" style={{ color: mc.dot }}>✦</span>
+                  <p className="text-[10px] italic" style={{ color: 'rgba(255,255,255,0.45)' }}>{m.note}</p>
+                </div>
+              </div>
             </div>
           )
         })}
       </div>
 
-      {/* Footer */}
-      <div className="px-4 py-2.5 text-center" style={{ borderTop: `1px solid ${A.border}` }}>
-        <p className="text-[9px]" style={{ color: A.textMut }}>
-          Bazuar në studime: J. Psychiatry Neurosci. · Nutrients · Frontiers in Endocrinology
+      {/* Science footer */}
+      <div className="mx-4 mb-4 rounded-xl px-3 py-2.5 flex items-center gap-2"
+        style={{ background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.12)' }}>
+        <span className="text-[11px] shrink-0">🔬</span>
+        <p className="text-[9px] leading-relaxed" style={{ color: A.textMut }}>
+          Burime: <span style={{ color: 'rgba(255,255,255,0.40)' }}>J. Psychiatry Neurosci. · Nutrients · Frontiers in Endocrinology · PubMed</span>
         </p>
       </div>
     </div>
@@ -1353,7 +1391,12 @@ export default function Assistant() {
 
               {/* Tab content */}
               <div>
-                {tab === 'calendar'  && <CalendarView  tasks={tasks}  onAddTask={date => { goTab('tasks') }} />}
+                {tab === 'calendar' && (
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4">
+                    <CalendarView tasks={tasks} onAddTask={() => goTab('tasks')} />
+                    <WeeklyDietCard />
+                  </div>
+                )}
                 {tab === 'tasks'     && <TasksView     tasks={tasks}  setTasks={setTasks} />}
                 {tab === 'reminders' && <RemindersView reminders={reminders} setReminders={setReminders} />}
                 {tab === 'notes'     && <NotesView     notes={notes}  setNotes={setNotes} />}
@@ -1368,7 +1411,6 @@ export default function Assistant() {
               <div className="lg:hidden space-y-4">
                 <div className="h-px" style={{ background: A.border }} />
                 <DailyQuote />
-                <WeeklyDietCard />
                 <RemindersWidget reminders={reminders} onViewAll={() => goTab('reminders')} />
                 <RoutinesWidget routines={routines} setRoutines={setRoutines} />
                 <WeeklyGoalsWidget tasks={tasks} />
@@ -1378,7 +1420,6 @@ export default function Assistant() {
             {/* ── RIGHT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6">
               <DailyQuote />
-              <WeeklyDietCard />
               <RecentNotesWidget notes={notes} onViewAll={() => goTab('notes')} />
               <RemindersWidget reminders={reminders} onViewAll={() => goTab('reminders')} />
               <RoutinesWidget routines={routines} setRoutines={setRoutines} />
