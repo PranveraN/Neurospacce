@@ -32,6 +32,7 @@ const PsikologuYt       = lazy(() => import('./pages/PsikologuYt'))
 const Tests             = lazy(() => import('./pages/Tests'))
 const EvolutionDashboard= lazy(() => import('./pages/EvolutionDashboard'))
 const Parenting         = lazy(() => import('./pages/Parenting'))
+const Assistant         = lazy(() => import('./pages/Assistant'))
 const BookAppointment   = lazy(() => import('./pages/BookAppointment'))
 const Pricing           = lazy(() => import('./pages/Pricing'))
 const About             = lazy(() => import('./pages/About'))
@@ -184,6 +185,7 @@ export default function App() {
                 <Route path="/tests"         element={<Tests />}             />
                 <Route path="/evolution"     element={<EvolutionDashboard />}/>
                 <Route path="/parenting"     element={<Parenting />}         />
+                <Route path="/assistant"     element={<Assistant />}         />
                 <Route path="/book"          element={<Navigate to="/psikologu?tab=book" replace />} />
                 <Route path="/book/:expertId" element={<BookAppointment />}  />
                 <Route path="/pricing"       element={<Pricing />}           />

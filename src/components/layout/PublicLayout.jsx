@@ -117,6 +117,7 @@ function PublicHeader() {
     { to: '/psikologu',  label: 'Psikologu yt' },
     { to: '/tests',      label: 'Teste' },
     { to: '/parenting',  label: 'Familje' },
+    { to: '/assistant',  label: 'Asistenti' },
     { to: '/pricing',    label: 'Planet' },
     { to: '/about',      label: 'Rreth nesh' },
   ]
