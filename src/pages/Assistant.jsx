@@ -277,6 +277,42 @@ function AddTaskModal({ defaultDate, onSave, onClose }) {
   )
 }
 
+// ─── Panel Drawer (slide-in from right) ──────────────────────────────────────
+function PanelDrawer({ title, icon, onClose, children }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const fn = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', fn)
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', fn) }
+  }, [onClose])
+
+  return (
+    <div className="fixed inset-0 z-[350] flex justify-end"
+      style={{ background: 'rgba(4,10,18,0.70)', backdropFilter: 'blur(6px)' }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="w-full max-w-lg h-full flex flex-col overflow-hidden"
+        style={{ background: 'linear-gradient(160deg,#081410,#0c1e16)', borderLeft: '1px solid rgba(52,211,153,0.18)', boxShadow: '-20px 0 60px rgba(0,0,0,0.50)' }}>
+        {/* Header */}
+        <div className="px-6 py-4 flex items-center gap-3 shrink-0" style={{ borderBottom: '1px solid rgba(52,211,153,0.12)' }}>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: A.btn, boxShadow: A.btnGlow }}>
+            {icon}
+          </div>
+          <p className="text-sm font-black flex-1" style={{ color: A.textPri }}>{title}</p>
+          <button onClick={onClose} className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10"
+            style={{ color: 'rgba(255,255,255,0.40)' }}>
+            <X size={14} />
+          </button>
+        </div>
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto px-6 py-5" style={{ scrollbarWidth: 'none' }}>
+          {children}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── GlassCard ────────────────────────────────────────────────────────────────
 function GlassCard({ children, className = '', style = {}, onClick }) {
   return (
@@ -289,13 +325,14 @@ function GlassCard({ children, className = '', style = {}, onClick }) {
 }
 
 // ─── Left: Greeting + Today ───────────────────────────────────────────────────
-function LeftGreeting({ tasks, onAdd }) {
+function LeftGreeting({ tasks, setTasks, onAdd, onOpenAI }) {
   const g = getGreeting()
   const today = todayStr()
   const todayTasks = tasks.filter(t => t.date === today)
   const done = todayTasks.filter(t => t.done).length
   const nowH = new Date().getHours()
   const nextTask = todayTasks.filter(t => !t.done && parseInt(t.time) > nowH)[0]
+  function toggleTask(id) { setTasks(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t)) }
 
   return (
     <div className="space-y-4">
@@ -357,10 +394,11 @@ function LeftGreeting({ tasks, onAdd }) {
             {todayTasks.slice(0, 4).map(task => {
               const cm = CAT_META[task.cat] || CAT_META.personal
               return (
-                <div key={task.id} className="flex items-center gap-2.5 p-2.5 rounded-xl"
-                  style={{ background: task.done ? 'rgba(52,211,153,0.06)' : 'rgba(255,255,255,0.03)', border: `1px solid rgba(52,211,153,0.08)` }}>
+                <button key={task.id} onClick={() => toggleTask(task.id)}
+                  className="w-full flex items-center gap-2.5 p-2.5 rounded-xl text-left transition-all hover:scale-[1.01] active:scale-[0.99]"
+                  style={{ background: task.done ? 'rgba(52,211,153,0.06)' : 'rgba(255,255,255,0.03)', border: `1px solid ${task.done ? 'rgba(52,211,153,0.20)' : 'rgba(52,211,153,0.08)'}` }}>
                   <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0" style={{ background: cm.bg }}>
-                    {cm.emoji}
+                    {task.done ? <CheckCircle size={14} style={{ color: A.accentD }} /> : cm.emoji}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold truncate" style={{ color: task.done ? A.textMut : A.textPri, textDecoration: task.done ? 'line-through' : 'none' }}>
@@ -368,16 +406,17 @@ function LeftGreeting({ tasks, onAdd }) {
                     </p>
                   </div>
                   <span className="text-[10px] shrink-0 font-semibold" style={{ color: A.textMut }}>{task.time}</span>
-                </div>
+                </button>
               )
             })}
           </div>
         )}
 
         {todayTasks.length > 4 && (
-          <button className="w-full mt-2 text-[10px] font-bold py-2 rounded-xl flex items-center justify-center gap-1 transition-colors"
+          <button onClick={() => onAdd(todayStr())}
+            className="w-full mt-2 text-[10px] font-bold py-2 rounded-xl flex items-center justify-center gap-1 transition-colors hover:opacity-80"
             style={{ color: A.accent }}>
-            Shiko të gjitha <ChevronRight size={10} />
+            +{todayTasks.length - 4} të tjera · Shiko të gjitha <ChevronRight size={10} />
           </button>
         )}
       </GlassCard>
@@ -414,9 +453,10 @@ function LeftGreeting({ tasks, onAdd }) {
                   </div>
                 ))}
               </div>
-              <button className="w-full mt-3 text-[10px] font-bold py-2 rounded-xl flex items-center justify-center gap-1"
-                style={{ color: A.accent }}>
-                Shiko analizën time <ChevronRight size={10} />
+              <button onClick={onOpenAI}
+                className="w-full mt-3 text-[10px] font-bold py-2 rounded-xl flex items-center justify-center gap-1 transition-all hover:opacity-80 active:scale-95"
+                style={{ color: A.accent, background: 'rgba(52,211,153,0.07)', border: `1px solid rgba(52,211,153,0.15)` }}>
+                <Sparkles size={10} /> Sugjero ditën time <ChevronRight size={10} />
               </button>
             </>
           )
@@ -1188,10 +1228,16 @@ function WeeklyGoalsWidget({ tasks }) {
 }
 
 // ─── AI Suggest ───────────────────────────────────────────────────────────────
-function AISuggest({ tasks, routines }) {
+function AISuggest({ tasks, routines, externalOpen, onExternalClose }) {
   const [open,    setOpen]    = useState(false)
   const [loading, setLoading] = useState(false)
   const [plan,    setPlan]    = useState(null)
+
+  useEffect(() => {
+    if (externalOpen && !open) generate()
+  }, [externalOpen])
+
+  function close() { setOpen(false); onExternalClose?.() }
 
   function generate() {
     setLoading(true); setPlan(null); setOpen(true)
@@ -1227,7 +1273,7 @@ function AISuggest({ tasks, routines }) {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" onClick={close}>
           <div className="absolute inset-0" style={{ background: 'rgba(8,20,16,0.90)', backdropFilter: 'blur(12px)' }} />
           <div className="relative w-full max-w-md rounded-3xl overflow-hidden"
             style={{ background: 'linear-gradient(160deg,#0c1e16,#081410)', border: `1px solid rgba(52,211,153,0.25)`, boxShadow: '0 24px 80px rgba(0,0,0,0.60)' }}
@@ -1238,7 +1284,7 @@ function AISuggest({ tasks, routines }) {
                   <Sparkles size={16} style={{ color: A.accent }} />
                   <span className="text-sm font-black" style={{ color: A.textPri }}>Plani i ditës — AI</span>
                 </div>
-                <button onClick={() => setOpen(false)} className="w-7 h-7 rounded-lg flex items-center justify-center"
+                <button onClick={close} className="w-7 h-7 rounded-lg flex items-center justify-center"
                   style={{ background: 'rgba(255,255,255,0.07)', color: A.textMut }}>
                   <X size={13} />
                 </button>
@@ -2036,6 +2082,8 @@ export default function Assistant() {
   const [reminders, setReminders] = useLS('ns_ass_reminders', seedReminders)
   const [routines,  setRoutines]  = useLS('ns_ass_routines',  seedRoutines)
   const [addModal,  setAddModal]  = useState({ open: false, date: todayStr() })
+  const [drawer,    setDrawer]    = useState(null) // 'notes' | 'reminders' | 'tasks'
+  const [aiOpen,    setAiOpen]    = useState(false)
 
   function openAdd(date) { setAddModal({ open: true, date: date || todayStr() }) }
   function saveTask(task) { setTasks(prev => [...prev, task]) }
@@ -2048,6 +2096,21 @@ export default function Assistant() {
           onSave={saveTask}
           onClose={() => setAddModal(m => ({ ...m, open: false }))}
         />
+      )}
+      {drawer === 'notes' && (
+        <PanelDrawer title="Shënimet e mia" icon={<FileText size={15} color="white" />} onClose={() => setDrawer(null)}>
+          <NotesView notes={notes} setNotes={setNotes} />
+        </PanelDrawer>
+      )}
+      {drawer === 'reminders' && (
+        <PanelDrawer title="Përkujtime të rëndësishme" icon={<Bell size={15} color="white" />} onClose={() => setDrawer(null)}>
+          <RemindersView reminders={reminders} setReminders={setReminders} />
+        </PanelDrawer>
+      )}
+      {drawer === 'tasks' && (
+        <PanelDrawer title="Të gjitha detyrat" icon={<CheckSquare size={15} color="white" />} onClose={() => setDrawer(null)}>
+          <TasksView tasks={tasks} setTasks={setTasks} />
+        </PanelDrawer>
       )}
       <div className="min-h-screen" style={{ background: A.page }}>
 
@@ -2063,7 +2126,7 @@ export default function Assistant() {
 
             {/* ── LEFT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6 max-h-[calc(100vh-5rem)] overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
-              <LeftGreeting tasks={tasks} onAdd={openAdd} />
+              <LeftGreeting tasks={tasks} setTasks={setTasks} onAdd={openAdd} onOpenAI={() => setAiOpen(true)} />
               <CalendarView tasks={tasks} onAddTask={openAdd} />
             </div>
 
@@ -2093,7 +2156,7 @@ export default function Assistant() {
                   </div>
                   {/* AI button */}
                   <div className="hidden md:block">
-                    <AISuggest tasks={tasks} routines={routines} />
+                    <AISuggest tasks={tasks} routines={routines} externalOpen={aiOpen} onExternalClose={() => setAiOpen(false)} />
                   </div>
                 </div>
               </div>
@@ -2106,7 +2169,7 @@ export default function Assistant() {
 
               {/* Mobile AI button */}
               <div className="lg:hidden">
-                <AISuggest tasks={tasks} routines={routines} />
+                <AISuggest tasks={tasks} routines={routines} externalOpen={aiOpen} onExternalClose={() => setAiOpen(false)} />
               </div>
 
               {/* Mobile calendar */}
@@ -2118,7 +2181,7 @@ export default function Assistant() {
               <div className="lg:hidden space-y-4">
                 <div className="h-px" style={{ background: A.border }} />
                 <DailyQuote />
-                <RemindersWidget reminders={reminders} onViewAll={() => {}} />
+                <RemindersWidget reminders={reminders} onViewAll={() => setDrawer('reminders')} />
                 <RoutinesWidget routines={routines} setRoutines={setRoutines} />
                 <WeeklyGoalsWidget tasks={tasks} />
               </div>
@@ -2127,8 +2190,8 @@ export default function Assistant() {
             {/* ── RIGHT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6">
               <DailyQuote />
-              <RecentNotesWidget notes={notes} onViewAll={() => {}} />
-              <RemindersWidget reminders={reminders} onViewAll={() => {}} />
+              <RecentNotesWidget notes={notes} onViewAll={() => setDrawer('notes')} />
+              <RemindersWidget reminders={reminders} onViewAll={() => setDrawer('reminders')} />
               <RoutinesWidget routines={routines} setRoutines={setRoutines} />
               <WeeklyGoalsWidget tasks={tasks} />
             </div>
