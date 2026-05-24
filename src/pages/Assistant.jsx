@@ -1310,106 +1310,76 @@ function WeeklyDietCard() {
 // ─── Exercise Mood Card ───────────────────────────────────────────────────────
 const EXERCISES = [
   {
-    id: 1,
-    name: 'Ecje e shpejtë',
-    emoji: '🚶',
-    time: '20–30 min',
-    intensity: 'E ulët',
-    benefit: 'Serotonin ↑  Kortizol ↓',
-    benefitColor: '#34d399',
-    photo: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=640&h=300&fit=crop&auto=format',
-    steps: [
-      'Ec me ritëm të qëndrueshëm mesatar',
-      'Mbaj shpinën drejt, shikimet përpara',
-      'Frymëmarrje e thellë me hundë — nxjerr me gojë',
-      'Prefero park, natyrë ose rrugë të qetë',
-    ],
+    id: 1, name: 'Ecje e shpejtë', emoji: '🚶', time: '20–30 min', intensity: 'E ulët',
+    benefit: 'Serotonin ↑  Kortizol ↓', benefitColor: '#34d399',
+    photo: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&h=400&fit=crop&auto=format',
     science: 'Ecja 20 min/ditë rrit serotonin me 30% dhe ul kortizolin (Sharma et al., 2006)',
+    steps: [
+      { text: 'Ec me ritëm të qëndrueshëm mesatar — mos nxito', photo: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Mbaj shpinën drejt, shikimet përpara, supet relaks', photo: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Frymëmarrje e thellë me hundë 4 sek — nxjerr me gojë 6 sek', photo: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Prefero park, natyrë ose rrugë të qetë — larg ekraneve', photo: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=320&fit=crop&auto=format' },
+    ],
   },
   {
-    id: 2,
-    name: 'Joga',
-    emoji: '🧘',
-    time: '15–25 min',
-    intensity: 'E ulët',
-    benefit: 'Ankth ↓  GABA ↑',
-    benefitColor: '#8b5cf6',
-    photo: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=640&h=300&fit=crop&auto=format',
-    steps: [
-      'Pozicioni i fëmijës — 2 min (relaksim i thellë)',
-      'Cat-Cow stretch — 10 lëvizje (shpina)',
-      'Warrior II — 5 frymëmarrje çdo anë',
-      'Shavasana — 5 min (integrimi)',
-    ],
+    id: 2, name: 'Joga', emoji: '🧘', time: '15–25 min', intensity: 'E ulët',
+    benefit: 'Ankth ↓  GABA ↑', benefitColor: '#8b5cf6',
+    photo: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=800&h=400&fit=crop&auto=format',
     science: 'Joga rrit GABA me 27% — po aq efektive sa ilaçet anxiolitike (Streeter et al., 2010)',
+    steps: [
+      { text: 'Pozicioni i fëmijës — gjunjëzohesh, ul ballin në dysheme, mbaj 2 min', photo: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Cat-Cow stretch — katër këmbësh, lëviz shpinën lart-poshtë, 10 herë', photo: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Warrior II — hap këmbët gjerë, krah drejt, 5 frymëmarrje çdo anë', photo: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Shavasana — shtrihesh shpine, mbyll sytë, relaksim total 5 min', photo: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=320&fit=crop&auto=format' },
+    ],
   },
   {
-    id: 3,
-    name: 'HIIT',
-    emoji: '⚡',
-    time: '12–15 min',
-    intensity: 'E lartë',
-    benefit: 'Dopaminë ↑  Endorfina ↑',
-    benefitColor: '#f43f5e',
-    photo: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=640&h=300&fit=crop&auto=format',
+    id: 3, name: 'HIIT', emoji: '⚡', time: '12–15 min', intensity: 'E lartë',
+    benefit: 'Dopaminë ↑  Endorfina ↑', benefitColor: '#f43f5e',
+    photo: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&h=400&fit=crop&auto=format',
+    science: 'HIIT rrit BDNF (faktori neuronal i rritjes) me 32% — "vrapim për trurin" (Raichlen & Alexander, 2017)',
     steps: [
-      '30 sek Squat Jumps → 15 sek pushim',
-      '30 sek Mountain Climbers → 15 sek pushim',
-      '30 sek Burpees → 15 sek pushim',
-      'Përsërit 4–5 herë — nxehë para & ftoh pas',
+      { text: 'Squat Jumps — 30 sek aktive + 15 sek pushim — 4 seri', photo: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Mountain Climbers — 30 sek me ritëm të shpejtë + 15 sek pushim', photo: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Burpees — 30 sek qëndrim + 15 sek pushim — nxeh të gjithë trupin', photo: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Ftohje aktive — shtrihesh, frymëmarrje e thellë, stretch lehtë 3 min', photo: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&h=320&fit=crop&auto=format' },
     ],
-    science: 'HIIT rrit BDNF (faktori i rritjes neuronal) me 32% — "jogging for your brain" (Raichlen & Alexander, 2017)',
   },
   {
-    id: 4,
-    name: 'Vallëzim i lirë',
-    emoji: '💃',
-    time: '10–20 min',
-    intensity: 'Mesatare',
-    benefit: 'Dopaminë ↑  Izolim ↓',
-    benefitColor: '#f59e0b',
-    photo: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=640&h=300&fit=crop&auto=format',
-    steps: [
-      'Zgjidh muzikën që të bën të lumtur',
-      'Lëviz trupin spontanisht — mos gjyko',
-      'Fokusohu tek ritmi, jo tek forma',
-      'Mbyll sytë nëse ndihesh e/i lirë',
-    ],
+    id: 4, name: 'Vallëzim i lirë', emoji: '💃', time: '10–20 min', intensity: 'Mesatare',
+    benefit: 'Dopaminë ↑  Izolim ↓', benefitColor: '#f59e0b',
+    photo: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=800&h=400&fit=crop&auto=format',
     science: 'Vallëzimi aktivizon reward circuits njëlloj si dashuria romantike (Brown et al., 2006 · NeuroImage)',
+    steps: [
+      { text: 'Zgjidh muzikën që të bën të lumtur — volume lart!', photo: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Lëviz trupin spontanisht — mos gjyko veten, je vetëm', photo: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Fokusohu vetëm tek ritmi — lër mendimin të shkojë', photo: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Mbyll sytë, ndie trupin, shijo çdo sekondë të lëvizjes', photo: 'https://images.unsplash.com/photo-1519925610903-381054cc2a1c?w=500&h=320&fit=crop&auto=format' },
+    ],
   },
   {
-    id: 5,
-    name: 'Stërvitje forcash',
-    emoji: '💪',
-    time: '25–35 min',
-    intensity: 'Mesatare-lartë',
-    benefit: 'Testosteron ↑  Vetëbesim ↑',
-    benefitColor: '#14b8a6',
-    photo: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=640&h=300&fit=crop&auto=format',
-    steps: [
-      '3×10 Push-ups (gjoks & krahë)',
-      '3×15 Squats me peshën e trupit',
-      '3×10 Dips (karikë ose karrige)',
-      '3×30 sek Plank (bark & brez)',
-    ],
+    id: 5, name: 'Stërvitje forcash', emoji: '💪', time: '25–35 min', intensity: 'Mesatare-lartë',
+    benefit: 'Testosteron ↑  Vetëbesim ↑', benefitColor: '#14b8a6',
+    photo: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=400&fit=crop&auto=format',
     science: 'Stërvitja e forcës ul simptomat depresive me 45% (Gordon et al., 2018 · JAMA Psychiatry)',
+    steps: [
+      { text: '3 × 10 Push-ups — gjoks e krahë — shpina drejt gjatë gjithë kohës', photo: 'https://images.unsplash.com/photo-1616279969096-54b228b1c0d4?w=500&h=320&fit=crop&auto=format' },
+      { text: '3 × 15 Squats me peshën e trupit — gjunjët mbi majë të këmbës', photo: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=500&h=320&fit=crop&auto=format' },
+      { text: '3 × 10 Dips — duart mbi karrige/karikë, ul trupin ngadalë', photo: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=320&fit=crop&auto=format' },
+      { text: '3 × 30 sek Plank — barka e tensionuar, trupi drejt si dërrasë', photo: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=500&h=320&fit=crop&auto=format' },
+    ],
   },
   {
-    id: 6,
-    name: 'Frymëmarrje 4-7-8',
-    emoji: '🌬️',
-    time: '5–10 min',
-    intensity: 'Shumë e ulët',
-    benefit: 'Stresin ↓↓  Melatonin ↑',
-    benefitColor: '#3b82f6',
-    photo: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=640&h=300&fit=crop&auto=format',
+    id: 6, name: 'Frymëmarrje 4-7-8', emoji: '🌬️', time: '5–10 min', intensity: 'Shumë e ulët',
+    benefit: 'Stres ↓↓  Melatonin ↑', benefitColor: '#3b82f6',
+    photo: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=400&fit=crop&auto=format',
+    science: 'Teknika 4-7-8 aktivizon nervus vagus — ul frekuencën kardiake brenda 60 sek (Zaccaro et al., 2018)',
     steps: [
-      'Ul veten komod — mbyll sytë',
-      'Thith frymë me hundë — 4 sekonda',
-      'Mbaj frymën — 7 sekonda',
-      'Nxjerr ngadalë me gojë — 8 sekonda · Përsërit 4×',
+      { text: 'Ul veten komod — shpina drejt, duart mbi gjunjë, mbyll sytë', photo: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Thith frymë ngadalë me hundë — numëro 4 sekonda', photo: 'https://images.unsplash.com/photo-1559595500-c5f23e2a95b0?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Mbaj frymën — numëro 7 sekonda pa lëvizje', photo: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&h=320&fit=crop&auto=format' },
+      { text: 'Nxjerr ngadalë me gojë — 8 sekonda, si fishkëllimë e butë — Përsërit 4×', photo: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=500&h=320&fit=crop&auto=format' },
     ],
-    science: 'Teknika 4-7-8 aktivizon nervus vagus — ul frekuencën kardiake brenda 60 sekondave (Zaccaro et al., 2018)',
   },
 ]
 
@@ -1421,116 +1391,246 @@ const INTENSITY_META = {
   'Shumë e ulët':     { bg: 'rgba(59,130,246,0.12)',  color: '#3b82f6' },
 }
 
-function ExerciseMoodCard() {
-  const [sel, setSel] = useState(0)
+// ─── Exercise Full-Screen Modal ───────────────────────────────────────────────
+function ExerciseModal({ initialIdx = 0, onClose }) {
+  const [sel, setSel] = useState(initialIdx)
   const ex = EXERCISES[sel]
   const im = INTENSITY_META[ex.intensity] || INTENSITY_META['Mesatare']
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const fn = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', fn)
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', fn) }
+  }, [onClose])
+
   return (
-    <div className="rounded-3xl overflow-hidden flex flex-col" style={{
-      background: 'linear-gradient(160deg,#0e1a26 0%,#0a1520 60%,#070d18 100%)',
-      border: '1px solid rgba(59,130,246,0.18)',
-      boxShadow: '0 8px 40px rgba(59,130,246,0.12)',
-    }}>
-      {/* Header */}
-      <div className="relative px-5 pt-5 pb-4 overflow-hidden">
-        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(99,102,241,0.22),transparent 70%)' }} />
-        <div className="absolute bottom-0 left-0 right-0 h-px"
-          style={{ background: 'linear-gradient(90deg,transparent,rgba(99,102,241,0.30),transparent)' }} />
-        <div className="relative flex items-start justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2.5 mb-1">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-lg shrink-0"
-                style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.20),rgba(59,130,246,0.15))', border: '1px solid rgba(99,102,241,0.25)' }}>
-                🏃
-              </div>
-              <div>
-                <p className="text-base font-black leading-tight" style={{ color: 'rgba(255,255,255,0.95)' }}>Ushtrime Mendore</p>
-                <p className="text-[10px] font-semibold" style={{ color: '#818cf8' }}>Lëvizje · Humor · Shëndet mendor</p>
-              </div>
-            </div>
-            <p className="text-[10px] mt-1 leading-relaxed" style={{ color: A.textMut }}>
-              Ushtrime të verifikuara shkencërisht që balancojnë dopaminën, serotonin &amp; kortizol
-            </p>
-          </div>
-          <div className="shrink-0 text-right">
-            <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: A.textMut }}>Nr</p>
-            <p className="text-2xl font-black leading-none" style={{ color: '#818cf8' }}>{sel + 1}</p>
-            <p className="text-[8px]" style={{ color: A.textMut }}>/ 6</p>
-          </div>
-        </div>
-      </div>
+    <div className="fixed inset-0 z-[300] flex" style={{ background: 'rgba(4,10,18,0.94)', backdropFilter: 'blur(14px)' }}>
 
-      {/* Exercise selector — horizontal pills */}
-      <div className="flex gap-1.5 px-4 py-2.5 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-        {EXERCISES.map((e, i) => (
-          <button key={e.id} onClick={() => setSel(i)}
-            className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-[10px] font-black transition-all duration-200"
-            style={sel === i
-              ? { background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', color: 'white', boxShadow: '0 4px 14px rgba(79,70,229,0.40)', transform: 'scale(1.05)' }
-              : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: A.textMut }
-            }>
-            <span>{e.emoji}</span>
-            <span className="hidden sm:inline">{e.name}</span>
+      {/* ── LEFT sidebar: exercise list ── */}
+      <div className="w-64 shrink-0 flex flex-col overflow-y-auto" style={{ background: 'rgba(14,26,38,0.95)', borderRight: '1px solid rgba(99,102,241,0.15)' }}>
+        {/* top bar */}
+        <div className="px-4 py-4 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(99,102,241,0.15)' }}>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center text-base shrink-0"
+            style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)' }}>🏃</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-black text-white leading-tight">Ushtrime Mendore</p>
+            <p className="text-[9px]" style={{ color: '#818cf8' }}>6 ushtrime · me foto demo</p>
+          </div>
+          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors hover:bg-white/10"
+            style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <X size={14} />
           </button>
-        ))}
+        </div>
+
+        {/* Exercise list */}
+        <div className="flex-1 p-3 space-y-2">
+          {EXERCISES.map((e, i) => {
+            const active = sel === i
+            const im2 = INTENSITY_META[e.intensity] || INTENSITY_META['Mesatare']
+            return (
+              <button key={e.id} onClick={() => setSel(i)}
+                className="w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-all duration-200"
+                style={active
+                  ? { background: 'linear-gradient(135deg,rgba(79,70,229,0.25),rgba(59,130,246,0.15))', border: '1px solid rgba(99,102,241,0.40)' }
+                  : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }
+                }>
+                {/* thumbnail */}
+                <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0">
+                  <img src={e.photo} alt={e.name} className="w-full h-full object-cover" style={{ filter: 'brightness(0.80)' }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-black truncate" style={{ color: active ? 'white' : 'rgba(255,255,255,0.75)' }}>
+                    {e.emoji} {e.name}
+                  </p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="text-[9px] font-bold" style={{ color: im2.color }}>⏱ {e.time}</span>
+                  </div>
+                </div>
+                {active && <div className="w-1 h-6 rounded-full shrink-0" style={{ background: 'linear-gradient(180deg,#4f46e5,#3b82f6)' }} />}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
-      {/* Photo */}
-      <div className="relative mx-4 rounded-2xl overflow-hidden" style={{ height: 180 }}>
-        <img
-          src={ex.photo}
-          alt={ex.name}
-          className="w-full h-full object-cover transition-all duration-500"
-          style={{ filter: 'brightness(0.82) saturate(1.1)' }}
-        />
-        {/* Overlay gradient */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(7,13,24,0.85) 0%,transparent 55%)' }} />
-        {/* Bottom info overlay */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
-          <div className="flex items-end justify-between gap-2">
-            <div>
-              <p className="text-lg font-black leading-tight text-white">{ex.emoji} {ex.name}</p>
-              <p className="text-xs font-semibold mt-0.5" style={{ color: ex.benefitColor }}>{ex.benefit}</p>
-            </div>
-            <div className="flex flex-col items-end gap-1 shrink-0">
-              <span className="text-[10px] font-black px-2.5 py-1 rounded-full text-white"
-                style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                ⏱ {ex.time}
-              </span>
-              <span className="text-[9px] font-black px-2 py-0.5 rounded-full"
-                style={{ background: im.bg, color: im.color, border: `1px solid ${im.color}30` }}>
-                {ex.intensity}
-              </span>
+      {/* ── RIGHT main area ── */}
+      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+
+        {/* Hero photo */}
+        <div className="relative w-full" style={{ height: 280 }}>
+          <img src={ex.photo} alt={ex.name} key={ex.id}
+            className="w-full h-full object-cover transition-all duration-500"
+            style={{ filter: 'brightness(0.70) saturate(1.15)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(4,10,18,1) 0%,rgba(4,10,18,0.30) 55%,transparent 100%)' }} />
+          {/* Close button (also on hero) */}
+          <button onClick={onClose}
+            className="absolute top-4 right-4 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', color: 'white' }}>
+            <X size={15} />
+          </button>
+          {/* Info overlay */}
+          <div className="absolute bottom-0 left-0 right-0 px-8 pb-6">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-3xl font-black text-white leading-tight drop-shadow">{ex.emoji} {ex.name}</p>
+                <p className="text-sm font-bold mt-1" style={{ color: ex.benefitColor }}>{ex.benefit}</p>
+              </div>
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
+                <span className="text-xs font-black px-3 py-1.5 rounded-full text-white"
+                  style={{ background: 'rgba(0,0,0,0.60)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.18)' }}>
+                  ⏱ {ex.time}
+                </span>
+                <span className="text-[10px] font-black px-3 py-1 rounded-full"
+                  style={{ background: im.bg, color: im.color, border: `1px solid ${im.color}40` }}>
+                  {ex.intensity}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Steps */}
-      <div className="px-4 pt-3 pb-2">
-        <p className="text-[10px] font-black uppercase tracking-widest mb-2.5" style={{ color: '#818cf8' }}>Si e bëj</p>
-        <div className="space-y-2">
-          {ex.steps.map((step, i) => (
-            <div key={i} className="flex items-start gap-3">
-              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', fontSize: 9, fontWeight: 900, color: 'white' }}>
-                {i + 1}
+        {/* Content */}
+        <div className="px-8 py-6">
+
+          {/* Steps header */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(99,102,241,0.35),transparent)' }} />
+            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: '#818cf8' }}>Si e bëj — hap pas hapi</p>
+            <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,transparent,rgba(99,102,241,0.35))' }} />
+          </div>
+
+          {/* Steps 2-col grid with photos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            {ex.steps.map((step, i) => (
+              <div key={i} className="rounded-2xl overflow-hidden flex flex-col"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(99,102,241,0.18)' }}>
+                {/* Step photo */}
+                <div className="relative" style={{ height: 180 }}>
+                  <img src={step.photo} alt={`Hapi ${i+1}`}
+                    className="w-full h-full object-cover"
+                    style={{ filter: 'brightness(0.78) saturate(1.10)' }} />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(14,26,38,0.70) 0%,transparent 60%)' }} />
+                  {/* Step number badge */}
+                  <div className="absolute top-3 left-3 w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black text-white"
+                    style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 4px 14px rgba(79,70,229,0.50)' }}>
+                    {i + 1}
+                  </div>
+                </div>
+                {/* Step text */}
+                <div className="px-4 py-3">
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>{step.text}</p>
+                </div>
               </div>
-              <p className="text-[11px] leading-snug flex-1" style={{ color: 'rgba(255,255,255,0.80)' }}>{step}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
 
-      {/* Science note */}
-      <div className="mx-4 mb-4 mt-2 rounded-xl px-3 py-2.5 flex items-start gap-2"
-        style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.18)' }}>
-        <span className="text-[11px] shrink-0 mt-0.5">🔬</span>
-        <p className="text-[9px] leading-relaxed italic" style={{ color: 'rgba(255,255,255,0.38)' }}>{ex.science}</p>
+          {/* Science note */}
+          <div className="rounded-2xl px-5 py-4 flex items-start gap-3"
+            style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.20)' }}>
+            <span className="text-xl shrink-0 mt-0.5">🔬</span>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#818cf8' }}>Studimi shkencor</p>
+              <p className="text-sm leading-relaxed italic" style={{ color: 'rgba(255,255,255,0.60)' }}>{ex.science}</p>
+            </div>
+          </div>
+
+          {/* Navigation between exercises */}
+          <div className="flex gap-3 mt-5">
+            <button onClick={() => setSel(s => Math.max(0, s - 1))}
+              disabled={sel === 0}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all disabled:opacity-30"
+              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.70)', border: '1px solid rgba(255,255,255,0.10)' }}>
+              <ChevronLeft size={14} /> Mëparshmi
+            </button>
+            <div className="flex items-center gap-1.5 flex-1 justify-center">
+              {EXERCISES.map((_, i) => (
+                <button key={i} onClick={() => setSel(i)}
+                  className="rounded-full transition-all duration-200"
+                  style={{ width: sel === i ? 20 : 6, height: 6, background: sel === i ? 'linear-gradient(90deg,#4f46e5,#3b82f6)' : 'rgba(255,255,255,0.18)' }} />
+              ))}
+            </div>
+            <button onClick={() => setSel(s => Math.min(EXERCISES.length - 1, s + 1))}
+              disabled={sel === EXERCISES.length - 1}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black transition-all disabled:opacity-30"
+              style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', color: 'white', boxShadow: '0 4px 14px rgba(79,70,229,0.35)' }}>
+              Tjetri <ChevronRight size={14} />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+  )
+}
+
+// ─── Exercise Preview Card (clickable → opens modal) ─────────────────────────
+function ExerciseMoodCard() {
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalIdx,  setModalIdx]  = useState(0)
+
+  function open(i = 0) { setModalIdx(i); setModalOpen(true) }
+
+  return (
+    <>
+      {modalOpen && <ExerciseModal initialIdx={modalIdx} onClose={() => setModalOpen(false)} />}
+
+      <div className="rounded-3xl overflow-hidden flex flex-col cursor-pointer group transition-all duration-200 hover:scale-[1.01]"
+        onClick={() => open(0)}
+        style={{
+          background: 'linear-gradient(160deg,#0e1a26 0%,#0a1520 60%,#070d18 100%)',
+          border: '1px solid rgba(59,130,246,0.18)',
+          boxShadow: '0 8px 40px rgba(59,130,246,0.12)',
+        }}>
+
+        {/* Header */}
+        <div className="relative px-5 pt-5 pb-4 overflow-hidden">
+          <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full blur-[60px] pointer-events-none"
+            style={{ background: 'radial-gradient(circle,rgba(99,102,241,0.22),transparent 70%)' }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px"
+            style={{ background: 'linear-gradient(90deg,transparent,rgba(99,102,241,0.30),transparent)' }} />
+          <div className="relative flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xl shrink-0"
+              style={{ background: 'linear-gradient(135deg,rgba(99,102,241,0.25),rgba(59,130,246,0.18))', border: '1px solid rgba(99,102,241,0.30)' }}>
+              🏃
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-black" style={{ color: 'rgba(255,255,255,0.95)' }}>Ushtrime Mendore</p>
+              <p className="text-[10px]" style={{ color: '#818cf8' }}>Lëvizje · Humor · Shëndet mendor</p>
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0 text-[10px] font-black px-3 py-1.5 rounded-xl transition-all group-hover:scale-105"
+              style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', color: 'white', boxShadow: '0 4px 14px rgba(79,70,229,0.35)' }}>
+              Hap <ChevronRight size={11} />
+            </div>
+          </div>
+        </div>
+
+        {/* Exercise photo grid preview — 2×3 */}
+        <div className="grid grid-cols-3 gap-1.5 px-4 pb-2">
+          {EXERCISES.map((e, i) => (
+            <button key={e.id}
+              onClick={ev => { ev.stopPropagation(); open(i) }}
+              className="relative rounded-xl overflow-hidden transition-all duration-200 hover:scale-105 hover:z-10"
+              style={{ height: 80 }}>
+              <img src={e.photo} alt={e.name} className="w-full h-full object-cover"
+                style={{ filter: 'brightness(0.70) saturate(1.1)' }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(7,13,24,0.80),transparent 55%)' }} />
+              <div className="absolute bottom-1.5 left-0 right-0 text-center">
+                <p className="text-[9px] font-black text-white leading-tight px-1 truncate">{e.emoji} {e.name}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Footer CTA */}
+        <div className="mx-4 mb-4 rounded-xl px-4 py-2.5 flex items-center justify-between"
+          style={{ background: 'rgba(99,102,241,0.10)', border: '1px solid rgba(99,102,241,0.20)' }}>
+          <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            6 ushtrime · foto demonstruese · bazuar shkencërisht
+          </p>
+          <ChevronRight size={13} style={{ color: '#818cf8' }} />
+        </div>
+      </div>
+    </>
   )
 }
 
