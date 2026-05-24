@@ -98,6 +98,44 @@ const TRENDING = [
   { label: 'Komunikimi i Hapur', n: 86  },
 ]
 
+const CAROUSEL_SLIDES = [
+  {
+    img: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&h=480&fit=crop&auto=format',
+    tag: 'Lidhja Emocionale',
+    title: 'Si të ndërtosh lidhje të sigurt me foshnjën tënde',
+    excerpt: 'Teoria e attachment-it tregon se cilësia e lidhjes në muajt e parë ndikon në gjithë jetën.',
+    readTime: '3 min', articleId: 1,
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=900&h=480&fit=crop&auto=format',
+    tag: 'Disiplina',
+    title: "Si t'i ndihmosh fëmijës me detyrat pa bërtitur",
+    excerpt: 'Beteja e detyrave është reale, por zgjidhja nuk është presioni — është mjedisi.',
+    readTime: '3 min', articleId: 4,
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=900&h=480&fit=crop&auto=format',
+    tag: 'Adoleshenca',
+    title: 'Adoleshenti dhe rrjetet sociale: kufij pa luftë',
+    excerpt: 'Komunikimi i hapur mbi teknologjinë ndërton besim dhe mban dialogun gjallë.',
+    readTime: '4 min', articleId: 6,
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=900&h=480&fit=crop&auto=format',
+    tag: 'Gjumi',
+    title: 'Rutina e gjumit: Pse është jetike dhe si ta vendosësh',
+    excerpt: 'Fëmijët me rutinë gjumi të strukturuar kanë nivel më të ulët kortizoli.',
+    readTime: '4 min', articleId: 2,
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?w=900&h=480&fit=crop&auto=format',
+    tag: 'Bullizmi',
+    title: 'Kur fëmija yt ka frikë të shkojë në shkollë',
+    excerpt: 'Shenjat e hershme të bullizmit dhe si të ndërhysh me dinjitet dhe efektivitet.',
+    readTime: '5 min', articleId: 8,
+  },
+]
+
 const PLAN_SUGGESTIONS = [
   'Bëni 10 minuta lojë të lirë me fëmijën çdo ditë.',
   'Vendosni 1 rregull të ri familjar këtë javë bashkë.',
@@ -838,6 +876,130 @@ function TrendingTopicsWidget() {
   )
 }
 
+// ─── Photo Carousel ──────────────────────────────────────────────────────────
+function PhotoCarousel({ onOpenArticle }) {
+  const [idx,    setIdx]    = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [animDir, setAnimDir] = useState(1)
+  const [visible, setVisible] = useState(true)
+
+  function go(next) {
+    const dir = next > idx ? 1 : -1
+    setAnimDir(dir); setVisible(false)
+    setTimeout(() => { setIdx((next + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length); setVisible(true) }, 220)
+  }
+
+  useEffect(() => {
+    if (paused) return
+    const id = setInterval(() => go(idx + 1), 5000)
+    return () => clearInterval(id)
+  }, [idx, paused])
+
+  const s = CAROUSEL_SLIDES[idx]
+
+  return (
+    <div
+      className="relative rounded-3xl overflow-hidden"
+      style={{ height: 340, boxShadow: '0 12px 50px rgba(0,0,0,0.50)' }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Preload next image invisibly */}
+      {CAROUSEL_SLIDES.map((sl, i) => i !== idx && (
+        <img key={i} src={sl.img} alt="" className="hidden" />
+      ))}
+
+      {/* Background image */}
+      <div
+        className="absolute inset-0 transition-all duration-500"
+        style={{
+          backgroundImage: `url(${s.img})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'scale(1)' : `scale(1.03) translateX(${animDir * 12}px)`,
+          transition: 'opacity 0.22s ease, transform 0.22s ease',
+        }}
+      />
+
+      {/* Gradient overlays */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(1,28,20,0.97) 0%, rgba(1,28,20,0.55) 55%, rgba(1,28,20,0.15) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(1,28,20,0.30) 0%, transparent 60%)' }} />
+
+      {/* Dot grid texture */}
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: G.dot, backgroundSize: '24px 24px', opacity: 0.5 }} />
+
+      {/* Nav arrows */}
+      {[
+        { dir: -1, icon: ChevronLeft,  pos: 'left-3' },
+        { dir:  1, icon: ChevronRight, pos: 'right-3' },
+      ].map(({ dir, icon: Icon, pos }) => (
+        <button
+          key={pos}
+          onClick={() => go(idx + dir)}
+          className={`absolute top-1/2 -translate-y-1/2 ${pos} z-20 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95`}
+          style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)', color: 'white' }}
+        >
+          <Icon size={16} />
+        </button>
+      ))}
+
+      {/* Content */}
+      <div
+        className="absolute bottom-0 left-0 right-0 p-5 transition-all duration-220"
+        style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(10px)' }}
+      >
+        {/* Tag */}
+        <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full inline-block mb-2"
+          style={{ background: 'rgba(52,211,153,0.25)', color: G.accent, backdropFilter: 'blur(6px)', border: '1px solid rgba(52,211,153,0.30)' }}>
+          ⭐ {s.tag}
+        </span>
+
+        {/* Title */}
+        <h3 className="text-lg font-black text-white leading-snug mb-1.5" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.60)' }}>
+          {s.title}
+        </h3>
+
+        {/* Excerpt */}
+        <p className="text-xs leading-relaxed mb-3 max-w-lg" style={{ color: 'rgba(255,255,255,0.65)' }}>
+          {s.excerpt}
+        </p>
+
+        {/* Footer row */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="flex items-center gap-1 text-[10px]" style={{ color: 'rgba(255,255,255,0.50)' }}>
+              <Clock size={9} /> {s.readTime}
+            </span>
+            {/* Dot indicators */}
+            <div className="flex gap-1.5 items-center ml-2">
+              {CAROUSEL_SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => go(i)}
+                  className="rounded-full transition-all duration-300"
+                  style={{ width: i === idx ? 18 : 5, height: 5, background: i === idx ? G.accent : 'rgba(255,255,255,0.30)' }}
+                />
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              const art = PARENTING_ARTICLES.find(a => a.id === s.articleId)
+              if (art) onOpenArticle(art)
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black text-white transition-all active:scale-95 hover:opacity-90 shrink-0"
+            style={{ background: G.btn, boxShadow: G.btnGlow }}
+          >
+            Lexo artikullin <ChevronRight size={12} />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Featured Article ─────────────────────────────────────────────────────────
 function FeaturedArticle({ article, onExpand }) {
   if (!article) return null
@@ -957,7 +1119,6 @@ export default function Parenting() {
   const [tab,             setTab]             = useState('articles')
   const [filterCat,       setFilterCat]       = useState('all')
   const [pendingAIPrompt, setPendingAIPrompt] = useState(null)
-  const [featOpen,        setFeatOpen]        = useState(false)
   const [openArticle,     setOpenArticle]     = useState(null)
   const centerRef = useRef(null)
 
@@ -967,7 +1128,6 @@ export default function Parenting() {
     centerRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const featured = PARENTING_ARTICLES[1] || PARENTING_ARTICLES[0]
   const filtered = filterCat === 'all'
     ? PARENTING_ARTICLES
     : PARENTING_ARTICLES.filter(a => a.categoryId === filterCat)
@@ -1038,16 +1198,8 @@ export default function Parenting() {
                 </div>
               </div>
 
-              {/* Featured Article */}
-              <FeaturedArticle article={featured} onExpand={() => setFeatOpen(o => !o)} />
-              {featOpen && featured && (
-                <div className="rounded-2xl p-5 space-y-3" style={{ background: 'rgba(5,150,105,0.08)', border: `1px solid rgba(52,211,153,0.20)` }}>
-                  <p className="text-sm font-semibold leading-relaxed" style={{ color: G.accent }}>{featured.excerpt}</p>
-                  {(featured.content || []).map((para, i) => (
-                    <p key={i} className="text-sm leading-relaxed" style={{ color: G.textSec }}>{para}</p>
-                  ))}
-                </div>
-              )}
+              {/* Photo Carousel */}
+              <PhotoCarousel onOpenArticle={a => setOpenArticle(a)} />
 
               {/* Age Categories */}
               <AgeCategorySection onFilter={id => { setFilterCat(id); setTab('articles') }} />
