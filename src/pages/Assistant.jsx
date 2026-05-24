@@ -130,6 +130,153 @@ function seedRoutines() {
   ]
 }
 
+// ─── Add Task Modal ───────────────────────────────────────────────────────────
+function AddTaskModal({ defaultDate, onSave, onClose }) {
+  const [title,    setTitle]    = useState('')
+  const [date,     setDate]     = useState(defaultDate || todayStr())
+  const [time,     setTime]     = useState('')
+  const [cat,      setCat]      = useState('personal')
+  const [priority, setPriority] = useState('medium')
+  const [desc,     setDesc]     = useState('')
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const fn = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', fn)
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', fn) }
+  }, [onClose])
+
+  function submit() {
+    if (!title.trim()) return
+    onSave({ id: uid(), title: title.trim(), desc: desc.trim(), time, date, cat, priority, done: false })
+    onClose()
+  }
+
+  const inp = {
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(52,211,153,0.18)',
+    color: 'rgba(255,255,255,0.90)',
+    borderRadius: 12,
+    padding: '9px 12px',
+    fontSize: 13,
+    width: '100%',
+    outline: 'none',
+  }
+
+  return (
+    <div className="fixed inset-0 z-[400] flex items-center justify-center p-4"
+      style={{ background: 'rgba(4,10,18,0.80)', backdropFilter: 'blur(12px)' }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+
+      <div className="w-full max-w-md rounded-3xl overflow-hidden"
+        style={{ background: 'linear-gradient(160deg,#0a1f18,#0d2a1e)', border: '1px solid rgba(52,211,153,0.22)', boxShadow: '0 24px 60px rgba(5,150,105,0.30)' }}>
+
+        {/* Header */}
+        <div className="px-6 py-5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(52,211,153,0.12)' }}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: A.btn, boxShadow: A.btnGlow }}>
+            <Plus size={17} color="white" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-black" style={{ color: A.textPri }}>Aktivitet i ri</p>
+            <p className="text-[10px]" style={{ color: A.textMut }}>Shto në kalendar</p>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10"
+            style={{ color: 'rgba(255,255,255,0.40)' }}>
+            <X size={14} />
+          </button>
+        </div>
+
+        {/* Form */}
+        <div className="px-6 py-5 space-y-4">
+
+          {/* Title */}
+          <div>
+            <label className="block text-[10px] font-black uppercase tracking-widest mb-1.5" style={{ color: A.accent }}>Titulli *</label>
+            <input value={title} onChange={e => setTitle(e.target.value)}
+              placeholder="p.sh. Ushtrim 30 minuta..."
+              style={inp}
+              onKeyDown={e => { if (e.key === 'Enter') submit() }}
+              autoFocus />
+          </div>
+
+          {/* Date + Time row */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest mb-1.5" style={{ color: A.accent }}>Data</label>
+              <input type="date" value={date} onChange={e => setDate(e.target.value)}
+                style={{ ...inp, colorScheme: 'dark' }} />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest mb-1.5" style={{ color: A.accent }}>Ora</label>
+              <input type="time" value={time} onChange={e => setTime(e.target.value)}
+                style={{ ...inp, colorScheme: 'dark' }} />
+            </div>
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-[10px] font-black uppercase tracking-widest mb-1.5" style={{ color: A.accent }}>Kategoria</label>
+            <div className="grid grid-cols-3 gap-2">
+              {Object.entries(CAT_META).map(([key, cm]) => (
+                <button key={key} onClick={() => setCat(key)}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] font-bold transition-all"
+                  style={cat === key
+                    ? { background: cm.bg, border: `1px solid ${cm.color}60`, color: cm.color }
+                    : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.55)' }
+                  }>
+                  {cm.emoji} {cm.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Priority */}
+          <div>
+            <label className="block text-[10px] font-black uppercase tracking-widest mb-1.5" style={{ color: A.accent }}>Prioriteti</label>
+            <div className="flex gap-2">
+              {Object.entries(PRIORITY_META).map(([key, pm]) => (
+                <button key={key} onClick={() => setPriority(key)}
+                  className="flex-1 py-2 rounded-xl text-[11px] font-bold transition-all"
+                  style={priority === key
+                    ? { background: pm.bg, border: `1px solid ${pm.color}60`, color: pm.color }
+                    : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)' }
+                  }>
+                  {pm.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Optional note */}
+          <div>
+            <label className="block text-[10px] font-black uppercase tracking-widest mb-1.5" style={{ color: A.accent }}>Shënim (opsional)</label>
+            <textarea value={desc} onChange={e => setDesc(e.target.value)}
+              placeholder="Detaje shtesë..."
+              rows={2}
+              style={{ ...inp, resize: 'none', lineHeight: 1.5 }} />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="px-6 pb-6 flex gap-3">
+          <button onClick={onClose}
+            className="flex-1 py-3 rounded-2xl text-sm font-black transition-all hover:bg-white/10"
+            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.60)', border: '1px solid rgba(255,255,255,0.10)' }}>
+            Anulo
+          </button>
+          <button onClick={submit}
+            disabled={!title.trim()}
+            className="flex-2 flex-1 py-3 rounded-2xl text-sm font-black transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
+            style={{ background: A.btn, color: 'white', boxShadow: title.trim() ? A.btnGlow : 'none' }}>
+            + Shto aktivitetin
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── GlassCard ────────────────────────────────────────────────────────────────
 function GlassCard({ children, className = '', style = {}, onClick }) {
   return (
@@ -142,7 +289,7 @@ function GlassCard({ children, className = '', style = {}, onClick }) {
 }
 
 // ─── Left: Greeting + Today ───────────────────────────────────────────────────
-function LeftGreeting({ tasks }) {
+function LeftGreeting({ tasks, onAdd }) {
   const g = getGreeting()
   const today = todayStr()
   const todayTasks = tasks.filter(t => t.date === today)
@@ -193,7 +340,8 @@ function LeftGreeting({ tasks }) {
             <p className="text-sm font-black" style={{ color: A.textPri }}>Sot</p>
             <p className="text-[10px]" style={{ color: A.textMut }}>{new Date().toLocaleDateString('sq-AL', { weekday:'long', day:'numeric', month:'long' })}</p>
           </div>
-          <button className="flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-lg transition-all active:scale-95"
+          <button onClick={() => onAdd(todayStr())}
+            className="flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-lg transition-all active:scale-95 hover:opacity-80"
             style={{ background: 'rgba(52,211,153,0.12)', color: A.accent, border: `1px solid rgba(52,211,153,0.20)` }}>
             <Plus size={11} /> Shto
           </button>
@@ -1887,9 +2035,20 @@ export default function Assistant() {
   const [notes,     setNotes]     = useLS('ns_ass_notes',     seedNotes)
   const [reminders, setReminders] = useLS('ns_ass_reminders', seedReminders)
   const [routines,  setRoutines]  = useLS('ns_ass_routines',  seedRoutines)
+  const [addModal,  setAddModal]  = useState({ open: false, date: todayStr() })
+
+  function openAdd(date) { setAddModal({ open: true, date: date || todayStr() }) }
+  function saveTask(task) { setTasks(prev => [...prev, task]) }
 
   return (
     <PublicLayout>
+      {addModal.open && (
+        <AddTaskModal
+          defaultDate={addModal.date}
+          onSave={saveTask}
+          onClose={() => setAddModal(m => ({ ...m, open: false }))}
+        />
+      )}
       <div className="min-h-screen" style={{ background: A.page }}>
 
         {/* Aurora */}
@@ -1904,8 +2063,8 @@ export default function Assistant() {
 
             {/* ── LEFT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6 max-h-[calc(100vh-5rem)] overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
-              <LeftGreeting tasks={tasks} />
-              <CalendarView tasks={tasks} onAddTask={() => {}} />
+              <LeftGreeting tasks={tasks} onAdd={openAdd} />
+              <CalendarView tasks={tasks} onAddTask={openAdd} />
             </div>
 
             {/* ── CENTER ── */}
@@ -1952,7 +2111,7 @@ export default function Assistant() {
 
               {/* Mobile calendar */}
               <div className="lg:hidden">
-                <CalendarView tasks={tasks} onAddTask={() => {}} />
+                <CalendarView tasks={tasks} onAddTask={openAdd} />
               </div>
 
               {/* Mobile right panels */}
