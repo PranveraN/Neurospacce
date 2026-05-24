@@ -294,54 +294,131 @@ function JourneyWidget() {
   )
 }
 
-// ─── Article Card ─────────────────────────────────────────────────────────────
-function ArticleCard({ article }) {
-  const [open, setOpen] = useState(false)
+// ─── Article Modal ────────────────────────────────────────────────────────────
+function ArticleModal({ article, category, onClose }) {
+  useEffect(() => {
+    const fn = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', fn)
+    document.body.style.overflow = 'hidden'
+    return () => { window.removeEventListener('keydown', fn); document.body.style.overflow = '' }
+  }, [onClose])
+
   return (
-    <div
-      className="rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 group"
-      style={{
-        background: open ? 'rgba(5,150,105,0.10)' : G.card,
-        border: `1px solid ${open ? 'rgba(52,211,153,0.30)' : G.border}`,
-        borderLeft: `3px solid ${G.accentD}`,
-      }}
-      onClick={() => setOpen(o => !o)}
-    >
-      <div className="p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0 transition-transform duration-200 group-hover:scale-105"
-            style={{ background: 'rgba(52,211,153,0.12)', border: `1px solid rgba(52,211,153,0.20)` }}>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0" style={{ background: 'rgba(1,28,20,0.85)', backdropFilter: 'blur(12px)' }} />
+      <div
+        className="relative w-full max-w-xl max-h-[85vh] flex flex-col rounded-3xl overflow-hidden"
+        style={{ background: 'linear-gradient(160deg,#022c22,#011c14)', border: `1px solid rgba(52,211,153,0.25)`, boxShadow: '0 24px 80px rgba(0,0,0,0.60)' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Aurora */}
+        <div className="absolute -top-10 -right-10 w-52 h-52 rounded-full blur-[60px] pointer-events-none opacity-40"
+          style={{ background: 'radial-gradient(circle,rgba(52,211,153,0.35),transparent 70%)' }} />
+
+        {/* Header */}
+        <div className="relative flex items-start gap-4 p-5 pb-4 shrink-0" style={{ borderBottom: `1px solid rgba(52,211,153,0.12)` }}>
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0"
+            style={{ background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.22)' }}>
             {article.emoji}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold leading-snug mb-1.5" style={{ color: G.textPri }}>{article.title}</p>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="flex items-center gap-1 text-[10px] font-medium" style={{ color: G.textMut }}>
+          <div className="flex-1 min-w-0 pr-8">
+            {category && (
+              <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full inline-block mb-1.5"
+                style={{ background: 'rgba(52,211,153,0.15)', color: G.accent }}>
+                {category.emoji} {category.label}
+              </span>
+            )}
+            <h2 className="text-base font-black leading-snug" style={{ color: G.textPri }}>{article.title}</h2>
+            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+              <span className="flex items-center gap-1 text-[10px]" style={{ color: G.textMut }}>
                 <Clock size={9} /> {article.readTime}
               </span>
-              {article.tags.slice(0, 2).map(t => (
-                <span key={t} className="text-[10px] px-2 py-0.5 rounded-full font-semibold"
-                  style={{ background: 'rgba(52,211,153,0.12)', color: G.accent }}>{t}</span>
+              {article.tags.map(t => (
+                <span key={t} className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold"
+                  style={{ background: 'rgba(52,211,153,0.10)', color: G.accent }}>{t}</span>
               ))}
             </div>
           </div>
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200"
-            style={{ background: open ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.05)', color: open ? G.accent : G.textMut }}>
-            <ChevronRight size={13} style={{ transform: open ? 'rotate(90deg)' : 'rotate(0)', transition: 'transform 0.2s' }} />
-          </div>
+          <button onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-xl flex items-center justify-center transition-colors"
+            style={{ background: 'rgba(255,255,255,0.07)', color: G.textMut }}>
+            <ChevronRight size={14} style={{ transform: 'rotate(-135deg)' }} />
+          </button>
         </div>
-        {open && (
-          <div className="mt-3 pt-3 space-y-3" style={{ borderTop: `1px solid rgba(52,211,153,0.15)` }}>
-            <EditableText id={`pa-${article.id}-ex`} as="p" className="text-sm font-semibold leading-relaxed" style={{ color: G.accent }}>
-              {article.excerpt}
-            </EditableText>
-            {(article.content || []).map((para, i) => (
-              <EditableText key={i} id={`pa-${article.id}-p${i}`} as="p" multiline className="text-sm leading-relaxed" style={{ color: G.textSec }}>
-                {para}
-              </EditableText>
+
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto p-5 space-y-4">
+          <p className="text-sm font-semibold leading-relaxed" style={{ color: G.accent }}>{article.excerpt}</p>
+          {(article.content || []).map((para, i) => (
+            <p key={i} className="text-sm leading-[1.8]" style={{ color: G.textSec }}>{para}</p>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="px-5 py-3 shrink-0 flex gap-3" style={{ borderTop: `1px solid rgba(52,211,153,0.12)` }}>
+          <button onClick={onClose}
+            className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95"
+            style={{ background: 'rgba(52,211,153,0.10)', border: `1px solid rgba(52,211,153,0.20)`, color: G.accent }}>
+            ← Kthehu
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Article Card ─────────────────────────────────────────────────────────────
+function ArticleCard({ article, category, onOpen }) {
+  return (
+    <div
+      className="rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 group hover:scale-[1.02] hover:-translate-y-0.5"
+      style={{ background: G.card, border: `1px solid ${G.border}` }}
+      onClick={onOpen}
+    >
+      {/* Top accent bar */}
+      <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg,${G.accentD},transparent 70%)` }} />
+
+      <div className="p-4">
+        {/* Category badge */}
+        {category && (
+          <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full inline-block mb-2.5"
+            style={{ background: 'rgba(52,211,153,0.10)', color: G.accent }}>
+            {category.emoji} {category.label}
+          </span>
+        )}
+
+        {/* Emoji + title */}
+        <div className="flex items-start gap-3 mb-3">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform duration-200 group-hover:scale-110"
+            style={{ background: 'rgba(52,211,153,0.12)', border: `1px solid rgba(52,211,153,0.20)` }}>
+            {article.emoji}
+          </div>
+          <p className="text-sm font-bold leading-snug pt-0.5 flex-1 min-w-0" style={{ color: G.textPri }}>
+            {article.title}
+          </p>
+        </div>
+
+        {/* Excerpt */}
+        <p className="text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: G.textSec }}>
+          {article.excerpt}
+        </p>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="flex items-center gap-1 text-[10px] font-medium" style={{ color: G.textMut }}>
+              <Clock size={9} /> {article.readTime}
+            </span>
+            {article.tags.slice(0, 2).map(t => (
+              <span key={t} className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold"
+                style={{ background: 'rgba(52,211,153,0.10)', color: G.accent }}>{t}</span>
             ))}
           </div>
-        )}
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:scale-110"
+            style={{ background: 'rgba(52,211,153,0.12)', color: G.accent }}>
+            <ChevronRight size={13} />
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -881,6 +958,7 @@ export default function Parenting() {
   const [filterCat,       setFilterCat]       = useState('all')
   const [pendingAIPrompt, setPendingAIPrompt] = useState(null)
   const [featOpen,        setFeatOpen]        = useState(false)
+  const [openArticle,     setOpenArticle]     = useState(null)
   const centerRef = useRef(null)
 
   function goToAI(prompt) {
@@ -1020,8 +1098,15 @@ export default function Parenting() {
                       </div>
                     </div>
                     <p className="text-[11px] font-semibold" style={{ color: G.textMut }}>{filtered.length} artikuj</p>
-                    <div className="space-y-3">
-                      {filtered.map(a => <ArticleCard key={a.id} article={a} />)}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {filtered.map(a => (
+                        <ArticleCard
+                          key={a.id}
+                          article={a}
+                          category={PARENT_CATEGORIES.find(c => c.id === a.categoryId)}
+                          onOpen={() => setOpenArticle(a)}
+                        />
+                      ))}
                     </div>
                   </div>
                 )}
@@ -1077,6 +1162,13 @@ export default function Parenting() {
           </div>
         </div>
       </div>
+      {openArticle && (
+        <ArticleModal
+          article={openArticle}
+          category={PARENT_CATEGORIES.find(c => c.id === openArticle.categoryId)}
+          onClose={() => setOpenArticle(null)}
+        />
+      )}
     </PublicLayout>
   )
 }
