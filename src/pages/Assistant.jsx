@@ -1635,21 +1635,11 @@ function ExerciseMoodCard() {
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
-const CENTER_TABS = [
-  { id: 'calendar',   label: 'Kalendari',    icon: CalendarDays },
-  { id: 'tasks',      label: 'Detyrat',      icon: CheckSquare  },
-  { id: 'reminders',  label: 'Përkujtimet',  icon: Bell         },
-  { id: 'notes',      label: 'Shënimet',     icon: FileText     },
-]
-
 export default function Assistant() {
-  const [tab,       setTab]       = useState('calendar')
   const [tasks,     setTasks]     = useLS('ns_ass_tasks',     seedTasks)
   const [notes,     setNotes]     = useLS('ns_ass_notes',     seedNotes)
   const [reminders, setReminders] = useLS('ns_ass_reminders', seedReminders)
   const [routines,  setRoutines]  = useLS('ns_ass_routines',  seedRoutines)
-
-  function goTab(t) { setTab(t) }
 
   return (
     <PublicLayout>
@@ -1668,7 +1658,7 @@ export default function Assistant() {
             {/* ── LEFT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6 max-h-[calc(100vh-5rem)] overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
               <LeftGreeting tasks={tasks} />
-              <CalendarView tasks={tasks} onAddTask={() => goTab('tasks')} />
+              <CalendarView tasks={tasks} onAddTask={() => {}} />
             </div>
 
             {/* ── CENTER ── */}
@@ -1702,32 +1692,10 @@ export default function Assistant() {
                 </div>
               </div>
 
-              {/* Center tabs */}
-              <div className="rounded-2xl p-1.5 flex gap-1" style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${A.border}` }}>
-                {CENTER_TABS.map(({ id, label, icon: Icon }) => (
-                  <button key={id} onClick={() => goTab(id)}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[11px] font-bold transition-all duration-200"
-                    style={tab === id
-                      ? { background: A.btn, color: 'white', boxShadow: A.btnGlow }
-                      : { color: A.textMut }
-                    }>
-                    <Icon size={13} strokeWidth={tab === id ? 2.5 : 1.8} />
-                    <span className="hidden sm:inline">{label}</span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Tab content */}
-              <div>
-                {tab === 'calendar' && (
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                    <WeeklyDietCard />
-                    <ExerciseMoodCard />
-                  </div>
-                )}
-                {tab === 'tasks'     && <TasksView     tasks={tasks}  setTasks={setTasks} />}
-                {tab === 'reminders' && <RemindersView reminders={reminders} setReminders={setReminders} />}
-                {tab === 'notes'     && <NotesView     notes={notes}  setNotes={setNotes} />}
+              {/* Main content — Diet & Exercise always visible */}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                <WeeklyDietCard />
+                <ExerciseMoodCard />
               </div>
 
               {/* Mobile AI button */}
@@ -1735,16 +1703,16 @@ export default function Assistant() {
                 <AISuggest tasks={tasks} routines={routines} />
               </div>
 
-              {/* Mobile calendar (visible only on mobile) */}
+              {/* Mobile calendar */}
               <div className="lg:hidden">
-                <CalendarView tasks={tasks} onAddTask={() => goTab('tasks')} />
+                <CalendarView tasks={tasks} onAddTask={() => {}} />
               </div>
 
               {/* Mobile right panels */}
               <div className="lg:hidden space-y-4">
                 <div className="h-px" style={{ background: A.border }} />
                 <DailyQuote />
-                <RemindersWidget reminders={reminders} onViewAll={() => goTab('reminders')} />
+                <RemindersWidget reminders={reminders} onViewAll={() => {}} />
                 <RoutinesWidget routines={routines} setRoutines={setRoutines} />
                 <WeeklyGoalsWidget tasks={tasks} />
               </div>
@@ -1753,8 +1721,8 @@ export default function Assistant() {
             {/* ── RIGHT ── */}
             <div className="hidden lg:flex flex-col gap-4 w-72 shrink-0 sticky top-6">
               <DailyQuote />
-              <RecentNotesWidget notes={notes} onViewAll={() => goTab('notes')} />
-              <RemindersWidget reminders={reminders} onViewAll={() => goTab('reminders')} />
+              <RecentNotesWidget notes={notes} onViewAll={() => {}} />
+              <RemindersWidget reminders={reminders} onViewAll={() => {}} />
               <RoutinesWidget routines={routines} setRoutines={setRoutines} />
               <WeeklyGoalsWidget tasks={tasks} />
             </div>
