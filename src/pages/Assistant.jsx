@@ -1393,7 +1393,11 @@ const INTENSITY_META = {
 
 // ─── Exercise Full-Screen Modal ───────────────────────────────────────────────
 function ExerciseModal({ initialIdx = 0, onClose }) {
-  const [sel, setSel] = useState(initialIdx)
+  const [sel, setSel]       = useState(initialIdx)
+  const [photos, setPhotos] = useLS('ns_ex_custom_photos', () => ({}))
+  const fileRef             = useRef(null)
+  const uploadTarget        = useRef(null) // { exId, stepIdx }
+
   const ex = EXERCISES[sel]
   const im = INTENSITY_META[ex.intensity] || INTENSITY_META['Mesatare']
 
@@ -1404,8 +1408,36 @@ function ExerciseModal({ initialIdx = 0, onClose }) {
     return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', fn) }
   }, [onClose])
 
+  function openUpload(exId, stepIdx) {
+    uploadTarget.current = { exId, stepIdx }
+    fileRef.current.value = ''
+    fileRef.current.click()
+  }
+
+  function handleFile(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const key = `${uploadTarget.current.exId}_${uploadTarget.current.stepIdx}`
+      setPhotos(prev => ({ ...prev, [key]: ev.target.result }))
+    }
+    reader.readAsDataURL(file)
+  }
+
+  function getStepPhoto(exId, stepIdx, fallback) {
+    return photos[`${exId}_${stepIdx}`] || fallback
+  }
+
+  function removePhoto(exId, stepIdx) {
+    const key = `${exId}_${stepIdx}`
+    setPhotos(prev => { const n = { ...prev }; delete n[key]; return n })
+  }
+
   return (
     <div className="fixed inset-0 z-[300] flex" style={{ background: 'rgba(4,10,18,0.94)', backdropFilter: 'blur(14px)' }}>
+      {/* Hidden file input */}
+      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
 
       {/* ── LEFT sidebar: exercise list ── */}
       <div className="w-64 shrink-0 flex flex-col overflow-y-auto" style={{ background: 'rgba(14,26,38,0.95)', borderRight: '1px solid rgba(99,102,241,0.15)' }}>
@@ -1502,27 +1534,67 @@ function ExerciseModal({ initialIdx = 0, onClose }) {
 
           {/* Steps 2-col grid with photos */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            {ex.steps.map((step, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden flex flex-col"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(99,102,241,0.18)' }}>
-                {/* Step photo */}
-                <div className="relative" style={{ height: 180 }}>
-                  <img src={step.photo} alt={`Hapi ${i+1}`}
-                    className="w-full h-full object-cover"
-                    style={{ filter: 'brightness(0.78) saturate(1.10)' }} />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(14,26,38,0.70) 0%,transparent 60%)' }} />
-                  {/* Step number badge */}
-                  <div className="absolute top-3 left-3 w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black text-white"
-                    style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 4px 14px rgba(79,70,229,0.50)' }}>
-                    {i + 1}
+            {ex.steps.map((step, i) => {
+              const customPhoto = photos[`${ex.id}_${i}`]
+              const src = customPhoto || step.photo
+              const isCustom = !!customPhoto
+              return (
+                <div key={i} className="rounded-2xl overflow-hidden flex flex-col group/step"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${isCustom ? 'rgba(99,102,241,0.45)' : 'rgba(99,102,241,0.18)'}` }}>
+                  {/* Step photo */}
+                  <div className="relative" style={{ height: 180 }}>
+                    <img src={src} alt={`Hapi ${i+1}`}
+                      className="w-full h-full object-cover transition-all duration-300"
+                      style={{ filter: 'brightness(0.78) saturate(1.10)' }} />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(14,26,38,0.70) 0%,transparent 60%)' }} />
+
+                    {/* Step number badge */}
+                    <div className="absolute top-3 left-3 w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black text-white"
+                      style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 4px 14px rgba(79,70,229,0.50)' }}>
+                      {i + 1}
+                    </div>
+
+                    {/* Custom badge */}
+                    {isCustom && (
+                      <div className="absolute top-3 right-3 text-[9px] font-black px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(79,70,229,0.80)', color: 'white', backdropFilter: 'blur(6px)' }}>
+                        ✓ E ngarkuar
+                      </div>
+                    )}
+
+                    {/* Upload overlay — visible on hover */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover/step:opacity-100 transition-opacity duration-200"
+                      style={{ background: 'rgba(4,10,18,0.65)', backdropFilter: 'blur(4px)' }}>
+                      <button
+                        onClick={() => openUpload(ex.id, i)}
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black text-white transition-all active:scale-95"
+                        style={{ background: 'linear-gradient(135deg,#4f46e5,#3b82f6)', boxShadow: '0 4px 14px rgba(79,70,229,0.50)' }}>
+                        📤 Ngarko foto
+                      </button>
+                      {isCustom && (
+                        <button
+                          onClick={() => removePhoto(ex.id, i)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all"
+                          style={{ background: 'rgba(244,63,94,0.25)', color: '#f87171', border: '1px solid rgba(244,63,94,0.35)' }}>
+                          🗑 Hiq foton
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Step text */}
+                  <div className="px-4 py-3 flex items-start justify-between gap-2">
+                    <p className="text-sm leading-relaxed flex-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{step.text}</p>
+                    <button onClick={() => openUpload(ex.id, i)}
+                      className="shrink-0 mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
+                      style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8' }}
+                      title="Ngarko foto">
+                      <Plus size={12} />
+                    </button>
                   </div>
                 </div>
-                {/* Step text */}
-                <div className="px-4 py-3">
-                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>{step.text}</p>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           {/* Science note */}
