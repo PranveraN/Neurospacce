@@ -161,10 +161,12 @@ function AICoachPanel({ onSendPrompt }) {
   const [input,   setInput]   = useState('')
   const [loading, setLoading] = useState(false)
   const [reply,   setReply]   = useState(null)
+  const [lastQ,   setLastQ]   = useState('')
 
   function ask(text) {
     const q = (text || input).trim()
     if (!q || loading) return
+    setLastQ(q)
     setInput(''); setReply(null); setLoading(true)
     setTimeout(() => {
       const res = generateParentingResponse(q)
@@ -231,22 +233,39 @@ function AICoachPanel({ onSendPrompt }) {
         </div>
       )}
 
-      {/* Reply */}
+      {/* Reply — full solution inline */}
       {reply && (
-        <div className="mt-3 rounded-xl p-3 space-y-2" style={{ background: 'rgba(52,211,153,0.08)', border: `1px solid rgba(52,211,153,0.20)` }}>
-          <p className="text-xs leading-relaxed" style={{ color: G.textSec }}>{reply.empathy}</p>
-          {reply.steps[0] && (
-            <div className="flex gap-2 items-start">
-              <div className="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white shrink-0 mt-0.5" style={{ background: G.accentD }}>1</div>
-              <p className="text-xs leading-relaxed" style={{ color: G.textSec }}>{reply.steps[0]}</p>
+        <div className="mt-3 rounded-xl p-3 space-y-2.5" style={{ background: 'rgba(52,211,153,0.08)', border: `1px solid rgba(52,211,153,0.20)` }}>
+          {/* Empathy */}
+          <p className="text-xs leading-relaxed italic" style={{ color: G.textSec }}>{reply.empathy}</p>
+
+          {/* All steps */}
+          {reply.steps && reply.steps.length > 0 && (
+            <div className="space-y-1.5 pt-1">
+              {reply.steps.map((step, i) => (
+                <div key={i} className="flex gap-2 items-start">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white shrink-0 mt-0.5" style={{ background: G.accentD }}>{i + 1}</div>
+                  <p className="text-xs leading-relaxed" style={{ color: G.textSec }}>{step}</p>
+                </div>
+              ))}
             </div>
           )}
+
+          {/* Tip */}
+          {reply.tip && (
+            <div className="flex items-start gap-1.5 pt-1 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.12)' }}>
+              <span className="text-sm shrink-0">💡</span>
+              <p className="text-[10px] leading-relaxed" style={{ color: G.accent }}>{reply.tip}</p>
+            </div>
+          )}
+
+          {/* Follow-up in AI Chat */}
           <button
-            onClick={() => onSendPrompt(reply)}
-            className="w-full py-1.5 rounded-lg text-[10px] font-black transition-colors"
-            style={{ border: `1px solid rgba(52,211,153,0.25)`, color: G.accent }}
+            onClick={() => onSendPrompt(lastQ)}
+            className="w-full py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95"
+            style={{ background: 'rgba(52,211,153,0.12)', border: `1px solid rgba(52,211,153,0.30)`, color: G.accent }}
           >
-            Shiko zgjidhjen e plotë →
+            Vazhdo bisedën me AI Coach →
           </button>
         </div>
       )}
