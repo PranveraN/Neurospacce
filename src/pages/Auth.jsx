@@ -625,7 +625,7 @@ export default function Auth() {
         </div>
 
         <p className="text-center text-white/12 text-xs mt-5 font-medium tracking-wide">
-          Platforma e parë shqiptare e mirëqenies mendore
+          Platforma pioniere e mirëqenies mendore
         </p>
       </div>
     </div>

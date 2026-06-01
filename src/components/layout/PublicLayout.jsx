@@ -273,7 +273,7 @@ function PublicFooter() {
               </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Platforma shqiptare e mirëqenies mendore. Artikuj, mbështetje nga psikologë të verifikuar dhe asistent AI i specializuar.
+              Platforma pioniere e mirëqenies mendore. Artikuj, mbështetje nga psikologë të verifikuar dhe asistent AI i specializuar.
             </p>
           </div>
 

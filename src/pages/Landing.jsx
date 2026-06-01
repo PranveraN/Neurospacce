@@ -905,7 +905,7 @@ function HeroSection() {
             <EditableText id="hero-subtitle" as="p" multiline
               className="text-white/50 leading-relaxed mb-10 max-w-md"
               style={{ fontSize: '1.1rem' }}>
-              NeuroSphera bashkon psikologji klinike, AI dhe gjurmim humori për mbështetje e vërtetë mendore, çdo ditë, në shqip.
+              NeuroSphera bashkon psikologji klinike, AI dhe gjurmim humori për mbështetje e vërtetë mendore, çdo ditë, kudo.
             </EditableText>
 
             {/* CTAs */}
@@ -935,7 +935,7 @@ function HeroSection() {
                   {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#fbbf24" color="#fbbf24"/>)}
                   <span className="text-white/40 text-xs ml-2">4.9/5</span>
                 </div>
-                <EditableText id="hero-social-proof" as="p" className="text-white/35 text-xs">Platforma e shëndetit mendor në Shqipëri</EditableText>
+                <EditableText id="hero-social-proof" as="p" className="text-white/35 text-xs">Platforma pioniere e shëndetit mendor</EditableText>
               </div>
             </div>
           </div>
@@ -1668,7 +1668,7 @@ function CTASection() {
               Gati të fillosh?
             </EditableText>
             <EditableText id="cta-sub" as="p" multiline className="text-white/70 text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-              NeuroSphera është platforma e parë profesionale e shëndetit mendor në Shqipëri. Sot mund të fillosh edhe ti.
+              NeuroSphera është platforma pioniere e kujdesit mendor, ndërtuar me neuroshkencë dhe empati. Sot mund të fillosh edhe ti.
             </EditableText>
 
             <Link to="/auth"
@@ -1700,7 +1700,7 @@ function AboutSection() {
     { emoji: '💭', label: 'Njerëzit me ankth & depresion' },
     { emoji: '👨‍👩‍👧', label: 'Prindërit me sfida në edukim' },
     { emoji: '💼', label: 'Profesionistët e lodhur' },
-    { emoji: '🌍', label: 'Diaspora shqipfolëse' },
+    { emoji: '🌍', label: 'Komunitetin e shpërndarë' },
   ]
 
   return (
@@ -1743,7 +1743,7 @@ function AboutSection() {
                 </div>
                 <div>
                   <p className="text-xs font-black text-white">NeuroSphera</p>
-                  <p className="text-[10px] text-white/40">Kosovë · Shqipëri · Diaspora</p>
+                  <p className="text-[10px] text-white/40">Mirëqenie · Neuroshkencë · Empati</p>
                 </div>
               </div>
             </div>
@@ -1811,7 +1811,7 @@ function Footer() {
               <EditableText id="footer-brand" as="span" className="font-black text-white text-base">NeuroSphera</EditableText>
             </div>
             <EditableText id="footer-tagline" as="p" multiline className="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
-              Platforma e parë shqiptare e zhvillimit të mendjes bazuar në neuroshkencë. Mëso si funksionon truri yt.
+              Platforma pioniere e zhvillimit të mendjes bazuar në neuroshkencë. Mëso si funksionon truri yt.
             </EditableText>
             <div className="flex gap-2">
               {SOCIALS.map(s => (

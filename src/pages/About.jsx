@@ -29,8 +29,8 @@ const SERVE = [
   },
   {
     icon: Globe2,
-    title: 'Diaspora dhe ata larg shtëpisë',
-    desc: 'Të jetosh larg shtëpisë sjell sfida unike: vetmi, nostalgjia, identiteti. NeuroSphera është gjithmonë këtu, në gjuhën tënde, me kuptimin e kontekstit tënd kulturor.',
+    title: 'Ata që ndihen të izoluar',
+    desc: 'Vetmia, ndryshimet e mëdha, humbja e lidhjeve — NeuroSphera është gjithmonë këtu, pa gjykim, me mbështetje reale për ata që ndihen të vetëm.',
     from: '#7c3aed', to: '#4c1d95',
     tag: 'Komunitet',
   },
@@ -40,7 +40,7 @@ const SERVE = [
 const PILLARS = [
   { num: '1 në 4', label: 'persona përballet me probleme të shëndetit mendor gjatë jetës, por shumica nuk kërkojnë ndihmë kurrë' },
   { num: '74%', label: 'e njerëzve me probleme të shëndetit mendor nuk marrin asnjë ndihmë profesionale' },
-  { num: '1-e', label: 'platformë cilësore e shëndetit mendor në gjuhën shqipe: NeuroSphera' },
+  { num: '1-e', label: 'platformë holistike e shëndetit mendor bazuar në neuroshkencë: NeuroSphera' },
 ]
 
 /* ── Values ── */
@@ -48,7 +48,7 @@ const VALUES = [
   { icon: Heart,  title: 'Njeriu para çdo tjetri',   desc: 'Çdo funksion vendoset duke pyetur: "A ndihmon vërtet dikë sot?" Jo metrika, jo viral, por vetëm ndikim real.', from: '#ec4899', to: '#be185d' },
   { icon: Shield, title: 'Privatësi pa kompromis',    desc: 'Çfarë ndani me ne qëndron me ne. Asnjë të dhënë për reklama, asnjë profilizim, asnjë shitje e të dhënave.', from: '#7c3aed', to: '#4c1d95' },
   { icon: Zap,    title: 'Shkencë, jo klishe',        desc: 'Çdo teknikë, çdo artikull, çdo vlerësim buron nga kërkime të verifikuara. Nuk ofrojmë "motivim", por dije.', from: '#f59e0b', to: '#b45309' },
-  { icon: Users,  title: 'Gjithëpërfshirje reale',   desc: 'Nga Prishtina në Tiranë deri te diaspora në Zvicër: NeuroSphera është për çdo folës të shqipes, pavarësisht vendndodhjes.', from: '#10b981', to: '#065f46' },
+  { icon: Users,  title: 'Gjithëpërfshirje reale',   desc: 'Pavarësisht ku jeton, çfarë flet, apo çfarë ndjen — NeuroSphera është ndërtuar për çdo njeri, pa kufij dhe pa gjykim.', from: '#10b981', to: '#065f46' },
 ]
 
 export const TEAM_DEFAULTS = [
@@ -108,7 +108,7 @@ export default function About() {
               Për këdo që ka nevojë, pa gjykim
             </EditableText>
             <EditableText id="about-serve-sub" as="p" multiline className="text-gray-500 max-w-xl mx-auto leading-relaxed">
-              NeuroSphera është ndërtuar për njerëz të vërtetë me sfida të vërteta, nga Kosova në Shqipëri deri te diaspora në çdo cep të botës.
+              NeuroSphera është ndërtuar për njerëz të vërtetë me sfida të vërteta — kudo që jetojnë, pavarësisht sfidave që bartin.
             </EditableText>
           </div>
 
@@ -188,7 +188,7 @@ export default function About() {
                   Çdo ditë, njerëz të zakonshëm: nëna që nuk fle natën nga ankthi, i riu që nuk guxon të flasë me askënd, prindi që nuk di si t'i afrohet fëmijës, jetojnë me barrë të padukshme pa asnjë mbështetje.
                 </EditableText>
                 <EditableText id="about-story-p2" as="p" multiline className="text-gray-600 leading-relaxed">
-                  Burimet ekzistonin, por jo në shqip. Psikologët ekzistonin, por me tarifa shumë të larta. Platformat ekzistonin, por pa kuptuar kontekstin kulturor dhe gjuhësor tonin.
+                  Burimet ekzistonin, por shumë larg. Psikologët ekzistonin, por me tarifa shumë të larta. Platformat ekzistonin, por pa kuptuar nevojat e vërteta të njerëzve.
                 </EditableText>
                 <EditableText id="about-story-p3" as="p" multiline className="text-gray-600 leading-relaxed">
                   Kështu lindi NeuroSphera, një platformë e ndërtuar nga njerëz që kuptojnë sfidën, për njerëz që meritojnë ndihmë reale. Sot jemi këtu, nesër do të jemi edhe më afër.
@@ -196,9 +196,9 @@ export default function About() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                {['Kosovë', 'Shqipëri', 'Maqedoni', 'Diaspora'].map(loc => (
-                  <span key={loc} className="px-3 py-1.5 rounded-full text-xs font-bold bg-violet-50 text-violet-600 border border-violet-100">
-                    📍 {loc}
+                {['Neuroshkencë', 'Empati', 'Mirëqenie', 'Komunitet'].map(tag => (
+                  <span key={tag} className="px-3 py-1.5 rounded-full text-xs font-bold bg-violet-50 text-violet-600 border border-violet-100">
+                    ✦ {tag}
                   </span>
                 ))}
               </div>
