@@ -1,7 +1,8 @@
 ﻿import { useParams, Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Clock, Calendar, User, ArrowRight, Share2, BookOpen } from 'lucide-react'
+import { ArrowLeft, Clock, Calendar, User, ArrowRight, BookOpen } from 'lucide-react'
 import PublicLayout from '../components/layout/PublicLayout'
 import { loadArticles, getCatColor } from '../data/articlesData'
+import ShareMenu from '../components/ShareMenu'
 
 const ARTICLES = loadArticles()
 
@@ -97,9 +98,11 @@ export default function ArticleDetail() {
               <div className="flex items-center gap-1">
                 <Clock size={13} /> {article.readTime} lexim
               </div>
-              <button className="ml-auto flex items-center gap-1.5 text-gray-400 hover:text-violet-600 transition-colors">
-                <Share2 size={14} /> Ndaj
-              </button>
+              <ShareMenu
+                title={article.title}
+                url={`https://myneurosphera.com/articles/${article.id}`}
+                className="ml-auto"
+              />
             </div>
 
             {/* title */}
@@ -135,10 +138,17 @@ export default function ArticleDetail() {
                   </div>
                 </div>
 
-                <Link to="/ask"
-                  className="flex items-center gap-2 px-5 py-3 bg-violet-600 text-white font-bold rounded-xl text-sm hover:bg-violet-500 transition-colors shadow-md">
-                  Pyet {article.author.split(' ')[0]} <ArrowRight size={14} />
-                </Link>
+                <div className="flex items-center gap-3">
+                  <ShareMenu
+                    title={article.title}
+                    url={`https://myneurosphera.com/articles/${article.id}`}
+                    className="text-sm"
+                  />
+                  <Link to="/ask"
+                    className="flex items-center gap-2 px-5 py-3 bg-violet-600 text-white font-bold rounded-xl text-sm hover:bg-violet-500 transition-colors shadow-md">
+                    Pyet {article.author.split(' ')[0]} <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
             </div>
           </article>
