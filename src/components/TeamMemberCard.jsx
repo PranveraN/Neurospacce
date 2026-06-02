@@ -1,16 +1,33 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Camera } from 'lucide-react'
 import { useEditMode } from '../contexts/EditModeContext'
 import { useAuth } from '../contexts/AuthContext'
 import EditableText from './EditableText'
 
+const LS_PREFIX = 'ns_team_photo_'
+
 export default function TeamMemberCard({ index, initials, name, role, grad, size = 'lg' }) {
-  const { editMode } = useEditMode()
-  const { isAdmin }  = useAuth()
+  const { editMode, dbTexts, saveToDb } = useEditMode()
+  const { isAdmin } = useAuth()
+  const photoId = `team-photo-${index}`
+
   const [photo, setPhoto] = useState(() => {
-    try { return localStorage.getItem(`ns_team_photo_${index}`) || null } catch { return null }
+    try { return localStorage.getItem(`${LS_PREFIX}${index}`) || null } catch { return null }
   })
   const fileRef = useRef(null)
+
+  // Sync from Supabase once dbTexts loads
+  useEffect(() => {
+    const dbPhoto = dbTexts?.[photoId]?.sq
+    if (dbPhoto && dbPhoto.startsWith('data:')) {
+      setPhoto(dbPhoto)
+      try { localStorage.setItem(`${LS_PREFIX}${index}`, dbPhoto) } catch {}
+    } else if (dbPhoto === '') {
+      // Explicitly cleared
+      setPhoto(null)
+      try { localStorage.removeItem(`${LS_PREFIX}${index}`) } catch {}
+    }
+  }, [dbTexts, photoId, index])
 
   function handleFile(e) {
     if (!isAdmin) return
@@ -20,9 +37,18 @@ export default function TeamMemberCard({ index, initials, name, role, grad, size
     reader.onload = ev => {
       const b64 = ev.target.result
       setPhoto(b64)
-      try { localStorage.setItem(`ns_team_photo_${index}`, b64) } catch {}
+      // Save to localStorage as fast cache
+      try { localStorage.setItem(`${LS_PREFIX}${index}`, b64) } catch {}
+      // Save to Supabase for permanent persistence across devices/deployments
+      saveToDb(photoId, 'sq', b64)
     }
     reader.readAsDataURL(file)
+  }
+
+  function removePhoto() {
+    setPhoto(null)
+    try { localStorage.removeItem(`${LS_PREFIX}${index}`) } catch {}
+    saveToDb(photoId, 'sq', '')
   }
 
   const dim  = size === 'sm' ? 'w-14 h-14' : 'w-20 h-20'
@@ -44,12 +70,12 @@ export default function TeamMemberCard({ index, initials, name, role, grad, size
             <button
               onClick={() => fileRef.current?.click()}
               className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center shadow-lg hover:bg-violet-700 transition-colors z-10"
-              title="Ngarko foto (vetëm admin)">
+              title="Ngarko foto">
               <Camera size={12} color="white"/>
             </button>
             {photo && (
               <button
-                onClick={() => { setPhoto(null); try { localStorage.removeItem(`ns_team_photo_${index}`) } catch {} }}
+                onClick={removePhoto}
                 className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center shadow text-white text-[10px] font-black z-10 hover:bg-red-600 transition-colors"
                 title="Hiq foton">✕</button>
             )}

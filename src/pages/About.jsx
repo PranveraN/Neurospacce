@@ -52,9 +52,9 @@ const VALUES = [
 ]
 
 export const TEAM_DEFAULTS = [
-  { initials: 'AN', name: 'Arben Nushi', role: 'CEO & Co-Founder', grad: 'linear-gradient(135deg,#7c3aed,#4c1d95)' },
-  { initials: 'MK', name: 'Mirela Koci',  role: 'Kryepsikologja',   grad: 'linear-gradient(135deg,#ec4899,#9d174d)' },
-  { initials: 'DH', name: 'Dion Hoxha',  role: 'CTO',               grad: 'linear-gradient(135deg,#3b82f6,#1e3a8a)' },
+  { initials: 'PN', name: 'Pranvera', role: 'CEO & Co-Founder',  grad: 'linear-gradient(135deg,#7c3aed,#4c1d95)' },
+  { initials: 'ES', name: 'Esma',     role: 'Content manager',   grad: 'linear-gradient(135deg,#ec4899,#9d174d)' },
+  { initials: 'MZ', name: 'Mozaik',   role: 'UI/Visual Design',  grad: 'linear-gradient(135deg,#3b82f6,#1e3a8a)' },
 ]
 
 export default function About() {
