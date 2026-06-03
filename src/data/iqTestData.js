@@ -122,10 +122,10 @@ export const IQ_TEST = {
     },
     {
       id: 'iq_l2', domain: 'logical', difficulty: 2,
-      text: 'Maria është më e gjatë se Ana. Ana është më e gjatë se Gerta. Blerti është më i gjatë se Maria. Kush renditet i dyti nga gjatësia?',
-      options: ['Maria', 'Ana', 'Gerta', 'Blerti'],
-      correct: 'Maria',
-      explanation: 'Renditja: Blerti > Maria > Ana > Gerta. Vendi i dytë: Maria.',
+      text: 'Merita është më e gjatë se Ana. Ana është më e gjatë se Gerta. Blerti është më i gjatë se Merita. Kush renditet i dyti nga gjatësia?',
+      options: ['Merita', 'Ana', 'Gerta', 'Blerti'],
+      correct: 'Merita',
+      explanation: 'Renditja: Blerti > Merita > Ana > Gerta. Vendi i dytë: Merita.',
     },
     {
       id: 'iq_l3', domain: 'logical', difficulty: 2,
