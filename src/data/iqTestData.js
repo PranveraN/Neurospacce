@@ -129,10 +129,10 @@ export const IQ_TEST = {
     },
     {
       id: 'iq_l3', domain: 'logical', difficulty: 2,
-      text: 'Kur bie shi → qëndroj brenda. Kur nuk bie shi → shëtis. Sot nuk shëtita. Çfarë ndodhi?',
-      options: ['Doli shi', 'Nuk doli shi', 'Ndoshta doli shi', 'Asgjë nuk mund të thuhet'],
-      correct: 'Doli shi',
-      explanation: 'Kontrapozitiv: "nuk shëtita" → "doli shi" (sipas rregullave të dhëna).',
+      text: 'Nëse bie shi → qëndroj brenda. Nëse nuk bie shi → shëtis. Sot nuk shëtita. Çfarë ndodhi?',
+      options: ['Bie shi', 'Nuk binte shi', 'Ndoshta binte shi', 'Asgjë nuk mund të thuhet'],
+      correct: 'Bie shi',
+      explanation: 'Sipas rregullit: nëse nuk shëtita, do të thotë binte shi (kontrapozitivi i rregullit të dytë).',
     },
     {
       id: 'iq_l4', domain: 'logical', difficulty: 3,
