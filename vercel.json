@@ -1,3 +1,11 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "functions": {
+    "api/og.js": {
+      "includeFiles": "dist/index.html"
+    }
+  },
+  "rewrites": [
+    { "source": "/articles/:id", "destination": "/api/og?id=:id" },
+    { "source": "/(.*)",          "destination": "/index.html"    }
+  ]
 }
