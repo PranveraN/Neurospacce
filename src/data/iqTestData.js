@@ -101,10 +101,10 @@ export const IQ_TEST = {
     },
     {
       id: 'iq_n4', domain: 'numerical', difficulty: 3,
-      text: 'Arjeta blen 3 libra me 1 200 lekë. Sa libra mund të blejë me 2 800 lekë?',
+      text: 'Arjeta blen 3 libra me 12 euro. Sa libra mund të blejë me 28 euro?',
       options: ['6', '7', '8', '5'],
       correct: '7',
-      explanation: 'Çmimi për libër: 1200÷3=400 lekë. 2800÷400=7 libra.',
+      explanation: 'Çmimi për libër: 12÷3=4 euro. 28÷4=7 libra.',
     },
 
     // ── LOGICAL DEDUCTION (4 q) ──────────────────────────────────────────────
