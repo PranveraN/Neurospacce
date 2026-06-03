@@ -1222,32 +1222,44 @@ const IQ_DOMAIN_EMOJIS = {
 }
 
 function IQRunner({ onResult, onBack }) {
-  const [currentQ, setCurrentQ] = useState(0)
-  const [answers,  setAnswers]  = useState({})
-  const [revealed, setRevealed] = useState(false)
-  const [startTime]             = useState(() => Date.now())
-  const [elapsed,  setElapsed]  = useState(0)
+  const [currentQ,       setCurrentQ]       = useState(0)
+  const [answers,        setAnswers]         = useState({})
+  const [revealed,       setRevealed]        = useState(false)
+  const [startTime]                          = useState(() => Date.now())
+  const [elapsed,        setElapsed]         = useState(0)
+  const [extraTime,      setExtraTime]       = useState(0)
+  const [showTimeUpPopup, setShowTimeUpPopup] = useState(false)
 
   const questions   = IQ_TEST.questions
   const q           = questions[currentQ]
   const selected    = answers[q.id]
   const isCorrect   = selected === q.correct
   const isLast      = currentQ === questions.length - 1
-  const TIME_LIMIT  = IQ_TEST.time_limit_sec
+  const TIME_LIMIT  = IQ_TEST.time_limit_sec + extraTime
   const remaining   = Math.max(0, TIME_LIMIT - elapsed)
   const timeUp      = remaining === 0
   const OPTION_LABELS = ['A', 'B', 'C', 'D']
 
   useEffect(() => {
     const id = setInterval(() => {
-      setElapsed(Math.min(Math.floor((Date.now() - startTime) / 1000), TIME_LIMIT))
+      setElapsed(Math.floor((Date.now() - startTime) / 1000))
     }, 500)
     return () => clearInterval(id)
-  }, [startTime, TIME_LIMIT])
+  }, [startTime])
 
   useEffect(() => {
-    if (timeUp) onResult(scoreIQ(answers, TIME_LIMIT * 1000))
+    if (timeUp && !showTimeUpPopup) setShowTimeUpPopup(true)
   }, [timeUp]) // eslint-disable-line
+
+  function addTime(seconds) {
+    setExtraTime(prev => prev + seconds)
+    setShowTimeUpPopup(false)
+  }
+
+  function submitNow() {
+    setShowTimeUpPopup(false)
+    onResult(scoreIQ(answers, TIME_LIMIT * 1000))
+  }
 
   function formatTime(s) {
     const m = Math.floor(s / 60)
@@ -1273,6 +1285,46 @@ function IQRunner({ onResult, onBack }) {
   return (
     <div className="min-h-screen flex flex-col"
       style={{ background: 'linear-gradient(135deg,#eef2ff 0%,#f5f3ff 50%,#ede9fe 100%)' }}>
+
+      {/* ── TIME UP POPUP ── */}
+      {showTimeUpPopup && (
+        <div className="fixed inset-0 z-[500] flex items-center justify-center px-4"
+          style={{ background: 'rgba(10,5,30,0.7)', backdropFilter: 'blur(12px)' }}>
+          <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center"
+            style={{ animation: 'fadeSlideUp .25s ease' }}>
+            {/* icon */}
+            <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center text-3xl"
+              style={{ background: 'linear-gradient(135deg,#f97316,#ef4444)' }}>
+              ⏰
+            </div>
+
+            <h2 className="text-2xl font-black text-gray-900 mb-1">Na vjen keq!</h2>
+            <p className="text-gray-500 font-semibold mb-1">Koha juaj mbaroi.</p>
+            <p className="text-gray-400 text-sm mb-6">Të duhet më shumë kohë?</p>
+
+            <div className="space-y-3 mb-5">
+              {[
+                { label: 'Shto edhe 2 min tjera', sec: 120, color: '#6366f1' },
+                { label: 'Shto edhe 5 min tjera', sec: 300, color: '#8b5cf6' },
+                { label: 'Shto edhe 10 min tjera', sec: 600, color: '#7c3aed' },
+              ].map(({ label, sec, color }) => (
+                <button key={sec}
+                  onClick={() => addTime(sec)}
+                  className="w-full py-3 rounded-2xl font-bold text-white text-sm hover:opacity-90 active:scale-95 transition-all"
+                  style={{ background: `linear-gradient(135deg,${color},${color}cc)` }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            <button onClick={submitNow}
+              className="w-full py-2.5 rounded-2xl font-semibold text-gray-400 text-sm hover:text-gray-600 hover:bg-gray-50 transition-colors border border-gray-100">
+              Dërgo rezultatet tani
+            </button>
+          </div>
+          <style>{`@keyframes fadeSlideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }`}</style>
+        </div>
+      )}
 
       {/* Header */}
       <div className="max-w-2xl mx-auto w-full px-4 pt-6">
