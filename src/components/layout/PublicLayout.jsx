@@ -104,13 +104,12 @@ function SearchOverlay({ onClose }) {
 }
 
 import { useAuth } from '../../contexts/AuthContext'
-import NeuroPulse from '../NeuroPulse'
 
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [scrolled,   setScrolled]   = useState(false)
-  const { user, logout, isAdmin } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
@@ -129,13 +128,21 @@ function PublicHeader() {
   const links = [
     { to: '/library',    label: 'NeuroArtikuj' },
     { to: '/brainboost', label: 'BrainBoost' },
-    { to: '/psikologu',  label: 'Psikologu yt', adminOnly: true },
+    { to: '/psikologu',  label: 'Psikologu yt' },
     { to: '/tests',      label: 'Teste' },
     { to: '/parenting',  label: 'Familje' },
-    { to: '/assistant',  label: 'Asistenti', adminOnly: true },
+    { to: '/assistant',  label: 'Asistenti' },
     { to: '/pricing',    label: 'Planet' },
     { to: '/about',      label: 'Rreth nesh' },
   ]
+
+  /* ── styles shared between transparent & dark ── */
+  const headerBg   = transparent ? 'transparent'                     : 'rgba(7,4,26,0.97)'
+  const headerBdr  = transparent ? '1px solid rgba(255,255,255,0.06)': '1px solid rgba(139,92,246,0.14)'
+  const headerBlur = transparent ? 'none'                            : 'blur(22px)'
+  const linkBase   = 'px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200'
+  const linkIdle   = transparent ? 'text-white/72 hover:text-white hover:bg-white/8' : 'text-white/55 hover:text-white hover:bg-white/6'
+  const linkActive = transparent ? 'text-white bg-white/12'          : 'text-white bg-white/10'
 
   return (
     <>
@@ -144,131 +151,98 @@ function PublicHeader() {
       <header
         className={transparent ? 'fixed top-0 left-0 right-0 z-50' : 'sticky top-0 z-50'}
         style={{
-          background: transparent ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.97)',
-          backdropFilter: transparent ? 'blur(0px)' : 'blur(20px)',
-          WebkitBackdropFilter: transparent ? 'blur(0px)' : 'blur(20px)',
-          borderBottom: transparent ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(229,231,235,0.8)',
-          boxShadow: transparent ? 'none' : '0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(109,40,217,0.06)',
-          transition: 'background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease',
+          background: headerBg,
+          backdropFilter: headerBlur,
+          WebkitBackdropFilter: headerBlur,
+          borderBottom: headerBdr,
+          transition: 'background 0.35s ease, border-color 0.35s ease',
         }}>
-        {/* Violet accent line — hidden when transparent */}
-        {!transparent && <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, #7c3aed 0%, #6d28d9 40%, #3b82f6 100%)',
-          opacity: 0.7,
-        }}/>}
 
-        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center gap-3">
-          {/* Logo */}
-          <div className="flex items-center gap-2.5 shrink-0 mr-2">
+        <div className="max-w-7xl mx-auto px-5 h-16 flex items-center gap-2">
+
+          {/* ── Logo ── */}
+          <div className="flex items-center gap-2.5 shrink-0 mr-3">
             <LogoMark size={36} radius="rounded-xl"/>
             <Link to="/" className="flex flex-col leading-none">
-              <span className={`font-black text-lg tracking-tight ${transparent ? 'text-white' : 'bg-gradient-to-r from-violet-600 via-purple-600 to-blue-500 bg-clip-text text-transparent'}`}>NeuroSphera</span>
-              <span className={`text-[9px] font-semibold uppercase tracking-widest ${transparent ? 'text-white/70' : 'text-violet-400'}`}>Shëndeti Mendor</span>
+              <span className="font-black text-base tracking-tight bg-gradient-to-r from-violet-400 via-fuchsia-300 to-blue-400 bg-clip-text text-transparent">
+                NeuroSphera
+              </span>
+              <span className="text-[8px] font-bold uppercase tracking-widest text-white/45">
+                Shëndeti Mendor
+              </span>
             </Link>
           </div>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-0 flex-1">
-            {links.map(l => {
-              if (l.adminOnly && !isAdmin) return (
-                <div key={l.to} className="relative px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap text-gray-400 cursor-default select-none">
-                  {l.label}
-                  <span className="absolute -top-1 -right-1 text-[8px] font-black px-1 py-0.5 rounded-full text-white leading-none"
-                    style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
-                    soon
-                  </span>
-                </div>
-              )
-              return (
-                <NavLink key={l.to} to={l.to}
-                  className={({ isActive }) =>
-                    transparent
-                      ? `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-white' : 'text-white/75 hover:text-white hover:bg-white/10'}`
-                      : `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`
-                  }>
-                  {l.label}
-                </NavLink>
-              )
-            })}
+          {/* ── Desktop nav ── */}
+          <nav className="hidden md:flex items-center gap-0.5 flex-1">
+            {links.map(l => (
+              <NavLink key={l.to} to={l.to}
+                className={({ isActive }) => `${linkBase} ${isActive ? linkActive : linkIdle}`}>
+                {l.label}
+              </NavLink>
+            ))}
           </nav>
 
-          {/* Search + CTAs */}
-          <div className="hidden md:flex items-center gap-2 ml-auto">
+          {/* ── Right actions ── */}
+          <div className="hidden md:flex items-center gap-1.5 ml-auto">
             <button onClick={() => setShowSearch(true)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors ${transparent ? 'text-white/75 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100'}`}>
-              <Search size={15}/><span className="hidden lg:inline">Kërko</span>
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${linkIdle}`}>
+              <Search size={14}/><span>Kërko</span>
             </button>
+
             {user ? (
-              <>
-                <button onClick={() => { logout(); navigate('/') }}
-                  className={`px-4 py-2 text-sm font-semibold transition-colors ${transparent ? 'text-white/70 hover:text-white' : 'text-gray-500 hover:text-red-500'}`}>
-                  Dil
-                </button>
-                <NeuroPulse scrolled={false} />
-              </>
+              <button onClick={() => { logout(); navigate('/') }}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-white/50 hover:text-red-400 transition-colors">
+                Dil
+              </button>
             ) : (
-              <>
-                <Link to="/auth"
-                  className={`px-5 py-2 rounded-xl text-sm font-bold border transition-colors ${transparent ? 'text-white border-white/30 hover:bg-white/10' : 'text-gray-700 border-gray-300 hover:bg-gray-50'}`}>
-                  Hyr / Regjistrohu
-                </Link>
-              </>
+              <Link to="/auth"
+                className="px-5 py-2 rounded-xl text-xs font-bold border transition-all hover:bg-white/8"
+                style={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(139,92,246,0.45)' }}>
+                Hyr / Regjistrohu
+              </Link>
             )}
           </div>
 
-          {/* Mobile actions */}
+          {/* ── Mobile actions ── */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
-            <button onClick={() => setShowSearch(true)} aria-label="Kërko" className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-600">
+            <button onClick={() => setShowSearch(true)} aria-label="Kërko"
+              className="w-9 h-9 flex items-center justify-center rounded-xl text-white/60 hover:text-white transition-colors"
+              style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
               <Search size={16}/>
             </button>
-            <button onClick={() => setOpen(!open)} aria-label={open ? 'Mbyll menunë' : 'Hap menunë'} className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-600">
+            <button onClick={() => setOpen(!open)} aria-label={open ? 'Mbyll' : 'Menu'}
+              className="w-9 h-9 flex items-center justify-center rounded-xl text-white/60 hover:text-white transition-colors"
+              style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
               {open ? <X size={18}/> : <Menu size={18}/>}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* ── Mobile drawer ── */}
         {open && (
-          <div className="md:hidden border-t border-gray-100 bg-white px-5 py-4 space-y-1">
-            {links.map(l => {
-              if (l.adminOnly && !isAdmin) return (
-                <div key={l.to} className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 cursor-default select-none">
-                  <span>{l.label}</span>
-                  <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white"
-                    style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
-                    Se shpejti
-                  </span>
-                </div>
-              )
-              return (
-                <NavLink key={l.to} to={l.to} onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    `block px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-700 hover:bg-gray-50'}`
-                  }>
-                  {l.label}
-                </NavLink>
-              )
-            })}
-            <div className="pt-3 flex flex-col gap-2 border-t border-gray-100 mt-2">
+          <div className="md:hidden px-4 pb-5 pt-2 space-y-1"
+            style={{ background: 'rgba(7,4,26,0.98)', borderTop: '1px solid rgba(139,92,246,0.12)' }}>
+            {links.map(l => (
+              <NavLink key={l.to} to={l.to} onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `block px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-white bg-white/8' : 'text-white/55 hover:text-white hover:bg-white/5'}`
+                }>
+                {l.label}
+              </NavLink>
+            ))}
+            <div className="pt-3 mt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
               {user ? (
-                <>
-                  <button onClick={() => { logout(); navigate('/'); setOpen(false) }}
-                    className="py-2.5 text-center text-sm font-semibold border border-red-100 rounded-xl text-red-500">
-                    Dil nga llogaria
-                  </button>
-                  <div className="flex justify-center" onClick={() => setOpen(false)}>
-                    <NeuroPulse scrolled={false} />
-                  </div>
-                </>
+                <button onClick={() => { logout(); navigate('/'); setOpen(false) }}
+                  className="w-full py-2.5 text-center text-sm font-semibold rounded-xl text-red-400 hover:bg-red-500/10 transition-colors">
+                  Dil nga llogaria
+                </button>
               ) : (
-                <>
-                  <Link to="/auth" onClick={() => setOpen(false)}
-                    className="py-2.5 text-center text-sm font-semibold border border-gray-200 rounded-xl text-gray-600">Kyçu</Link>
-                  <div className="flex justify-center" onClick={() => setOpen(false)}>
-                    <NeuroPulse scrolled={false} />
-                  </div>
-                </>
+                <Link to="/auth" onClick={() => setOpen(false)}
+                  className="block py-2.5 text-center text-sm font-bold rounded-xl text-white"
+                  style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
+                  Hyr / Regjistrohu
+                </Link>
               )}
             </div>
           </div>
