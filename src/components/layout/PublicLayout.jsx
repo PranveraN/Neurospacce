@@ -104,7 +104,6 @@ function SearchOverlay({ onClose }) {
 }
 
 import { useAuth } from '../../contexts/AuthContext'
-import NeuroPulse from '../NeuroPulse'
 
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
@@ -185,10 +184,10 @@ function PublicHeader() {
                 {l.label}
               </NavLink>
             ))}
-            {/* NeuroPulse — mes Familje dhe Asistenti */}
-            <div className="mx-1">
-              <NeuroPulse scrolled={false} />
-            </div>
+            <NavLink to="/assistant"
+              className={({ isActive }) => `${linkBase} ${isActive ? linkActive : linkIdle}`}>
+              NeuroPulse
+            </NavLink>
             {linksRight.map(l => (
               <NavLink key={l.to} to={l.to}
                 className={({ isActive }) => `${linkBase} ${isActive ? linkActive : linkIdle}`}>
