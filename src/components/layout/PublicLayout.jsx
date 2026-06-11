@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useRef, useMemo } from 'react'
-import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Brain, Menu, X, ArrowRight, Mail, Search, ChevronRight } from 'lucide-react'
 import LogoMark from '../LogoMark'
 import { PLATFORM_CATS } from '../../data/categoriesData'
@@ -108,22 +108,8 @@ import { useAuth } from '../../contexts/AuthContext'
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
   const [showSearch, setShowSearch] = useState(false)
-  const [scrolled,   setScrolled]   = useState(false)
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const { pathname } = useLocation()
-
-  const isLanding = pathname === '/'
-
-  useEffect(() => {
-    if (!isLanding) { setScrolled(false); return }
-    const fn = () => setScrolled(window.scrollY > 60)
-    fn()
-    window.addEventListener('scroll', fn, { passive: true })
-    return () => window.removeEventListener('scroll', fn)
-  }, [isLanding])
-
-  const transparent = isLanding && !scrolled
 
   const linksLeft = [
     { to: '/library',    label: 'NeuroArtikuj' },
@@ -139,27 +125,20 @@ function PublicHeader() {
   ]
   const links = [...linksLeft, ...linksRight]
 
-  /* ── styles shared between transparent & dark ── */
-  const headerBg   = transparent ? 'transparent'                     : '#07041a'
-  const headerBdr  = transparent ? '1px solid rgba(255,255,255,0.06)': '1px solid rgba(139,92,246,0.14)'
-  const headerBlur = transparent ? 'none'                            : 'blur(22px)'
   const linkBase   = 'px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200'
-  const linkIdle   = transparent ? 'text-white/72 hover:text-white hover:bg-white/8' : 'text-white/55 hover:text-white hover:bg-white/6'
-  const linkActive = transparent ? 'text-white bg-white/12'          : 'text-white bg-white/10'
+  const linkIdle   = 'text-white/60 hover:text-white hover:bg-white/6'
+  const linkActive = 'text-white bg-white/10'
 
   return (
     <>
       {showSearch && <SearchOverlay onClose={() => setShowSearch(false)}/>}
 
       <header
-        className={transparent ? 'fixed top-0 left-0 right-0 z-50' : 'sticky top-0 z-50'}
+        className="sticky top-0 z-50"
         style={{
-          background: headerBg,
-          backdropFilter: headerBlur,
-          WebkitBackdropFilter: headerBlur,
-          borderBottom: headerBdr,
-          boxShadow: transparent ? 'none' : '0 4px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(139,92,246,0.12)',
-          transition: 'background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease',
+          background: '#07041a',
+          borderBottom: '1px solid rgba(139,92,246,0.15)',
+          boxShadow: '0 4px 32px rgba(0,0,0,0.5)',
         }}>
 
         <div className="max-w-7xl mx-auto px-5 h-16 flex items-center gap-2">
