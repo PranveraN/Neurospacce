@@ -140,7 +140,7 @@ function PublicHeader() {
   const links = [...linksLeft, ...linksRight]
 
   /* ── styles shared between transparent & dark ── */
-  const headerBg   = transparent ? 'transparent'                     : 'rgba(7,4,26,0.97)'
+  const headerBg   = transparent ? 'transparent'                     : '#07041a'
   const headerBdr  = transparent ? '1px solid rgba(255,255,255,0.06)': '1px solid rgba(139,92,246,0.14)'
   const headerBlur = transparent ? 'none'                            : 'blur(22px)'
   const linkBase   = 'px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200'
