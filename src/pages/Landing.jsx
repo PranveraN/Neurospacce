@@ -774,11 +774,11 @@ function StarField() {
 /*  HERO CAROUSEL DATA                                                        */
 /* ─────────────────────────────────────────────────────────────────────────── */
 const CAROUSEL_PHOTOS = [
-  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=85', label: 'Mindfulness & Qetësi', sub: 'Sesione të guiduara', icon: Brain },
-  { src: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=900&q=85',   label: 'Terapi Profesionale',  sub: '8 psikologë online', icon: CalendarCheck },
-  { src: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=900&q=85', label: 'Meditim & Fokus',     sub: 'Çdo ditë, 10 minuta', icon: Sparkles },
-  { src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=85', label: 'Komunitet & Ndihmë',  sub: '2,400+ anëtarë', icon: Users },
-  { src: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=85',    label: 'AI · 24/7 Aktiv',     sub: 'Mbështetje inteligjente', icon: Heart },
+  { src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1600&q=90', label: 'Mindfulness & Qetësi', sub: 'Sesione të guiduara', icon: Brain },
+  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=90', label: 'Terapi Profesionale',  sub: '8 psikologë online', icon: CalendarCheck },
+  { src: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1600&q=90', label: 'Meditim & Fokus',     sub: 'Çdo ditë, 10 minuta', icon: Sparkles },
+  { src: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1600&q=90', label: 'Komunitet & Ndihmë',  sub: '2,400+ anëtarë', icon: Users },
+  { src: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=1600&q=90',    label: 'AI · 24/7 Aktiv',     sub: 'Mbështetje inteligjente', icon: Heart },
 ]
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -786,274 +786,167 @@ const CAROUSEL_PHOTOS = [
 /* ─────────────────────────────────────────────────────────────────────────── */
 function HeroSection() {
   const [slide, setSlide] = useState(0)
-  const [mouse, setMouse] = useState({ x: 0, y: 0 })
   const heroRef = useRef(null)
 
   useEffect(() => {
-    const t = setInterval(() => setSlide(s => (s + 1) % CAROUSEL_PHOTOS.length), 5000)
+    const t = setInterval(() => setSlide(s => (s + 1) % CAROUSEL_PHOTOS.length), 6000)
     return () => clearInterval(t)
   }, [])
-
-  function handleMouseMove(e) {
-    const rect = heroRef.current?.getBoundingClientRect()
-    if (!rect) return
-    setMouse({
-      x: ((e.clientX - rect.left) / rect.width  - 0.5) * 2,
-      y: ((e.clientY - rect.top)  / rect.height - 0.5) * 2,
-    })
-  }
-
-  const photo = CAROUSEL_PHOTOS[slide]
-  const PhotoIcon = photo.icon
 
   return (
     <section
       ref={heroRef}
-      onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: 'linear-gradient(150deg, #050816 0%, #0B1024 55%, #130B2F 100%)' }}
+      className="relative min-h-screen flex flex-col overflow-hidden"
     >
-      {/* Glow orbs — very subtle */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute rounded-full"
-          style={{
-            width: 800, height: 800, top: '-25%', left: '-20%',
-            background: 'radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 65%)',
-            transform: `translate(${mouse.x * -20}px, ${mouse.y * -20}px)`,
-            transition: 'transform 1s ease-out',
-          }}/>
-        <div className="absolute rounded-full"
-          style={{
-            width: 600, height: 600, bottom: '-10%', right: '-10%',
-            background: 'radial-gradient(circle, rgba(20,216,166,0.07) 0%, transparent 65%)',
-            transform: `translate(${mouse.x * 12}px, ${mouse.y * 12}px)`,
-            transition: 'transform 1s ease-out',
-          }}/>
+      {/* ── Full-bleed background photos ── */}
+      <div className="absolute inset-0">
+        {CAROUSEL_PHOTOS.map((p, i) => (
+          <div key={i} className="absolute inset-0"
+            style={{ opacity: i === slide ? 1 : 0, transition: 'opacity 1.6s ease' }}>
+            <img src={p.src} alt={p.label}
+              className="w-full h-full object-cover object-center"
+              style={{
+                transform: i === slide ? 'scale(1.05)' : 'scale(1)',
+                transition: 'transform 8s ease-out',
+              }}/>
+          </div>
+        ))}
+
+        {/* Left gradient — text readability */}
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(100deg, rgba(4,6,18,0.80) 0%, rgba(4,6,18,0.60) 42%, rgba(4,6,18,0.15) 68%, transparent 100%)' }}/>
+        {/* Top gradient — nav readability */}
+        <div className="absolute top-0 left-0 right-0 h-40"
+          style={{ background: 'linear-gradient(to bottom, rgba(4,6,18,0.55) 0%, transparent 100%)' }}/>
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32"
+          style={{ background: 'linear-gradient(to top, rgba(4,6,18,0.5) 0%, transparent 100%)' }}/>
       </div>
 
-      {/* Ultra-fine grid */}
-      <div className="absolute inset-0 opacity-[0.022] pointer-events-none"
-        style={{ backgroundImage: 'linear-gradient(rgba(139,92,246,1) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,1) 1px,transparent 1px)', backgroundSize: '90px 90px' }}/>
-
-      <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-24 pb-16 w-full">
-        <div className="grid lg:grid-cols-[1fr_460px] gap-16 xl:gap-24 items-center min-h-[calc(100vh-100px)]">
-
-          {/* ── LEFT ─────────────────────────────────────────────── */}
-          <div style={{ animation: 'heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) forwards' }}>
+      {/* ── Content ── */}
+      <div className="relative flex-1 flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-20">
+          <div className="max-w-[580px]" style={{ animation: 'heroFadeUp 0.9s cubic-bezier(0.22,1,0.36,1) both' }}>
 
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-px w-8 rounded-full" style={{ background: 'linear-gradient(90deg,#8B5CF6,transparent)' }}/>
-              <span className="text-xs font-semibold tracking-[0.18em] uppercase"
-                style={{ color: 'rgba(139,92,246,0.75)' }}>
+            <div className="flex items-center gap-2.5 mb-7">
+              <Heart size={13} fill="#ec4899" color="#ec4899"/>
+              <span className="text-xs font-bold tracking-[0.22em] uppercase text-white/80">
                 Shëndeti Mendor
               </span>
             </div>
 
             {/* Headline */}
             <h1
-              className="font-black text-white leading-[1.06] mb-7 tracking-tight"
-              style={{ fontSize: 'clamp(2.8rem, 5.2vw, 4.8rem)', letterSpacing: '-0.025em' }}
+              className="font-black text-white leading-[1.07] mb-7"
+              style={{ fontSize: 'clamp(2.9rem, 5.5vw, 5rem)', letterSpacing: '-0.028em' }}
             >
               <EditableText id="hero-h1-l1" as="span">Hapësira jote<br />
               për një mendje<br /></EditableText>
               <EditableText id="hero-h1-accent" as="span"
                 className="text-transparent bg-clip-text"
-                style={{ backgroundImage: 'linear-gradient(130deg, #8B5CF6 10%, #14D8A6 100%)' }}>
+                style={{ backgroundImage: 'linear-gradient(130deg, #ec4899 0%, #8B5CF6 45%, #06b6d4 100%)' }}>
                 më të qetë.
               </EditableText>
             </h1>
 
             {/* Subheadline */}
             <EditableText id="hero-sub" as="p" multiline
-              className="mb-11 max-w-[420px] leading-[1.75]"
-              style={{ color: 'rgba(255,255,255,0.42)', fontSize: '1.05rem' }}>
+              className="mb-10 leading-[1.75] max-w-[440px]"
+              style={{ color: 'rgba(255,255,255,0.60)', fontSize: '1.05rem' }}>
               Terapi online, AI inteligjente dhe mbështetje profesionale në një platformë të vetme.
             </EditableText>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-14">
+            <div className="flex flex-wrap gap-3 mb-12">
               <Link to="/auth"
-                className="inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl font-bold text-white transition-all duration-300 hover:scale-[1.025] hover:brightness-110"
+                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:brightness-110"
                 style={{
                   background: 'linear-gradient(135deg,#8B5CF6,#6D28D9)',
-                  boxShadow: '0 8px 32px rgba(139,92,246,0.32), inset 0 1px 0 rgba(255,255,255,0.12)',
+                  boxShadow: '0 8px 40px rgba(139,92,246,0.45), inset 0 1px 0 rgba(255,255,255,0.15)',
                   fontSize: '0.95rem',
                 }}>
-                <EditableText id="hero-cta1" as="span">Fillo Falas</EditableText> <ArrowRight size={16}/>
+                <EditableText id="hero-cta1" as="span">Fillo Falas</EditableText>
+                <ArrowRight size={16}/>
               </Link>
               <Link to="/book"
-                className="inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl font-semibold transition-all duration-300 hover:bg-white/6 hover:border-white/20"
+                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:bg-white/10"
                 style={{
-                  color: 'rgba(255,255,255,0.6)',
-                  border: '1px solid rgba(255,255,255,0.11)',
-                  backdropFilter: 'blur(8px)',
+                  color: 'rgba(255,255,255,0.85)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  backdropFilter: 'blur(12px)',
+                  background: 'rgba(255,255,255,0.06)',
                   fontSize: '0.95rem',
                 }}>
-                <CalendarCheck size={16} style={{ opacity: 0.65 }}/>
+                <CalendarCheck size={16} style={{ opacity: 0.75 }}/>
                 <EditableText id="hero-cta2" as="span">Rezervo Takim</EditableText>
               </Link>
             </div>
 
-            {/* Trust */}
+            {/* Trust avatars */}
             <div className="flex items-center gap-4">
               <div className="flex -space-x-2.5">
-                {[['A','#8B5CF6'],['M','#14D8A6'],['D','#6D28D9'],['L','#059669']].map(([l,bg]) => (
-                  <div key={l} className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-black text-white"
-                    style={{ borderColor: '#050816', background: bg }}>{l}</div>
-                ))}
-              </div>
-              <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.8rem', lineHeight: 1.5 }}>
-                Bashkohu me{' '}
-                <span style={{ color: 'rgba(139,92,246,0.8)' }} className="font-semibold">2,400+</span>
-                {' '}njerëz<br/>që u kujdesën për mendjen e tyre
-              </p>
-            </div>
-          </div>
-
-          {/* ── RIGHT: photo carousel ─────────────────────────────── */}
-          <div
-            className="relative hidden lg:block"
-            style={{
-              transform: `translate(${mouse.x * 9}px, ${mouse.y * 7}px)`,
-              transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)',
-            }}
-          >
-            {/* Float wrapper */}
-            <div style={{ animation: 'heroFloat 7s ease-in-out infinite' }}>
-
-              {/* Main image panel */}
-              <div
-                className="relative overflow-hidden"
-                style={{
-                  width: 440, height: 580,
-                  borderRadius: 28,
-                  boxShadow: '0 48px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.14)',
-                }}
-              >
-                {/* Cross-fade photos */}
-                {CAROUSEL_PHOTOS.map((p, i) => (
-                  <div key={i} className="absolute inset-0"
-                    style={{
-                      opacity: i === slide ? 1 : 0,
-                      transition: 'opacity 1.2s ease',
-                    }}>
-                    <img src={p.src} alt={p.label}
-                      className="w-full h-full object-cover"
-                      style={{
-                        transform: i === slide ? 'scale(1.06)' : 'scale(1)',
-                        transition: 'transform 7s ease-out',
-                      }}/>
+                {[['A','#8B5CF6'],['M','#ec4899'],['D','#14D8A6'],['L','#6D28D9']].map(([l,bg]) => (
+                  <div key={l}
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-black text-white"
+                    style={{ background: bg, border: '2px solid rgba(255,255,255,0.2)' }}>
+                    {l}
                   </div>
                 ))}
-
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 pointer-events-none"
-                  style={{ background: 'linear-gradient(to bottom, rgba(5,8,22,0.08) 0%, rgba(5,8,22,0) 35%, rgba(5,8,22,0.75) 100%)' }}/>
-
-                {/* Dot nav — top right */}
-                <div className="absolute top-5 right-5 flex gap-1.5 z-10">
-                  {CAROUSEL_PHOTOS.map((_, i) => (
-                    <button key={i} onClick={() => setSlide(i)}
-                      className="rounded-full transition-all duration-500"
-                      style={{
-                        width: i === slide ? 22 : 6, height: 6,
-                        background: i === slide ? '#8B5CF6' : 'rgba(255,255,255,0.28)',
-                      }}/>
-                  ))}
-                </div>
-
-                {/* Bottom glass card */}
-                <div
-                  className="absolute bottom-5 left-5 right-5 flex items-center gap-3 px-4 py-3.5 z-10"
-                  style={{
-                    borderRadius: 18,
-                    background: 'rgba(11,16,36,0.78)',
-                    backdropFilter: 'blur(24px)',
-                    border: '1px solid rgba(139,92,246,0.18)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.32)',
-                  }}
-                >
-                  <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: 'linear-gradient(135deg,#8B5CF6,#14D8A6)' }}>
-                    <PhotoIcon size={14} color="white" strokeWidth={2}/>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white text-xs font-semibold leading-tight truncate">{photo.label}</p>
-                    <p className="text-[10px] mt-0.5 truncate" style={{ color: 'rgba(20,216,166,0.7)' }}>{photo.sub}</p>
-                  </div>
-                  <div className="w-2 h-2 rounded-full shrink-0 animate-pulse" style={{ background: '#14D8A6' }}/>
-                </div>
               </div>
-
-              {/* Floating pill — left */}
-              <div
-                className="absolute -left-14 top-20 flex items-center gap-2.5 px-4 py-3 z-10"
-                style={{
-                  borderRadius: 16,
-                  background: 'rgba(11,16,36,0.82)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(139,92,246,0.18)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.28)',
-                  animation: 'heroPill1 5s ease-in-out infinite',
-                }}
-              >
-                <div className="w-7 h-7 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(139,92,246,0.18)' }}>
-                  <ShieldCheck size={13} style={{ color: '#8B5CF6' }}/>
-                </div>
-                <div>
-                  <p className="text-white text-xs font-semibold leading-tight">E sigurt & private</p>
-                  <p className="text-[10px]" style={{ color: 'rgba(20,216,166,0.65)' }}>End-to-end encrypted</p>
-                </div>
-              </div>
-
-              {/* Floating pill — right */}
-              <div
-                className="absolute -right-10 bottom-28 flex items-center gap-2.5 px-4 py-3 z-10"
-                style={{
-                  borderRadius: 16,
-                  background: 'rgba(11,16,36,0.82)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(20,216,166,0.16)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.28)',
-                  animation: 'heroPill2 6s ease-in-out infinite',
-                }}
-              >
-                <div className="w-7 h-7 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(20,216,166,0.12)' }}>
-                  <Users size={13} style={{ color: '#14D8A6' }}/>
-                </div>
-                <div>
-                  <p className="text-white text-xs font-semibold leading-tight">8 Psikologë Online</p>
-                  <p className="text-[10px]" style={{ color: 'rgba(139,92,246,0.7)' }}>Gatshëm tani</p>
-                </div>
+              <div>
+                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.82rem', lineHeight: 1.6 }}>
+                  Bashkë me mijëra njerëz{' '}
+                  <Heart size={11} fill="#ec4899" color="#ec4899" style={{ display: 'inline', verticalAlign: 'middle' }}/>
+                </p>
+                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem' }}>
+                  në rrugëtimin drejt qetësisë.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom fade to white */}
-      <div className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }}/>
+      {/* ── Bottom-right badge: Psikologë Online ── */}
+      <div className="absolute bottom-10 right-8 z-10 hidden md:block">
+        <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl"
+          style={{
+            background: 'rgba(255,255,255,0.12)',
+            backdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255,255,255,0.18)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+          }}>
+          <div className="w-2 h-2 rounded-full shrink-0 bg-green-400 animate-pulse"/>
+          <span className="text-white text-xs font-semibold">Psikologë Online</span>
+          <div className="flex -space-x-2">
+            {[['A','#8B5CF6'],['M','#ec4899'],['K','#14D8A6']].map(([l,bg]) => (
+              <div key={l}
+                className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black text-white"
+                style={{ background: bg, border: '1.5px solid rgba(255,255,255,0.25)' }}>
+                {l}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Carousel dot nav — bottom center ── */}
+      <div className="absolute bottom-9 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+        {CAROUSEL_PHOTOS.map((_, i) => (
+          <button key={i} onClick={() => setSlide(i)}
+            className="rounded-full transition-all duration-500"
+            style={{
+              width: i === slide ? 24 : 6, height: 6,
+              background: i === slide ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)',
+            }}/>
+        ))}
+      </div>
 
       <style>{`
         @keyframes heroFadeUp {
-          from { opacity:0; transform:translateY(28px); }
+          from { opacity:0; transform:translateY(30px); }
           to   { opacity:1; transform:translateY(0); }
-        }
-        @keyframes heroFloat {
-          0%,100% { transform:translateY(0px); }
-          50%      { transform:translateY(-14px); }
-        }
-        @keyframes heroPill1 {
-          0%,100% { transform:translateY(0px); }
-          50%      { transform:translateY(-9px); }
-        }
-        @keyframes heroPill2 {
-          0%,100% { transform:translateY(0px); }
-          50%      { transform:translateY(9px); }
         }
       `}</style>
     </section>

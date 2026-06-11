@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useRef, useMemo } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { Brain, Menu, X, ArrowRight, Mail, Search, ChevronRight } from 'lucide-react'
 import LogoMark from '../LogoMark'
 import { PLATFORM_CATS } from '../../data/categoriesData'
@@ -109,8 +109,22 @@ import NeuroPulse from '../NeuroPulse'
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
   const [showSearch, setShowSearch] = useState(false)
+  const [scrolled,   setScrolled]   = useState(false)
   const { user, logout, isAdmin } = useAuth()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  const isLanding = pathname === '/'
+
+  useEffect(() => {
+    if (!isLanding) { setScrolled(false); return }
+    const fn = () => setScrolled(window.scrollY > 60)
+    fn()
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
+  }, [isLanding])
+
+  const transparent = isLanding && !scrolled
 
   const links = [
     { to: '/library',    label: 'NeuroArtikuj' },
@@ -128,28 +142,29 @@ function PublicHeader() {
       {showSearch && <SearchOverlay onClose={() => setShowSearch(false)}/>}
 
       <header
-        className="sticky top-0 z-50"
+        className={transparent ? 'fixed top-0 left-0 right-0 z-50' : 'sticky top-0 z-50'}
         style={{
-          background: 'rgba(255,255,255,0.97)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(229,231,235,0.8)',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(109,40,217,0.06)',
+          background: transparent ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.97)',
+          backdropFilter: transparent ? 'blur(0px)' : 'blur(20px)',
+          WebkitBackdropFilter: transparent ? 'blur(0px)' : 'blur(20px)',
+          borderBottom: transparent ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(229,231,235,0.8)',
+          boxShadow: transparent ? 'none' : '0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(109,40,217,0.06)',
+          transition: 'background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease',
         }}>
-        {/* Violet accent line at top */}
-        <div style={{
+        {/* Violet accent line — hidden when transparent */}
+        {!transparent && <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 2,
           background: 'linear-gradient(90deg, #7c3aed 0%, #6d28d9 40%, #3b82f6 100%)',
           opacity: 0.7,
-        }}/>
+        }}/>}
 
         <div className="max-w-6xl mx-auto px-5 h-16 flex items-center gap-3">
           {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0 mr-2">
             <LogoMark size={36} radius="rounded-xl"/>
             <Link to="/" className="flex flex-col leading-none">
-              <span className="font-black text-lg tracking-tight bg-gradient-to-r from-violet-600 via-purple-600 to-blue-500 bg-clip-text text-transparent">NeuroSphera</span>
-              <span className="text-[9px] font-semibold text-violet-400 uppercase tracking-widest">Shëndeti Mendor</span>
+              <span className={`font-black text-lg tracking-tight ${transparent ? 'text-white' : 'bg-gradient-to-r from-violet-600 via-purple-600 to-blue-500 bg-clip-text text-transparent'}`}>NeuroSphera</span>
+              <span className={`text-[9px] font-semibold uppercase tracking-widest ${transparent ? 'text-white/70' : 'text-violet-400'}`}>Shëndeti Mendor</span>
             </Link>
           </div>
 
@@ -168,7 +183,9 @@ function PublicHeader() {
               return (
                 <NavLink key={l.to} to={l.to}
                   className={({ isActive }) =>
-                    `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`
+                    transparent
+                      ? `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-white' : 'text-white/75 hover:text-white hover:bg-white/10'}`
+                      : `px-2.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-violet-600 bg-violet-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`
                   }>
                   {l.label}
                 </NavLink>
@@ -179,21 +196,23 @@ function PublicHeader() {
           {/* Search + CTAs */}
           <div className="hidden md:flex items-center gap-2 ml-auto">
             <button onClick={() => setShowSearch(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100 transition-colors">
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors ${transparent ? 'text-white/75 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100'}`}>
               <Search size={15}/><span className="hidden lg:inline">Kërko</span>
             </button>
             {user ? (
               <>
                 <button onClick={() => { logout(); navigate('/') }}
-                  className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-red-500 transition-colors">
+                  className={`px-4 py-2 text-sm font-semibold transition-colors ${transparent ? 'text-white/70 hover:text-white' : 'text-gray-500 hover:text-red-500'}`}>
                   Dil
                 </button>
                 <NeuroPulse scrolled={false} />
               </>
             ) : (
               <>
-                <Link to="/auth" className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors">Kyçu</Link>
-                <NeuroPulse scrolled={false} />
+                <Link to="/auth"
+                  className={`px-5 py-2 rounded-xl text-sm font-bold border transition-colors ${transparent ? 'text-white border-white/30 hover:bg-white/10' : 'text-gray-700 border-gray-300 hover:bg-gray-50'}`}>
+                  Hyr / Regjistrohu
+                </Link>
               </>
             )}
           </div>
