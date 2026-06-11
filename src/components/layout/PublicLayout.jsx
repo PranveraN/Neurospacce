@@ -158,7 +158,8 @@ function PublicHeader() {
           backdropFilter: headerBlur,
           WebkitBackdropFilter: headerBlur,
           borderBottom: headerBdr,
-          transition: 'background 0.35s ease, border-color 0.35s ease',
+          boxShadow: transparent ? 'none' : '0 4px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(139,92,246,0.12)',
+          transition: 'background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease',
         }}>
 
         <div className="max-w-7xl mx-auto px-5 h-16 flex items-center gap-2">
