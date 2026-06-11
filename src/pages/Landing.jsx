@@ -773,61 +773,12 @@ function StarField() {
 /* ─────────────────────────────────────────────────────────────────────────── */
 /*  HERO CAROUSEL DATA                                                        */
 /* ─────────────────────────────────────────────────────────────────────────── */
-const CAROUSEL_MODULES = [
-  {
-    icon: Brain, title: 'AI Assistant',
-    desc: 'NeuroAI të udhëzon tek eksperti i duhur dhe artikujt relevantë për situatën tënde.',
-    color: '#a78bfa', grad: 'linear-gradient(135deg,#7c3aed,#6d28d9)',
-    bg: 'rgba(124,58,237,0.18)', preview: 'chat',
-    photo: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=700&q=80',
-    tag: 'AI · 24/7',
-    stat: '50K+ sesione',
-  },
-  {
-    icon: CalendarCheck, title: 'Rezervo Takim',
-    desc: 'Psikolog i licencuar të gatshëm brenda 60 sekondave.',
-    color: '#34d399', grad: 'linear-gradient(135deg,#059669,#10b981)',
-    bg: 'rgba(16,185,129,0.15)', preview: 'booking',
-    photo: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=700&q=80',
-    tag: '8 Psikologë · Online',
-    stat: '98% satisfaksion',
-  },
-  {
-    icon: Users, title: 'Komunitet',
-    desc: 'Histori reale, mbështetje nga njerëz që kuptojnë.',
-    color: '#93c5fd', grad: 'linear-gradient(135deg,#2563eb,#3b82f6)',
-    bg: 'rgba(59,130,246,0.15)', preview: 'patients',
-    photo: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&q=80',
-    tag: 'Komunitet · Live',
-    stat: '2.4K+ anëtarë',
-  },
-  {
-    icon: BarChart2, title: 'Gjurmim Humori',
-    desc: 'Analiza e humorit çdo ditë me insight-e nga AI.',
-    color: '#fcd34d', grad: 'linear-gradient(135deg,#d97706,#f59e0b)',
-    bg: 'rgba(245,158,11,0.15)', preview: 'mood',
-    photo: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=700&q=80',
-    tag: 'Çdo ditë · Smart',
-    stat: '30 ditë historik',
-  },
-  {
-    icon: Play, title: 'Sesione Video',
-    desc: 'Terapi online me cilësi HD direkt nga shtëpia jote.',
-    color: '#f9a8d4', grad: 'linear-gradient(135deg,#db2777,#ec4899)',
-    bg: 'rgba(236,72,153,0.15)', preview: 'video',
-    photo: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=700&q=80',
-    tag: 'HD · E sigurt',
-    stat: '500+ sesione',
-  },
-  {
-    icon: TrendingUp, title: 'Raporte & Progres',
-    desc: 'Progresi yt mendor në raporte javore dhe mujore.',
-    color: '#c4b5fd', grad: 'linear-gradient(135deg,#7c3aed,#8b5cf6)',
-    bg: 'rgba(139,92,246,0.15)', preview: 'reports',
-    photo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80',
-    tag: 'Raporte · PDF',
-    stat: 'Insight javor',
-  },
+const CAROUSEL_PHOTOS = [
+  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=85', label: 'Mindfulness & Qetësi', sub: 'Sesione të guiduara', icon: Brain },
+  { src: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=900&q=85',   label: 'Terapi Profesionale',  sub: '8 psikologë online', icon: CalendarCheck },
+  { src: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=900&q=85', label: 'Meditim & Fokus',     sub: 'Çdo ditë, 10 minuta', icon: Sparkles },
+  { src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=85', label: 'Komunitet & Ndihmë',  sub: '2,400+ anëtarë', icon: Users },
+  { src: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=85',    label: 'AI · 24/7 Aktiv',     sub: 'Mbështetje inteligjente', icon: Heart },
 ]
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -835,286 +786,276 @@ const CAROUSEL_MODULES = [
 /* ─────────────────────────────────────────────────────────────────────────── */
 function HeroSection() {
   const [slide, setSlide] = useState(0)
-  const [key,   setKey]   = useState(0)
+  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+  const heroRef = useRef(null)
 
   useEffect(() => {
-    const t = setInterval(() => {
-      setSlide(s => (s + 1) % CAROUSEL_MODULES.length)
-      setKey(k => k + 1)
-    }, 3200)
+    const t = setInterval(() => setSlide(s => (s + 1) % CAROUSEL_PHOTOS.length), 5000)
     return () => clearInterval(t)
   }, [])
 
-  const mod = CAROUSEL_MODULES[slide]
-  const Icon = mod.icon
+  function handleMouseMove(e) {
+    const rect = heroRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setMouse({
+      x: ((e.clientX - rect.left) / rect.width  - 0.5) * 2,
+      y: ((e.clientY - rect.top)  / rect.height - 0.5) * 2,
+    })
+  }
+
+  const photo = CAROUSEL_PHOTOS[slide]
+  const PhotoIcon = photo.icon
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #030711 0%, #0d0520 40%, #16042e 70%, #0a0118 100%)' }}>
-
-      {/* Starfield */}
-      <StarField/>
-
-      {/* Animated nebula orbs */}
+    <section
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen flex items-center overflow-hidden"
+      style={{ background: 'linear-gradient(150deg, #050816 0%, #0B1024 55%, #130B2F 100%)' }}
+    >
+      {/* Glow orbs — very subtle */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute animate-orb-pulse rounded-full"
-          style={{ width: 600, height: 600, top: '-15%', left: '-10%',
-            background: 'radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)' }}/>
-        <div className="absolute animate-orb-pulse rounded-full"
-          style={{ width: 500, height: 500, top: '20%', right: '-8%', animationDelay: '2s',
-            background: 'radial-gradient(circle, rgba(236,72,153,0.12) 0%, transparent 70%)' }}/>
-        <div className="absolute animate-orb-pulse rounded-full"
-          style={{ width: 400, height: 400, bottom: '5%', left: '30%', animationDelay: '1s',
-            background: 'radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%)' }}/>
+        <div className="absolute rounded-full"
+          style={{
+            width: 800, height: 800, top: '-25%', left: '-20%',
+            background: 'radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 65%)',
+            transform: `translate(${mouse.x * -20}px, ${mouse.y * -20}px)`,
+            transition: 'transform 1s ease-out',
+          }}/>
+        <div className="absolute rounded-full"
+          style={{
+            width: 600, height: 600, bottom: '-10%', right: '-10%',
+            background: 'radial-gradient(circle, rgba(20,216,166,0.07) 0%, transparent 65%)',
+            transform: `translate(${mouse.x * 12}px, ${mouse.y * 12}px)`,
+            transition: 'transform 1s ease-out',
+          }}/>
       </div>
 
-      {/* Dot grid */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '36px 36px' }}/>
+      {/* Ultra-fine grid */}
+      <div className="absolute inset-0 opacity-[0.022] pointer-events-none"
+        style={{ backgroundImage: 'linear-gradient(rgba(139,92,246,1) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,1) 1px,transparent 1px)', backgroundSize: '90px 90px' }}/>
 
-      <div className="relative max-w-7xl mx-auto px-5 pt-16 pb-24 md:pt-20 md:pb-20 w-full">
-        <div className="grid lg:grid-cols-2 gap-14 xl:gap-24 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-24 pb-16 w-full">
+        <div className="grid lg:grid-cols-[1fr_460px] gap-16 xl:gap-24 items-center min-h-[calc(100vh-100px)]">
 
           {/* ── LEFT ─────────────────────────────────────────────── */}
-          <div className="animate-slide-up">
+          <div style={{ animation: 'heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) forwards' }}>
 
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2.5 rounded-full px-4 py-2 mb-8 backdrop-blur-sm"
-              style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(167,139,250,0.25)' }}>
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0"/>
-              <EditableText id="hero-badge" as="span" className="text-violet-300 text-sm font-semibold tracking-wide">Platforma #1 e shëndetit mendor</EditableText>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-8">
+              <div className="h-px w-8 rounded-full" style={{ background: 'linear-gradient(90deg,#8B5CF6,transparent)' }}/>
+              <span className="text-xs font-semibold tracking-[0.18em] uppercase"
+                style={{ color: 'rgba(139,92,246,0.75)' }}>
+                Shëndeti Mendor
+              </span>
             </div>
 
             {/* Headline */}
-            <h1 className="font-black text-white leading-[1.05] mb-6" style={{ fontSize: 'clamp(2.6rem, 5.5vw, 4.2rem)' }}>
-              <EditableText id="hero-h1-line1" as="span">Mendo më</EditableText>
-              {' '}
-              <EditableText id="hero-h1-line2" as="span" className="text-transparent bg-clip-text"
-                style={{ backgroundImage: 'linear-gradient(135deg, #c084fc 20%, #f472b6 80%)' }}>
-                qartë.
-              </EditableText>
-              <br/>
-              <EditableText id="hero-h1-line3" as="span">Ndihu më</EditableText>
-              {' '}
-              <EditableText id="hero-h1-line4" as="span" className="text-transparent bg-clip-text"
-                style={{ backgroundImage: 'linear-gradient(135deg, #67e8f9 20%, #34d399 80%)' }}>
-                mirë.
+            <h1
+              className="font-black text-white leading-[1.06] mb-7 tracking-tight"
+              style={{ fontSize: 'clamp(2.8rem, 5.2vw, 4.8rem)', letterSpacing: '-0.025em' }}
+            >
+              <EditableText id="hero-h1-l1" as="span">Hapësira jote<br />
+              për një mendje<br /></EditableText>
+              <EditableText id="hero-h1-accent" as="span"
+                className="text-transparent bg-clip-text"
+                style={{ backgroundImage: 'linear-gradient(130deg, #8B5CF6 10%, #14D8A6 100%)' }}>
+                më të qetë.
               </EditableText>
             </h1>
 
-            {/* Sub */}
-            <EditableText id="hero-subtitle" as="p" multiline
-              className="text-white/50 leading-relaxed mb-10 max-w-md"
-              style={{ fontSize: '1.1rem' }}>
-              NeuroSphera bashkon psikologji klinike, AI dhe gjurmim humori për mbështetje e vërtetë mendore, çdo ditë, kudo.
+            {/* Subheadline */}
+            <EditableText id="hero-sub" as="p" multiline
+              className="mb-11 max-w-[420px] leading-[1.75]"
+              style={{ color: 'rgba(255,255,255,0.42)', fontSize: '1.05rem' }}>
+              Terapi online, AI inteligjente dhe mbështetje profesionale në një platformë të vetme.
             </EditableText>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-12">
+            <div className="flex flex-col sm:flex-row gap-3 mb-14">
               <Link to="/auth"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-black text-white transition-all duration-200 hover:scale-[1.03] hover:brightness-110"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #ec4899)', boxShadow: '0 8px 32px rgba(124,58,237,0.4), 0 0 0 1px rgba(255,255,255,0.08)' }}>
-                <EditableText id="hero-cta1" as="span">Fillo falas sot</EditableText> <ArrowRight size={18}/>
+                className="inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl font-bold text-white transition-all duration-300 hover:scale-[1.025] hover:brightness-110"
+                style={{
+                  background: 'linear-gradient(135deg,#8B5CF6,#6D28D9)',
+                  boxShadow: '0 8px 32px rgba(139,92,246,0.32), inset 0 1px 0 rgba(255,255,255,0.12)',
+                  fontSize: '0.95rem',
+                }}>
+                <EditableText id="hero-cta1" as="span">Fillo Falas</EditableText> <ArrowRight size={16}/>
               </Link>
               <Link to="/book"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-semibold text-white/75 hover:text-white transition-all duration-200 hover:bg-white/8 backdrop-blur-sm"
-                style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
-                <CalendarCheck size={17}/> <EditableText id="hero-cta2" as="span">Rezervo takim</EditableText>
+                className="inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl font-semibold transition-all duration-300 hover:bg-white/6 hover:border-white/20"
+                style={{
+                  color: 'rgba(255,255,255,0.6)',
+                  border: '1px solid rgba(255,255,255,0.11)',
+                  backdropFilter: 'blur(8px)',
+                  fontSize: '0.95rem',
+                }}>
+                <CalendarCheck size={16} style={{ opacity: 0.65 }}/>
+                <EditableText id="hero-cta2" as="span">Rezervo Takim</EditableText>
               </Link>
             </div>
 
-            {/* Social proof */}
-            <div className="flex items-center gap-5">
+            {/* Trust */}
+            <div className="flex items-center gap-4">
               <div className="flex -space-x-2.5">
-                {[['A','#7c3aed'],['B','#2563eb'],['D','#059669'],['E','#d97706'],['F','#ec4899']].map(([l,bg]) => (
-                  <div key={l} className="w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-black text-white"
-                    style={{ borderColor: '#030711', background: bg }}>{l}</div>
+                {[['A','#8B5CF6'],['M','#14D8A6'],['D','#6D28D9'],['L','#059669']].map(([l,bg]) => (
+                  <div key={l} className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-black text-white"
+                    style={{ borderColor: '#050816', background: bg }}>{l}</div>
                 ))}
               </div>
-              <div>
-                <div className="flex items-center gap-0.5 mb-1">
-                  {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#fbbf24" color="#fbbf24"/>)}
-                  <span className="text-white/40 text-xs ml-2">4.9/5</span>
-                </div>
-                <EditableText id="hero-social-proof" as="p" className="text-white/35 text-xs">Platforma pioniere e shëndetit mendor</EditableText>
-              </div>
+              <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.8rem', lineHeight: 1.5 }}>
+                Bashkohu me{' '}
+                <span style={{ color: 'rgba(139,92,246,0.8)' }} className="font-semibold">2,400+</span>
+                {' '}njerëz<br/>që u kujdesën për mendjen e tyre
+              </p>
             </div>
           </div>
 
-          {/* ── RIGHT: carousel ──────────────────────────────────── */}
-          <div className="flex flex-col items-center gap-6 relative mt-8 lg:mt-0">
+          {/* ── RIGHT: photo carousel ─────────────────────────────── */}
+          <div
+            className="relative hidden lg:block"
+            style={{
+              transform: `translate(${mouse.x * 9}px, ${mouse.y * 7}px)`,
+              transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)',
+            }}
+          >
+            {/* Float wrapper */}
+            <div style={{ animation: 'heroFloat 7s ease-in-out infinite' }}>
 
-            {/* Floating stat badges */}
-            <div className="absolute -left-6 top-10 animate-badge flex items-center gap-2.5 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md z-10"
-              style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(52,211,153,0.25)' }}>
-              <span className="text-lg">🔥</span>
-              <div><p className="text-white font-bold text-xs leading-tight">14 ditë streak</p><p className="text-green-400 text-[10px]">Vazhdo kështu!</p></div>
-            </div>
-
-            <div className="absolute -right-4 top-16 animate-badge flex items-center gap-2.5 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md z-10"
-              style={{ background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(167,139,250,0.25)', animationDelay: '1.5s' }}>
-              <div className="flex -space-x-1.5">
-                {['#7c3aed','#ec4899','#3b82f6'].map((c,i) => (
-                  <div key={i} className="w-5 h-5 rounded-full border border-white/20" style={{ background: c }}/>
-                ))}
-              </div>
-              <p className="text-white/80 text-[11px] font-semibold">+12 sot aktiv</p>
-            </div>
-
-            <div className="absolute -left-2 bottom-16 animate-badge z-10 flex items-center gap-2.5 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md"
-              style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(147,197,253,0.25)', animationDelay: '0.8s' }}>
-              <CalendarCheck size={14} color="#93c5fd"/>
-              <div><p className="text-white text-[11px] font-bold">Takim ✓</p><p className="text-blue-300 text-[10px]">Dr. Arta K. · 10:00</p></div>
-            </div>
-
-            {/* ── PREMIUM CAROUSEL CARD ── */}
-            <div className="relative w-[380px]">
-
-              {/* Outer glow halo */}
-              <div className="absolute -inset-4 rounded-[2.5rem] pointer-events-none blur-2xl opacity-40 transition-all duration-700"
-                style={{ background: `radial-gradient(ellipse at 50% 40%, ${mod.color}55, transparent 70%)` }}/>
-
-              <div key={key} className="animate-carousel relative rounded-[2rem] overflow-hidden shadow-2xl"
+              {/* Main image panel */}
+              <div
+                className="relative overflow-hidden"
                 style={{
-                  background: 'rgba(8,4,24,0.85)',
-                  border: `1px solid ${mod.color}35`,
-                  backdropFilter: 'blur(32px)',
-                  boxShadow: `0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px ${mod.color}20, inset 0 1px 0 rgba(255,255,255,0.07)`,
-                }}>
-
-                {/* ── Photo area ── */}
-                <div className="relative h-[195px] overflow-hidden">
-                  <img
-                    src={mod.photo}
-                    alt={mod.title}
-                    className="w-full h-full object-cover transition-transform duration-700 scale-[1.04]"
-                  />
-                  {/* Multi-layer darkening + color tint */}
-                  <div className="absolute inset-0"
-                    style={{ background: `linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(8,4,24,0.0) 40%, rgba(8,4,24,0.95) 100%)` }}/>
-                  <div className="absolute inset-0 mix-blend-color opacity-25"
-                    style={{ background: mod.grad }}/>
-
-                  {/* Top-left tag pill */}
-                  <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(8,4,24,0.72)', border: `1px solid ${mod.color}45`, backdropFilter: 'blur(10px)' }}>
-                    <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: mod.color }}/>
-                    <span className="text-[10px] font-bold tracking-wide" style={{ color: mod.color }}>{mod.tag}</span>
+                  width: 440, height: 580,
+                  borderRadius: 28,
+                  boxShadow: '0 48px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.14)',
+                }}
+              >
+                {/* Cross-fade photos */}
+                {CAROUSEL_PHOTOS.map((p, i) => (
+                  <div key={i} className="absolute inset-0"
+                    style={{
+                      opacity: i === slide ? 1 : 0,
+                      transition: 'opacity 1.2s ease',
+                    }}>
+                    <img src={p.src} alt={p.label}
+                      className="w-full h-full object-cover"
+                      style={{
+                        transform: i === slide ? 'scale(1.06)' : 'scale(1)',
+                        transition: 'transform 7s ease-out',
+                      }}/>
                   </div>
+                ))}
 
-                  {/* Top-right stat */}
-                  <div className="absolute top-3.5 right-3.5 px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(8,4,24,0.72)', border: '1px solid rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)' }}>
-                    <span className="text-[10px] font-bold text-white/70">{mod.stat}</span>
-                  </div>
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 pointer-events-none"
+                  style={{ background: 'linear-gradient(to bottom, rgba(5,8,22,0.08) 0%, rgba(5,8,22,0) 35%, rgba(5,8,22,0.75) 100%)' }}/>
 
-                  {/* Dot nav — bottom of photo */}
-                  <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {CAROUSEL_MODULES.map((_, i) => (
-                      <button key={i} onClick={() => { setSlide(i); setKey(k => k + 1) }}
-                        className="rounded-full transition-all duration-300"
-                        style={{
-                          width: i === slide ? 18 : 6, height: 6,
-                          background: i === slide ? mod.color : 'rgba(255,255,255,0.3)',
-                        }}/>
-                    ))}
-                  </div>
+                {/* Dot nav — top right */}
+                <div className="absolute top-5 right-5 flex gap-1.5 z-10">
+                  {CAROUSEL_PHOTOS.map((_, i) => (
+                    <button key={i} onClick={() => setSlide(i)}
+                      className="rounded-full transition-all duration-500"
+                      style={{
+                        width: i === slide ? 22 : 6, height: 6,
+                        background: i === slide ? '#8B5CF6' : 'rgba(255,255,255,0.28)',
+                      }}/>
+                  ))}
                 </div>
 
-                {/* ── Card body ── */}
-                <div className="px-5 pt-4 pb-5">
-
-                  {/* Icon + title row */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-lg"
-                      style={{ background: mod.grad, boxShadow: `0 6px 20px ${mod.color}50` }}>
-                      <Icon size={18} color="white" strokeWidth={2}/>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white font-black text-[15px] leading-tight">{mod.title}</p>
-                      <p className="text-white/40 text-[11px] mt-0.5 leading-snug">{mod.desc}</p>
-                    </div>
+                {/* Bottom glass card */}
+                <div
+                  className="absolute bottom-5 left-5 right-5 flex items-center gap-3 px-4 py-3.5 z-10"
+                  style={{
+                    borderRadius: 18,
+                    background: 'rgba(11,16,36,0.78)',
+                    backdropFilter: 'blur(24px)',
+                    border: '1px solid rgba(139,92,246,0.18)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.32)',
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: 'linear-gradient(135deg,#8B5CF6,#14D8A6)' }}>
+                    <PhotoIcon size={14} color="white" strokeWidth={2}/>
                   </div>
-
-                  {/* Mini progress bars — decorative */}
-                  <div className="space-y-2 mb-4">
-                    {[['Progresi juaj', 72], ['Qëllimi javor', 55], ['Ndjeshmëria', 88]].map(([label, pct]) => (
-                      <div key={label} className="flex items-center gap-2">
-                        <span className="text-[9px] text-white/30 w-24 shrink-0">{label}</span>
-                        <div className="flex-1 h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.07)' }}>
-                          <div className="h-full rounded-full transition-all duration-1000"
-                            style={{ width: `${pct}%`, background: mod.grad }}/>
-                        </div>
-                        <span className="text-[9px] font-bold w-6 text-right" style={{ color: mod.color }}>{pct}%</span>
-                      </div>
-                    ))}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-xs font-semibold leading-tight truncate">{photo.label}</p>
+                    <p className="text-[10px] mt-0.5 truncate" style={{ color: 'rgba(20,216,166,0.7)' }}>{photo.sub}</p>
                   </div>
+                  <div className="w-2 h-2 rounded-full shrink-0 animate-pulse" style={{ background: '#14D8A6' }}/>
+                </div>
+              </div>
 
-                  {/* Action row */}
-                  <div className="flex items-center justify-between pt-3"
-                    style={{ borderTop: `1px solid ${mod.color}18` }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: mod.color }}/>
-                      <span className="text-white/35 text-[11px]">Aktiv tani</span>
-                    </div>
-                    <Link to="/auth"
-                      className="flex items-center gap-1.5 text-[11px] font-black px-4 py-2 rounded-xl transition-all hover:opacity-90 hover:scale-105"
-                      style={{ background: mod.grad, color: 'white', boxShadow: `0 4px 14px ${mod.color}40` }}>
-                      Hap <ArrowRight size={11}/>
-                    </Link>
-                  </div>
+              {/* Floating pill — left */}
+              <div
+                className="absolute -left-14 top-20 flex items-center gap-2.5 px-4 py-3 z-10"
+                style={{
+                  borderRadius: 16,
+                  background: 'rgba(11,16,36,0.82)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(139,92,246,0.18)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.28)',
+                  animation: 'heroPill1 5s ease-in-out infinite',
+                }}
+              >
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(139,92,246,0.18)' }}>
+                  <ShieldCheck size={13} style={{ color: '#8B5CF6' }}/>
+                </div>
+                <div>
+                  <p className="text-white text-xs font-semibold leading-tight">E sigurt & private</p>
+                  <p className="text-[10px]" style={{ color: 'rgba(20,216,166,0.65)' }}>End-to-end encrypted</p>
+                </div>
+              </div>
+
+              {/* Floating pill — right */}
+              <div
+                className="absolute -right-10 bottom-28 flex items-center gap-2.5 px-4 py-3 z-10"
+                style={{
+                  borderRadius: 16,
+                  background: 'rgba(11,16,36,0.82)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(20,216,166,0.16)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.28)',
+                  animation: 'heroPill2 6s ease-in-out infinite',
+                }}
+              >
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(20,216,166,0.12)' }}>
+                  <Users size={13} style={{ color: '#14D8A6' }}/>
+                </div>
+                <div>
+                  <p className="text-white text-xs font-semibold leading-tight">8 Psikologë Online</p>
+                  <p className="text-[10px]" style={{ color: 'rgba(139,92,246,0.7)' }}>Gatshëm tani</p>
                 </div>
               </div>
             </div>
-
-            {/* ── Module grid pills ── */}
-            <div className="grid grid-cols-3 gap-2 w-[380px]">
-              {CAROUSEL_MODULES.map((m, i) => {
-                const MI = m.icon
-                const isAct = i === slide
-                return (
-                  <button key={i} onClick={() => { setSlide(i); setKey(k => k + 1) }}
-                    className="relative flex flex-col items-center gap-1.5 py-3 px-2 rounded-2xl transition-all duration-200 overflow-hidden"
-                    style={{
-                      background: isAct ? m.bg : 'rgba(255,255,255,0.03)',
-                      border: `1px solid ${isAct ? m.color + '50' : 'rgba(255,255,255,0.07)'}`,
-                      transform: isAct ? 'scale(1.05)' : 'scale(1)',
-                      boxShadow: isAct ? `0 4px 16px ${m.color}25` : 'none',
-                    }}>
-                    {isAct && (
-                      <div className="absolute inset-0 pointer-events-none"
-                        style={{ background: `radial-gradient(circle at 50% 0%, ${m.color}20, transparent 70%)` }}/>
-                    )}
-                    <div className="w-7 h-7 rounded-xl flex items-center justify-center relative"
-                      style={{ background: isAct ? m.grad : 'rgba(255,255,255,0.07)', boxShadow: isAct ? `0 4px 12px ${m.color}40` : 'none' }}>
-                      <MI size={13} color={isAct ? 'white' : 'rgba(255,255,255,0.35)'} strokeWidth={2}/>
-                    </div>
-                    <span className="text-[9px] font-bold leading-tight text-center relative"
-                      style={{ color: isAct ? m.color : 'rgba(255,255,255,0.28)' }}>
-                      {m.title.split(' ')[0]}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
           </div>
-        </div>
-
-        {/* Stats bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-16 lg:mt-20">
-          {STATS.map(({ value, label }, i) => (
-            <div key={label} className="text-center rounded-2xl py-4 px-3 backdrop-blur-sm transition-all hover:bg-white/6"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <EditableText id={`hero-stat-${i}-value`} as="p" className="text-xl font-black text-white mb-0.5">{value}</EditableText>
-              <EditableText id={`hero-stat-${i}-label`} as="p" className="text-[11px] text-white/35 font-medium">{label}</EditableText>
-            </div>
-          ))}
         </div>
       </div>
 
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+      {/* Bottom fade to white */}
+      <div className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
         style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }}/>
+
+      <style>{`
+        @keyframes heroFadeUp {
+          from { opacity:0; transform:translateY(28px); }
+          to   { opacity:1; transform:translateY(0); }
+        }
+        @keyframes heroFloat {
+          0%,100% { transform:translateY(0px); }
+          50%      { transform:translateY(-14px); }
+        }
+        @keyframes heroPill1 {
+          0%,100% { transform:translateY(0px); }
+          50%      { transform:translateY(-9px); }
+        }
+        @keyframes heroPill2 {
+          0%,100% { transform:translateY(0px); }
+          50%      { transform:translateY(9px); }
+        }
+      `}</style>
     </section>
   )
 }
