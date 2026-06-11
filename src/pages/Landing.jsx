@@ -771,61 +771,39 @@ function StarField() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
-/*  HERO CAROUSEL DATA                                                        */
+/*  HERO PHOTO                                                                 */
 /* ─────────────────────────────────────────────────────────────────────────── */
-const CAROUSEL_PHOTOS = [
-  { src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1600&q=90', label: 'Mindfulness & Qetësi', sub: 'Sesione të guiduara', icon: Brain },
-  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=90', label: 'Terapi Profesionale',  sub: '8 psikologë online', icon: CalendarCheck },
-  { src: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1600&q=90', label: 'Meditim & Fokus',     sub: 'Çdo ditë, 10 minuta', icon: Sparkles },
-  { src: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1600&q=90', label: 'Komunitet & Ndihmë',  sub: '2,400+ anëtarë', icon: Users },
-  { src: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=1600&q=90',    label: 'AI · 24/7 Aktiv',     sub: 'Mbështetje inteligjente', icon: Heart },
-]
+const HERO_PHOTO = 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=1600&q=90'
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /*  HERO                                                                      */
 /* ─────────────────────────────────────────────────────────────────────────── */
 function HeroSection() {
-  const [slide, setSlide] = useState(0)
-  const heroRef = useRef(null)
-
-  useEffect(() => {
-    const t = setInterval(() => setSlide(s => (s + 1) % CAROUSEL_PHOTOS.length), 6000)
-    return () => clearInterval(t)
-  }, [])
-
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-screen flex flex-col overflow-hidden"
-    >
-      {/* ── Full-bleed background photos ── */}
-      <div className="absolute inset-0">
-        {CAROUSEL_PHOTOS.map((p, i) => (
-          <div key={i} className="absolute inset-0"
-            style={{ opacity: i === slide ? 1 : 0, transition: 'opacity 1.6s ease' }}>
-            <img src={p.src} alt={p.label}
-              className="w-full h-full object-cover object-center"
-              style={{
-                transform: i === slide ? 'scale(1.05)' : 'scale(1)',
-                transition: 'transform 8s ease-out',
-              }}/>
-          </div>
-        ))}
+    <section className="relative min-h-screen flex flex-col overflow-hidden">
 
+      {/* ── Full-bleed background photo ── */}
+      <div className="absolute inset-0">
+        <img
+          src={HERO_PHOTO}
+          alt="Hero"
+          className="w-full h-full object-cover object-center"
+          style={{ transform: 'scale(1.03)', transition: 'transform 12s ease-out' }}
+        />
         {/* Left gradient — text readability */}
         <div className="absolute inset-0"
-          style={{ background: 'linear-gradient(100deg, rgba(4,6,18,0.80) 0%, rgba(4,6,18,0.60) 42%, rgba(4,6,18,0.15) 68%, transparent 100%)' }}/>
-        {/* Top gradient — nav readability */}
-        <div className="absolute top-0 left-0 right-0 h-40"
-          style={{ background: 'linear-gradient(to bottom, rgba(4,6,18,0.55) 0%, transparent 100%)' }}/>
+          style={{ background: 'linear-gradient(105deg, rgba(4,6,18,0.82) 0%, rgba(4,6,18,0.62) 40%, rgba(4,6,18,0.18) 66%, transparent 100%)' }}/>
+        {/* Top gradient — nav area */}
+        <div className="absolute top-0 left-0 right-0 h-44"
+          style={{ background: 'linear-gradient(to bottom, rgba(4,6,18,0.52) 0%, transparent 100%)' }}/>
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32"
-          style={{ background: 'linear-gradient(to top, rgba(4,6,18,0.5) 0%, transparent 100%)' }}/>
+        <div className="absolute bottom-0 left-0 right-0 h-28"
+          style={{ background: 'linear-gradient(to top, rgba(4,6,18,0.45) 0%, transparent 100%)' }}/>
       </div>
 
       {/* ── Content ── */}
       <div className="relative flex-1 flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-6 md:px-12 pt-28 pb-20">
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-14 pt-28 pb-20">
           <div className="max-w-[580px]" style={{ animation: 'heroFadeUp 0.9s cubic-bezier(0.22,1,0.36,1) both' }}>
 
             {/* Eyebrow */}
@@ -853,7 +831,7 @@ function HeroSection() {
             {/* Subheadline */}
             <EditableText id="hero-sub" as="p" multiline
               className="mb-10 leading-[1.75] max-w-[440px]"
-              style={{ color: 'rgba(255,255,255,0.60)', fontSize: '1.05rem' }}>
+              style={{ color: 'rgba(255,255,255,0.62)', fontSize: '1.05rem' }}>
               Terapi online, AI inteligjente dhe mbështetje profesionale në një platformë të vetme.
             </EditableText>
 
@@ -872,10 +850,10 @@ function HeroSection() {
               <Link to="/book"
                 className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:bg-white/10"
                 style={{
-                  color: 'rgba(255,255,255,0.85)',
+                  color: 'rgba(255,255,255,0.88)',
                   border: '1px solid rgba(255,255,255,0.25)',
                   backdropFilter: 'blur(12px)',
-                  background: 'rgba(255,255,255,0.06)',
+                  background: 'rgba(255,255,255,0.07)',
                   fontSize: '0.95rem',
                 }}>
                 <CalendarCheck size={16} style={{ opacity: 0.75 }}/>
@@ -895,11 +873,11 @@ function HeroSection() {
                 ))}
               </div>
               <div>
-                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.82rem', lineHeight: 1.6 }}>
+                <p style={{ color: 'rgba(255,255,255,0.68)', fontSize: '0.82rem', lineHeight: 1.6 }}>
                   Bashkë me mijëra njerëz{' '}
                   <Heart size={11} fill="#ec4899" color="#ec4899" style={{ display: 'inline', verticalAlign: 'middle' }}/>
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem' }}>
+                <p style={{ color: 'rgba(255,255,255,0.48)', fontSize: '0.82rem' }}>
                   në rrugëtimin drejt qetësisë.
                 </p>
               </div>
@@ -929,18 +907,6 @@ function HeroSection() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* ── Carousel dot nav — bottom center ── */}
-      <div className="absolute bottom-9 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-        {CAROUSEL_PHOTOS.map((_, i) => (
-          <button key={i} onClick={() => setSlide(i)}
-            className="rounded-full transition-all duration-500"
-            style={{
-              width: i === slide ? 24 : 6, height: 6,
-              background: i === slide ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)',
-            }}/>
-        ))}
       </div>
 
       <style>{`
