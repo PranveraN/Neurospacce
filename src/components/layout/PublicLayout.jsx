@@ -4,6 +4,7 @@ import { Brain, Menu, X, ArrowRight, Mail, Search, ChevronRight } from 'lucide-r
 import LogoMark from '../LogoMark'
 import { PLATFORM_CATS } from '../../data/categoriesData'
 import { ARTICLES as STATIC_ARTICLES } from '../../data/articlesData'
+import MedicalDisclaimer from '../MedicalDisclaimer'
 
 function loadArticles() {
   try { const v = localStorage.getItem('ns_landing_articles'); return v ? JSON.parse(v) : STATIC_ARTICLES } catch { return STATIC_ARTICLES }
@@ -314,7 +315,11 @@ function PublicFooter() {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mt-10 mb-6">
+          <MedicalDisclaimer variant="dark" />
+        </div>
+
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-500">© 2026 NeuroSphera. Të gjitha të drejtat e rezervuara.</p>
           <div className="flex gap-4">
             <span className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Politika e Privatësisë</span>

@@ -334,13 +334,21 @@ export default function LibraryPage() {
     return matchPlat && matchArt && matchSearch
   }), [activePlatCat, activeArtCat, search])
 
-  const featured = useMemo(() => filtered.filter(a => a.featured).slice(0, 3), [filtered])
-  const rest     = useMemo(() => filtered.filter(a => !a.featured), [filtered])
+  // Artikulli me ID-në më të lartë (i fundit) gjithmonë del i pari si featured
+  const featured = useMemo(() => {
+    const latest = [...filtered].sort((a, b) => b.id - a.id)[0]
+    if (!latest) return []
+    const otherFeatured = filtered.filter(a => a.featured && a.id !== latest.id)
+    return [latest, ...otherFeatured].slice(0, 3)
+  }, [filtered])
+
+  const featuredIds = useMemo(() => new Set(featured.map(a => a.id)), [featured])
+  const rest = useMemo(() => filtered.filter(a => !featuredIds.has(a.id)), [filtered, featuredIds])
 
   /* Home-view only data (from full catalogue) */
-  const trending   = useMemo(() => ALL_ARTICLES.filter(a => !a.featured).slice(0, 8), [])
-  const aiPicks    = useMemo(() => ALL_ARTICLES.filter(a => a.featured).slice(0, 5), [])
-  const newArrivals = useMemo(() => [...ALL_ARTICLES].slice(-4).reverse(), [])
+  const trending    = useMemo(() => ALL_ARTICLES.filter(a => !a.featured).slice(0, 8), [])
+  const aiPicks     = useMemo(() => ALL_ARTICLES.filter(a => a.featured).slice(0, 5), [])
+  const newArrivals = useMemo(() => [...ALL_ARTICLES].sort((a, b) => b.id - a.id).slice(0, 4), [])
 
   const isDefault = activePlatCat === 'all' && !search && activeArtCat === 'Të gjitha'
 

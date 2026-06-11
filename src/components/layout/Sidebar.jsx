@@ -9,6 +9,7 @@ import { useMood } from '../../contexts/MoodContext'
 import { useAuth } from '../../contexts/AuthContext'
 import { usePlan } from '../../hooks/usePlan'
 import { AvatarDisplay } from '../Avatar'
+import MedicalDisclaimer from '../MedicalDisclaimer'
 
 const NAV = [
   { to: '/home',      icon: Home,      label: 'Ballina',    color: '#8b5cf6' },
@@ -157,6 +158,9 @@ export default function Sidebar() {
           </Link>
         )}
       </div>
+
+      {/* Medical disclaimer */}
+      <MedicalDisclaimer variant="sidebar" />
 
       {/* User card */}
       <div className="mx-3 mb-4 mt-1">

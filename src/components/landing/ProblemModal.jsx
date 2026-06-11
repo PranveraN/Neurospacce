@@ -4,6 +4,7 @@ import {
   ExternalLink, CheckCircle, Clock, ChevronRight,
   FileText, Play,
 } from 'lucide-react'
+import EditableText from '../EditableText'
 
 /* ─── TAB CONFIG ─────────────────────────────────────────────────────────── */
 const TABS = [
@@ -210,13 +211,13 @@ const PROBLEMS_DATA = {
 }
 
 /* ─── SUB-COMPONENTS ─────────────────────────────────────────────────────── */
-function ExplanationTab({ data, color }) {
+function ExplanationTab({ data, color, problemKey }) {
   return (
     <div className="space-y-4">
       <div className="rounded-2xl p-5"
         style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-        <h3 className="font-black text-white text-base mb-3">{data.headline}</h3>
-        <p className="text-white/60 text-sm leading-relaxed">{data.body}</p>
+        <EditableText as="h3" id={`pm-${problemKey}-exp-headline`} className="font-black text-white text-base mb-3">{data.headline}</EditableText>
+        <EditableText as="p" multiline id={`pm-${problemKey}-exp-body`} className="text-white/60 text-sm leading-relaxed">{data.body}</EditableText>
       </div>
       <p className="text-[11px] font-bold uppercase tracking-widest text-white/30 px-1">Konceptet kryesore shkencore</p>
       {data.concepts.map((c, i) => (
@@ -224,8 +225,8 @@ function ExplanationTab({ data, color }) {
           style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
           <span className="text-2xl shrink-0 mt-0.5">{c.icon}</span>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-white text-sm mb-1">{c.name}</p>
-            <p className="text-white/55 text-xs leading-relaxed mb-2">{c.desc}</p>
+            <EditableText as="p" id={`pm-${problemKey}-concept-${i}-name`} className="font-bold text-white text-sm mb-1">{c.name}</EditableText>
+            <EditableText as="p" multiline id={`pm-${problemKey}-concept-${i}-desc`} className="text-white/55 text-xs leading-relaxed mb-2">{c.desc}</EditableText>
             <p className="text-[10px] font-mono leading-snug" style={{ color: color + 'bb' }}>📄 {c.source}</p>
           </div>
         </div>
@@ -234,7 +235,7 @@ function ExplanationTab({ data, color }) {
   )
 }
 
-function TechniquesTab({ data, color, gradient }) {
+function TechniquesTab({ data, color, gradient, problemKey }) {
   const [expanded, setExpanded] = useState(null)
   return (
     <div className="space-y-3">
@@ -245,7 +246,7 @@ function TechniquesTab({ data, color, gradient }) {
             onClick={() => setExpanded(expanded === i ? null : i)}>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <p className="font-black text-white text-sm">{t.name}</p>
+                <EditableText as="p" id={`pm-${problemKey}-tech-${i}-name`} className="font-black text-white text-sm">{t.name}</EditableText>
                 <span className="text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0"
                   style={{ background: t.difficulty_color + '22', color: t.difficulty_color }}>
                   {t.difficulty}
@@ -263,7 +264,7 @@ function TechniquesTab({ data, color, gradient }) {
           </button>
           {expanded === i && (
             <div className="px-4 pb-4 space-y-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-white/60 text-xs leading-relaxed pt-3">{t.desc}</p>
+              <EditableText as="p" multiline id={`pm-${problemKey}-tech-${i}-desc`} className="text-white/60 text-xs leading-relaxed pt-3">{t.desc}</EditableText>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-2">Hapat e zbatimit</p>
                 <ol className="space-y-2">
@@ -271,7 +272,7 @@ function TechniquesTab({ data, color, gradient }) {
                     <li key={si} className="flex items-start gap-2.5">
                       <span className="w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5"
                         style={{ background: gradient, color: 'white' }}>{si + 1}</span>
-                      <span className="text-white/65 text-xs leading-relaxed">{step}</span>
+                      <EditableText id={`pm-${problemKey}-tech-${i}-step-${si}`} className="text-white/65 text-xs leading-relaxed">{step}</EditableText>
                     </li>
                   ))}
                 </ol>
@@ -287,7 +288,7 @@ function TechniquesTab({ data, color, gradient }) {
   )
 }
 
-function ExercisesTab({ data, color }) {
+function ExercisesTab({ data, color, problemKey }) {
   const [checked, setChecked] = useState({})
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }))
   return (
@@ -298,7 +299,7 @@ function ExercisesTab({ data, color }) {
           <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
             <span className="text-2xl">{ex.icon}</span>
             <div>
-              <p className="font-black text-white text-sm">{ex.title}</p>
+              <EditableText as="p" id={`pm-${problemKey}-ex-${i}-title`} className="font-black text-white text-sm">{ex.title}</EditableText>
               <p className="text-white/40 text-[10px] flex items-center gap-1 mt-0.5"><Clock size={9}/> {ex.duration}</p>
             </div>
           </div>
@@ -314,7 +315,7 @@ function ExercisesTab({ data, color }) {
                     style={{ background: done ? color : 'transparent', borderColor: done ? color : 'rgba(255,255,255,0.2)' }}>
                     {done && <CheckCircle size={10} color="white" strokeWidth={3}/>}
                   </div>
-                  <span className={`text-xs leading-relaxed ${done ? 'line-through text-white/25' : 'text-white/65'}`}>{step}</span>
+                  <EditableText id={`pm-${problemKey}-ex-${i}-step-${si}`} className={`text-xs leading-relaxed ${done ? 'line-through text-white/25' : 'text-white/65'}`}>{step}</EditableText>
                 </button>
               )
             })}
@@ -322,7 +323,8 @@ function ExercisesTab({ data, color }) {
           <div className="px-5 pb-5">
             <div className="rounded-xl px-4 py-3" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <p className="text-[11px] text-white/55 leading-snug">
-                <span className="font-bold text-white/80">Rezultati: </span>{ex.outcome}
+                <span className="font-bold text-white/80">Rezultati: </span>
+                <EditableText id={`pm-${problemKey}-ex-${i}-outcome`} className="text-[11px] text-white/55 leading-snug">{ex.outcome}</EditableText>
               </p>
             </div>
           </div>
@@ -332,7 +334,7 @@ function ExercisesTab({ data, color }) {
   )
 }
 
-function ResourcesTab({ data, color }) {
+function ResourcesTab({ data, color, problemKey }) {
   const groups = [
     { type: 'paper', label: 'Studime Shkencore (Peer-Reviewed)', Icon: FileText },
     { type: 'book',  label: 'Libra të Rekomanduar', Icon: BookOpen },
@@ -361,10 +363,10 @@ function ResourcesTab({ data, color }) {
                     <Icon size={13} style={{ color }}/>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-white text-xs leading-snug">{r.title}</p>
+                    <EditableText as="p" id={`pm-${problemKey}-res-${type}-${i}-title`} className="font-bold text-white text-xs leading-snug">{r.title}</EditableText>
                     <p className="text-white/40 text-[10px] mt-0.5">{r.authors || ''}</p>
                     {r.journal && <p className="text-[10px] font-mono mt-0.5" style={{ color: color + '80' }}>{r.journal}</p>}
-                    <p className="text-white/50 text-[10px] mt-1 leading-snug">{r.desc}</p>
+                    <EditableText as="p" multiline id={`pm-${problemKey}-res-${type}-${i}-desc`} className="text-white/50 text-[10px] mt-1 leading-snug">{r.desc}</EditableText>
                   </div>
                   <ExternalLink size={11} className="text-white/20 group-hover:text-white/50 transition-colors shrink-0 mt-1"/>
                 </a>
@@ -377,7 +379,7 @@ function ResourcesTab({ data, color }) {
   )
 }
 
-function ProgressTab({ data, color, gradient }) {
+function ProgressTab({ data, color, gradient, problemKey }) {
   return (
     <div className="space-y-3">
       <div className="rounded-2xl p-4"
@@ -398,9 +400,9 @@ function ProgressTab({ data, color, gradient }) {
                 background: i === 0 ? color + '12' : 'rgba(255,255,255,0.03)',
                 border: `1px solid ${i === 0 ? color + '35' : 'rgba(255,255,255,0.06)'}`,
               }}>
-              <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
-                style={{ color: i === 0 ? color : 'rgba(255,255,255,0.3)' }}>{m.week}</p>
-              <p className="text-white/70 text-xs leading-relaxed">{m.goal}</p>
+              <EditableText as="p" id={`pm-${problemKey}-prog-${i}-week`} className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                style={{ color: i === 0 ? color : 'rgba(255,255,255,0.3)' }}>{m.week}</EditableText>
+              <EditableText as="p" multiline id={`pm-${problemKey}-prog-${i}-goal`} className="text-white/70 text-xs leading-relaxed">{m.goal}</EditableText>
             </div>
           </div>
         ))}
@@ -452,8 +454,8 @@ export default function ProblemModal({ problemKey, onClose }) {
               {data.icon}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: data.color }}>{data.subtitle}</p>
-              <h2 className="text-white font-black text-base leading-snug pr-8">{data.title}</h2>
+              <EditableText as="p" id={`pm-${problemKey}-subtitle`} className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: data.color }}>{data.subtitle}</EditableText>
+              <EditableText as="h2" id={`pm-${problemKey}-title`} className="text-white font-black text-base leading-snug pr-8">{data.title}</EditableText>
             </div>
             <button onClick={onClose}
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all shrink-0"
@@ -467,8 +469,8 @@ export default function ProblemModal({ problemKey, onClose }) {
             {data.stats.map((s, i) => (
               <div key={i} className="flex-1 rounded-2xl px-3.5 py-3"
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <p className="font-black text-lg leading-tight" style={{ color: data.color }}>{s.value}</p>
-                <p className="text-white/50 text-[10px] leading-snug mt-0.5">{s.label}</p>
+                <EditableText as="p" id={`pm-${problemKey}-stat-${i}-value`} className="font-black text-lg leading-tight" style={{ color: data.color }}>{s.value}</EditableText>
+                <EditableText as="p" id={`pm-${problemKey}-stat-${i}-label`} className="text-white/50 text-[10px] leading-snug mt-0.5">{s.label}</EditableText>
                 <p className="text-white/22 text-[9px] mt-1 font-mono">src: {s.src}</p>
               </div>
             ))}
@@ -495,11 +497,11 @@ export default function ProblemModal({ problemKey, onClose }) {
 
         {/* ── Content ── */}
         <div className="flex-1 overflow-y-auto p-5">
-          {tab === 0 && <ExplanationTab data={data.explanation} color={data.color}/>}
-          {tab === 1 && <TechniquesTab  data={data.techniques}  color={data.color} gradient={data.gradient}/>}
-          {tab === 2 && <ExercisesTab   data={data.exercises}   color={data.color}/>}
-          {tab === 3 && <ResourcesTab   data={data.resources}   color={data.color}/>}
-          {tab === 4 && <ProgressTab    data={data.progress}    color={data.color} gradient={data.gradient}/>}
+          {tab === 0 && <ExplanationTab data={data.explanation} color={data.color} problemKey={problemKey}/>}
+          {tab === 1 && <TechniquesTab  data={data.techniques}  color={data.color} gradient={data.gradient} problemKey={problemKey}/>}
+          {tab === 2 && <ExercisesTab   data={data.exercises}   color={data.color} problemKey={problemKey}/>}
+          {tab === 3 && <ResourcesTab   data={data.resources}   color={data.color} problemKey={problemKey}/>}
+          {tab === 4 && <ProgressTab    data={data.progress}    color={data.color} gradient={data.gradient} problemKey={problemKey}/>}
         </div>
       </div>
     </div>

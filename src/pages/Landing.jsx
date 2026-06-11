@@ -22,6 +22,7 @@ import ParentingSection  from '../components/landing/ParentingSection'
 import BookingSection    from '../components/landing/BookingSection'
 import ServicesCarousel  from '../components/landing/ServicesCarousel'
 import ProblemModal      from '../components/landing/ProblemModal'
+import MedicalDisclaimer from '../components/MedicalDisclaimer'
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /*  PERSISTENCE                                                                */
@@ -1839,6 +1840,11 @@ function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mb-8">
+          <MedicalDisclaimer variant="dark" />
         </div>
 
         {/* Contact strip */}

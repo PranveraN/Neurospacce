@@ -100,12 +100,19 @@ function injectOG(html, { title, description, image, url }) {
   ].join('\n    ')
 
   return html
-    // Remove old generic OG tags that would conflict
-    .replace(/<meta property="og:title"[^>]*\/>/g, '')
-    .replace(/<meta property="og:description"[^>]*\/>/g, '')
-    .replace(/<meta property="og:type"[^>]*\/>/g, '')
-    .replace(/<meta name="twitter:title"[^>]*\/>/g, '')
-    .replace(/<meta name="twitter:description"[^>]*\/>/g, '')
+    // Remove all generic OG/Twitter tags that would conflict with article-specific ones
+    .replace(/<meta property="og:title"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:description"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:image"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:image:width"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:image:height"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:type"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:url"[^>]*\/?>/g, '')
+    .replace(/<meta property="og:site_name"[^>]*\/?>/g, '')
+    .replace(/<meta name="twitter:card"[^>]*\/?>/g, '')
+    .replace(/<meta name="twitter:title"[^>]*\/?>/g, '')
+    .replace(/<meta name="twitter:description"[^>]*\/?>/g, '')
+    .replace(/<meta name="twitter:image"[^>]*\/?>/g, '')
     // Inject before </head>
     .replace('</head>', `  ${tags}\n  </head>`)
 }

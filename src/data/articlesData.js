@@ -7,8 +7,11 @@ export function loadArticles() {
     const v = localStorage.getItem(LS_KEY)
     if (!v) return ARTICLES
     const saved = JSON.parse(v)
+    const staticMap = new Map(ARTICLES.map(a => [a.id, a]))
     const savedIds = new Set(saved.map(a => a.id))
-    return [...saved, ...ARTICLES.filter(a => !savedIds.has(a.id))]
+    // Merge: saved fields win for presentation, but static fields fill any gaps
+    const merged = saved.map(s => ({ ...staticMap.get(s.id), ...s }))
+    return [...merged, ...ARTICLES.filter(a => !savedIds.has(a.id))]
   } catch { return ARTICLES }
 }
 

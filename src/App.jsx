@@ -20,6 +20,7 @@ import EditModeToggle            from './components/EditModeToggle'
 import FloatingBack              from './components/FloatingBack'
 import { EditModeProvider }      from './contexts/EditModeContext'
 import { ToastProvider }         from './components/Toast'
+import MedicalDisclaimer         from './components/MedicalDisclaimer'
 import './index.css'
 
 // ── public pages (lazy) ───────────────────────────────────────────────────────
@@ -102,6 +103,9 @@ function UserApp() {
       <div className="md:hidden flex flex-col min-h-screen" style={{background:'#07041a'}}>
         <main className="flex-1 pb-48">
           <UserRoutes />
+          <div className="px-4 pb-4 pt-2">
+            <MedicalDisclaimer variant="dark" />
+          </div>
         </main>
         <BottomNav />
         <WidgetBar />

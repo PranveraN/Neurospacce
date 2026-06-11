@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import EditableText from '../components/EditableText'
 import {
   Brain, Zap, Timer, Battery, Shield, BookOpen, Trophy,
   Play, Pause, RotateCcw, Volume2, VolumeX, ChevronRight,
@@ -81,7 +82,7 @@ function FocusSprint() {
             {done
               ? <><CheckCircle size={22} className="text-emerald-400"/><p className="text-[11px] font-black text-emerald-400 mt-1">Perfekt!</p></>
               : <><span className="text-3xl font-black text-white tabular-nums">{mm}:{ss}</span>
-                  <span className="text-[10px] text-white/40 mt-0.5">Fokus i thellë</span></>}
+                  <EditableText as="span" id="bb-sprint-label" className="text-[10px] text-white/40 mt-0.5">Fokus i thellë</EditableText></>}
           </div>
         </div>
       </div>
@@ -173,13 +174,13 @@ function MentalEnergyScanner() {
             style={{background:i<=step?'#7c3aed':'rgba(255,255,255,0.1)'}}/>
         ))}
       </div>
-      <p className="text-sm font-bold text-white">{EQ[step].q}</p>
+      <EditableText as="p" id={`bb-eq-${step}-q`} className="text-sm font-bold text-white">{EQ[step].q}</EditableText>
       <div className="flex flex-col gap-2">
         {EQ[step].opts.map((opt,i) => (
           <button key={opt} onClick={() => answer(i)}
             className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-left transition-all hover:-translate-x-0.5"
             style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.09)',color:'rgba(255,255,255,0.75)'}}>
-            {opt}
+            <EditableText id={`bb-eq-${step}-opt-${i}`}>{opt}</EditableText>
           </button>
         ))}
       </div>
@@ -230,7 +231,7 @@ function AntiDistraction() {
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-xs text-white/50 leading-relaxed">3 hapa para fokusimit të plotë:</p>
+      <EditableText as="p" id="bb-antidist-desc" className="text-xs text-white/50 leading-relaxed">3 hapa para fokusimit të plotë:</EditableText>
       {STEPS.map((s,i) => (
         <button key={i} onClick={() => toggle(i)}
           className="flex items-center gap-3 p-3 rounded-xl transition-all text-left"
@@ -240,10 +241,10 @@ function AntiDistraction() {
             style={{background:checked[i]?'#7c3aed':'rgba(255,255,255,0.08)'}}>
             {checked[i] && <CheckCircle size={12} className="text-white"/>}
           </div>
-          <span className="text-xs text-white/70 font-medium">{s}</span>
+          <EditableText id={`bb-antidist-step-${i}`} className="text-xs text-white/70 font-medium">{s}</EditableText>
         </button>
       ))}
-      <p className="text-[10px] text-white/20 text-center">Aktivizon Focus Mode automatikisht</p>
+      <EditableText as="p" id="bb-antidist-footer" className="text-[10px] text-white/20 text-center">Aktivizon Focus Mode automatikisht</EditableText>
     </div>
   )
 }
@@ -264,6 +265,21 @@ function MemoryBoost() {
   const t = TECHS[a]
   return (
     <div className="flex flex-col gap-4">
+      <div className="relative rounded-2xl overflow-hidden" style={{ height: '100px' }}>
+        <img
+          src="https://images.unsplash.com/photo-1617791160505-6f00504e3519?auto=format&fit=crop&w=1200&q=70"
+          alt="Brain memory"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(90deg, rgba(59,130,246,0.85) 0%, rgba(6,5,26,0.5) 60%, rgba(6,5,26,0.2) 100%)' }}/>
+        <div className="absolute inset-0 flex items-center px-6">
+          <div>
+            <p className="text-white font-black text-base leading-tight">5 teknikat shkencore</p>
+            <p className="text-blue-200/70 text-xs mt-0.5">Forco kujtesën afatgjatë sot</p>
+          </div>
+        </div>
+      </div>
       <div className="flex gap-3 overflow-x-auto pb-1" style={{scrollbarWidth:'none'}}>
         {TECHS.map((tech,i) => (
           <button key={tech.name} onClick={() => setA(i)}
@@ -283,11 +299,11 @@ function MemoryBoost() {
         <div className="flex items-center gap-3">
           <span className="text-2xl">{t.e}</span>
           <div>
-            <p className="font-black text-white text-sm">{t.name}</p>
-            <p className="text-xs mt-0.5" style={{color:t.c}}>{t.short}</p>
+            <EditableText as="p" id={`bb-tech-${a}-name`} className="font-black text-white text-sm">{t.name}</EditableText>
+            <EditableText as="p" id={`bb-tech-${a}-short`} className="text-xs mt-0.5" style={{color:t.c}}>{t.short}</EditableText>
           </div>
         </div>
-        <p className="text-xs text-white/60 leading-relaxed">{t.desc}</p>
+        <EditableText as="p" multiline id={`bb-tech-${a}-desc`} className="text-xs text-white/60 leading-relaxed">{t.desc}</EditableText>
         <button className="w-full py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all"
           style={{background:t.c,boxShadow:`0 4px 16px ${t.c}40`}}>
           Provoje tani →
@@ -327,8 +343,8 @@ function SiMesonTruri() {
       <div className="p-4 rounded-xl flex gap-3" style={{background:`${t.c}12`,border:`1px solid ${t.c}25`}}>
         <span className="text-3xl">{t.icon}</span>
         <div>
-          <p className="font-black text-white text-sm">{t.label}</p>
-          <p className="text-xs text-white/60 mt-1 leading-relaxed">{t.desc}</p>
+          <EditableText as="p" id={`bb-brain-${a}-label`} className="font-black text-white text-sm">{t.label}</EditableText>
+          <EditableText as="p" multiline id={`bb-brain-${a}-desc`} className="text-xs text-white/60 mt-1 leading-relaxed">{t.desc}</EditableText>
         </div>
       </div>
       <Link to="/articles" className="text-xs text-violet-400 font-bold hover:text-violet-300 flex items-center gap-1">
@@ -457,9 +473,7 @@ function StudyBattle() {
                 }}>
                 <span className="text-xl shrink-0">{isDone ? '✅' : m.icon}</span>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-xs font-semibold leading-snug ${isDone ? 'text-emerald-400 line-through' : 'text-white/80'}`}>
-                    {m.label}
-                  </p>
+                  <EditableText as="p" id={`bb-mission-${m.id}-label`} className={`text-xs font-semibold leading-snug ${isDone ? 'text-emerald-400 line-through' : 'text-white/80'}`}>{m.label}</EditableText>
                 </div>
                 <div className="shrink-0 flex flex-col items-end gap-0.5">
                   <span className="text-[10px] font-black text-violet-300">+{m.xp} XP</span>
@@ -494,12 +508,26 @@ function SleepBrain() {
   const card = SLEEP_CARDS[c]
   return (
     <div className="flex flex-col gap-3">
+      <div className="relative rounded-xl overflow-hidden" style={{ height: '105px' }}>
+        <img
+          src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=70"
+          alt="Sleep and brain"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.75) 0%, rgba(6,5,26,0.45) 100%)' }}/>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-white font-black text-sm tracking-wide" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>
+            Gjumi · Kujtesa · Fokusi
+          </p>
+        </div>
+      </div>
       <div className="p-4 rounded-xl flex gap-3 min-h-[100px]"
         style={{background:'rgba(99,102,241,0.1)',border:'1px solid rgba(99,102,241,0.2)'}}>
         <span className="text-2xl">{card.icon}</span>
         <div>
-          <p className="font-bold text-white text-sm leading-snug">{card.title}</p>
-          <p className="text-xs text-white/55 mt-1.5 leading-relaxed">{card.body}</p>
+          <EditableText as="p" id={`bb-sleep-${c}-title`} className="font-bold text-white text-sm leading-snug">{card.title}</EditableText>
+          <EditableText as="p" multiline id={`bb-sleep-${c}-body`} className="text-xs text-white/55 mt-1.5 leading-relaxed">{card.body}</EditableText>
         </div>
       </div>
       <div className="flex items-center justify-between">
@@ -544,7 +572,7 @@ function BrainHacks() {
       <div className="p-4 rounded-xl flex gap-3 min-h-[80px]"
         style={{background:'rgba(245,158,11,0.08)',border:'1px solid rgba(245,158,11,0.2)'}}>
         <span className="text-3xl shrink-0">{HACKS[i].e}</span>
-        <p className="text-sm text-white/70 leading-relaxed">{HACKS[i].h}</p>
+        <EditableText as="p" multiline id={`bb-hack-${i}`} className="text-sm text-white/70 leading-relaxed">{HACKS[i].h}</EditableText>
       </div>
       <div className="flex items-center justify-between">
         <p className="text-[10px] text-white/25">{i+1} / {HACKS.length}</p>
@@ -1141,10 +1169,10 @@ function QuickRecallChallenge() {
     <div className="flex flex-col gap-3">
       {phase==='idle' && (
         <>
-          <p className="text-xs text-white/50 leading-relaxed">5 fjalë shfaqen 10 sekonda. Mbaji mend, pastaj shkruaji!</p>
+          <EditableText as="p" id="bb-recall-desc" className="text-xs text-white/50 leading-relaxed">5 fjalë shfaqen 10 sekonda. Mbaji mend, pastaj shkruaji!</EditableText>
           <button onClick={start} className="w-full py-2.5 rounded-xl font-bold text-sm text-white"
             style={{background:'linear-gradient(135deg,#7c3aed,#4f46e5)',boxShadow:'0 4px 16px rgba(124,58,237,0.3)'}}>
-            Fillo Sfidën ⚡
+            <EditableText id="bb-recall-btn">Fillo Sfidën ⚡</EditableText>
           </button>
         </>
       )}
@@ -1217,7 +1245,8 @@ function NeuroPulse() {
         {['Fokus','Clarity','Memory','Overload'].map((l,i) => (
           <div key={l}>
             <div className="flex justify-between text-[9px] text-white/40 mb-1">
-              <span>{l}</span><span>{Math.round(s.bars[i]*100)}%</span>
+              <EditableText id={`bb-pulse-bar-${i}`} className="text-[9px] text-white/40">{l}</EditableText>
+              <span>{Math.round(s.bars[i]*100)}%</span>
             </div>
             <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
               <div className="h-full rounded-full transition-all duration-700" style={{width:`${s.bars[i]*100}%`,background:s.c}}/>
@@ -1260,18 +1289,18 @@ function WhyYouForget() {
             style={{background:open===i?'rgba(124,58,237,0.12)':'rgba(255,255,255,0.04)',
               border:`1px solid ${open===i?'rgba(167,139,250,0.25)':'rgba(255,255,255,0.08)'}`}}>
             <span className="text-lg">{r.icon}</span>
-            <span className="text-xs font-bold text-white flex-1">{r.title}</span>
+            <EditableText id={`bb-forget-${i}-title`} className="text-xs font-bold text-white flex-1">{r.title}</EditableText>
             <ChevronRight size={12} className={`text-white/30 transition-transform ${open===i?'rotate-90':''}`}/>
           </button>
           {open===i && (
             <div className="px-4 py-2.5 text-xs text-white/55 leading-relaxed"
               style={{background:'rgba(124,58,237,0.06)',borderLeft:'2px solid rgba(167,139,250,0.3)'}}>
-              {r.body}
+              <EditableText as="span" multiline id={`bb-forget-${i}-body`} className="text-xs text-white/55 leading-relaxed">{r.body}</EditableText>
             </div>
           )}
         </div>
       ))}
-      <p className="text-[10px] text-white/25 pt-1">Zgjidhja: Active Recall + Spaced Repetition çdo ditë.</p>
+      <EditableText as="p" id="bb-forget-footer" className="text-[10px] text-white/25 pt-1">Zgjidhja: Active Recall + Spaced Repetition çdo ditë.</EditableText>
     </div>
   )
 }
@@ -1316,12 +1345,12 @@ function ResetBrain() {
         <AlertCircle size={24} className="text-red-400"/>
       </div>
       <div>
-        <p className="font-black text-white text-sm">Nuk po mundem të foksohem</p>
-        <p className="text-xs text-white/45 mt-1">5 hapa shkencore — 60 sekonda reset i plotë</p>
+        <EditableText as="p" id="bb-reset-title" className="font-black text-white text-sm">Nuk po mundem të foksohem</EditableText>
+        <EditableText as="p" id="bb-reset-subtitle" className="text-xs text-white/45 mt-1">5 hapa shkencore — 60 sekonda reset i plotë</EditableText>
       </div>
       <button onClick={start} className="w-full py-2.5 rounded-xl font-bold text-sm text-white"
         style={{background:'linear-gradient(135deg,#ef4444,#dc2626)',boxShadow:'0 4px 16px rgba(239,68,68,0.3)'}}>
-        Reset Brain — 60s
+        <EditableText id="bb-reset-btn">Reset Brain — 60s</EditableText>
       </button>
     </div>
   )
@@ -1342,8 +1371,8 @@ function ResetBrain() {
       </div>
       <div className="text-center px-2">
         {seconds===0
-          ? <p className="text-emerald-400 font-black text-sm">Reset komplet! 🎯 Rifillo tani.</p>
-          : <p className="text-xs font-bold text-white leading-relaxed animate-pulse">{RESET_STEPS[stepIdx]}</p>
+          ? <EditableText as="p" id="bb-reset-done" className="text-emerald-400 font-black text-sm">Reset komplet! 🎯 Rifillo tani.</EditableText>
+          : <EditableText as="p" id={`bb-reset-step-${stepIdx}`} className="text-xs font-bold text-white leading-relaxed animate-pulse">{RESET_STEPS[stepIdx]}</EditableText>
         }
       </div>
       {seconds===0 && (
@@ -1377,7 +1406,7 @@ function LevelUp() {
         style={{background:`${current.c}12`,border:`1px solid ${current.c}30`}}>
         <span className="text-3xl">{current.icon}</span>
         <div className="flex-1">
-          <p className="text-[10px] text-white/40">Niveli yt tani</p>
+          <EditableText as="p" id="bb-levelup-label" className="text-[10px] text-white/40">Niveli yt tani</EditableText>
           <p className="font-black text-lg text-white">{current.name}</p>
           {next && (
             <>
@@ -1445,7 +1474,7 @@ function AIStudyCoach() {
     <div className="flex flex-col gap-3">
       {!plan ? (
         <>
-          <p className="text-xs text-white/50">Shkruaj qëllimin tënd (p.sh. "Kam provim nesër")</p>
+          <EditableText as="p" id="bb-coach-desc" className="text-xs text-white/50">Shkruaj qëllimin tënd (p.sh. "Kam provim nesër")</EditableText>
           <input value={goal} onChange={e=>setGoal(e.target.value)} onKeyDown={e=>e.key==='Enter'&&generate()}
             placeholder='"Kam provim nesër"'
             className="w-full px-3 py-2.5 rounded-xl text-sm bg-white/5 border border-white/10 text-white/80 focus:outline-none focus:border-violet-500/50 placeholder:text-white/20"/>
@@ -1496,10 +1525,10 @@ function TodaysBrainTip() {
     <div className="flex flex-col gap-4">
       <div className="p-5 rounded-2xl text-center" style={{background:`${tip.c}12`,border:`1px solid ${tip.c}30`}}>
         <div className="text-4xl mb-3">{tip.icon}</div>
-        <p className="text-sm text-white/80 leading-relaxed font-medium italic">{tip.tip}</p>
+        <EditableText as="p" multiline id={`bb-tip-${i}-text`} className="text-sm text-white/80 leading-relaxed font-medium italic">{tip.tip}</EditableText>
         <span className="inline-block mt-3 px-3 py-1 rounded-full text-[10px] font-bold"
           style={{background:`${tip.c}20`,color:tip.c,border:`1px solid ${tip.c}35`}}>
-          {tip.tag}
+          <EditableText id={`bb-tip-${i}-tag`} style={{color:tip.c}}>{tip.tag}</EditableText>
         </span>
       </div>
       <div className="flex gap-1.5 justify-center">
@@ -1514,11 +1543,59 @@ function TodaysBrainTip() {
 }
 
 /* ══════════════════════════════════════════════════════════
+   VIDEO CARD
+══════════════════════════════════════════════════════════ */
+function VideoCard({ youtubeId, title, speaker, duration, category, color = '#7c3aed' }) {
+  const [active, setActive] = useState(false)
+  const thumb = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`
+  return (
+    <div className="rounded-2xl overflow-hidden flex flex-col"
+      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.09)' }}>
+      <div className="relative cursor-pointer group" style={{ aspectRatio: '16/9' }}
+        onClick={() => !active && setActive(true)}>
+        {active ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&color=white`}
+            className="w-full h-full"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowFullScreen
+            style={{ border: 'none', display: 'block' }}
+          />
+        ) : (
+          <>
+            <img src={thumb} alt={title} className="w-full h-full object-cover" style={{ display: 'block' }}/>
+            <div className="absolute inset-0"
+              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.08) 55%)' }}/>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center transition-all group-hover:scale-110"
+                style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '2px solid rgba(255,255,255,0.35)' }}>
+                <Play size={20} className="text-white ml-1" fill="white" />
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-3">
+              <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full"
+                style={{ background: color + '30', color, border: `1px solid ${color}50` }}>
+                {category}
+              </span>
+              <p className="text-white font-black text-sm leading-snug mt-1.5 line-clamp-2">{title}</p>
+              <p className="text-white/50 text-[10px] mt-1 flex items-center gap-1.5">
+                <span>{speaker}</span><span>·</span><Clock size={9}/><span>{duration}</span>
+              </p>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ══════════════════════════════════════════════════════════
    CARD WRAPPER
 ══════════════════════════════════════════════════════════ */
 function Card({ id, icon, title, children, accent, className='' }) {
   const accentBg  = accent ? `${accent}09` : 'rgba(255,255,255,0.04)'
   const accentBor = accent ? `1px solid ${accent}20` : '1px solid rgba(255,255,255,0.09)'
+  const titleId   = id ? `bb-card-${id}-title` : undefined
   return (
     <div id={id} className={`p-5 rounded-3xl flex flex-col gap-3 ${className}`}
       style={{background:accentBg, border:accentBor, boxShadow:'0 4px 24px rgba(0,0,0,0.2)'}}>
@@ -1527,7 +1604,7 @@ function Card({ id, icon, title, children, accent, className='' }) {
           style={{background:accent?`${accent}22`:'rgba(255,255,255,0.07)',border:`1px solid ${accent||'rgba(255,255,255,0.12)'}`}}>
           {icon}
         </div>
-        <p className="font-black text-white text-sm">{title}</p>
+        <EditableText as="p" id={titleId} className="font-black text-white text-sm">{title}</EditableText>
       </div>
       {children}
     </div>
@@ -1573,10 +1650,8 @@ export default function BrainBoost() {
           <h1 className="text-5xl md:text-7xl font-black text-white mb-4 leading-none tracking-tight">
             Brain<span className="bg-gradient-to-r from-violet-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">Boost</span>
           </h1>
-          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-1">
-            Optimizo Trurin Tënd. Përmirëso Fokusin, Kujtesën dhe Performancën.
-          </p>
-          <p className="text-white/30 text-sm">Mjetet, teknikat dhe udhëzimet më të mira bazuar në shkencë dhe AI.</p>
+          <EditableText as="p" id="bb-hero-subtitle" className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-1">Optimizo Trurin Tënd. Përmirëso Fokusin, Kujtesën dhe Performancën.</EditableText>
+          <EditableText as="p" id="bb-hero-desc" className="text-white/30 text-sm">Mjetet, teknikat dhe udhëzimet më të mira bazuar në shkencë dhe AI.</EditableText>
         </div>
 
         {/* ── QUICK NAV ── */}
@@ -1588,6 +1663,32 @@ export default function BrainBoost() {
               <span>{t.icon}</span>{t.label}
             </button>
           ))}
+        </div>
+
+        {/* ── HERO BANNER ── */}
+        <div className="relative rounded-3xl overflow-hidden mb-6">
+          <img
+            src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1400&q=75"
+            alt="Neural connections"
+            className="w-full object-cover"
+            style={{ height: '210px', filter: 'hue-rotate(20deg) saturate(1.3)' }}
+          />
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, rgba(7,4,26,0.94) 0%, rgba(13,5,32,0.5) 55%, rgba(7,4,26,0.85) 100%)' }}/>
+          <div className="absolute inset-0 flex items-center px-8 sm:px-12">
+            <div className="max-w-sm">
+              <div className="flex items-center gap-2 mb-2.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse"/>
+                <span className="text-[10px] font-black text-violet-300 uppercase tracking-widest">Neuroshkenca e Aplikuar</span>
+              </div>
+              <h2 className="text-white font-black text-xl sm:text-2xl leading-tight mb-2">
+                Optimizo çdo aspekt të<br/>performancës kognitive
+              </h2>
+              <p className="text-white/45 text-xs leading-relaxed">
+                Bazuar në kërkimet nga Harvard, MIT dhe Stanford.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* ── ROW 1: Focus Sprint · Mental Energy · Anti-Distraction ── */}
@@ -1625,12 +1726,73 @@ export default function BrainBoost() {
           <Card icon={<Eye size={13} className="text-emerald-400"/>} title="BrainType Test" accent="#10b981"><BrainTypeTest/></Card>
         </div>
 
+        {/* ── VIDEO SECTION ── */}
+        <div className="mb-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px flex-1" style={{ background: 'rgba(255,255,255,0.08)' }}/>
+            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full"
+              style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)' }}>
+              <Play size={10} className="text-violet-400" fill="#7c3aed"/>
+              <span className="text-[10px] font-black text-violet-300 uppercase tracking-widest">Video Edukative</span>
+            </div>
+            <div className="h-px flex-1" style={{ background: 'rgba(255,255,255,0.08)' }}/>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <VideoCard
+              youtubeId="U6PoUg7jXsA"
+              title="Feats of Memory Anyone Can Do"
+              speaker="Joshua Foer · TED"
+              duration="20 min"
+              category="Kujtesa"
+              color="#7c3aed"
+            />
+            <VideoCard
+              youtubeId="5MgBikgcWnY"
+              title="The First 20 Hours — How to Learn Anything"
+              speaker="Josh Kaufman · TEDx"
+              duration="19 min"
+              category="Mësim i Shpejtë"
+              color="#3b82f6"
+            />
+            <VideoCard
+              youtubeId="5BoNavXmFBo"
+              title="Sleep Is Your Superpower"
+              speaker="Matt Walker · TED"
+              duration="19 min"
+              category="Gjumi & Truri"
+              color="#6366f1"
+            />
+          </div>
+        </div>
+
         {/* ── ROW 5: 4 cards ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <Card icon="⚡" title="Quick Recall Challenge"><QuickRecallChallenge/></Card>
           <Card icon="🔮" title="NeuroPulse for Brain" accent="#7c3aed"><NeuroPulse/></Card>
           <Card icon="🧩" title="Why You Forget"><WhyYouForget/></Card>
           <Card icon={<AlertCircle size={13} className="text-red-400"/>} title="Reset Brain" accent="#ef4444"><ResetBrain/></Card>
+        </div>
+
+        {/* ── MID-PAGE PHOTO STRIP ── */}
+        <div className="relative rounded-3xl overflow-hidden mb-4">
+          <img
+            src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1400&q=70"
+            alt="Focus and study"
+            className="w-full object-cover"
+            style={{ height: '170px' }}
+          />
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(90deg, rgba(7,4,26,0.92) 0%, rgba(7,4,26,0.5) 50%, rgba(124,58,237,0.35) 100%)' }}/>
+          <div className="absolute inset-0 flex items-center justify-between px-8 sm:px-12">
+            <div>
+              <p className="text-violet-300 text-[10px] font-black uppercase tracking-widest mb-1">Progresi yt</p>
+              <p className="text-white font-black text-lg leading-tight">Çdo ditë pak.<br/>Çdo javë shumë.</p>
+            </div>
+            <div className="hidden sm:flex flex-col items-end gap-2 text-right">
+              <span className="text-[10px] text-white/40 font-bold">Konsistenca &gt; Intensiteti</span>
+              <span className="text-[10px] text-white/25">— James Clear, Atomic Habits</span>
+            </div>
+          </div>
         </div>
 
         {/* ── ROW 6: Level Up full width ── */}
