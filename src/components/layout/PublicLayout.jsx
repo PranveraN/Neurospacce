@@ -104,6 +104,7 @@ function SearchOverlay({ onClose }) {
 }
 
 import { useAuth } from '../../contexts/AuthContext'
+import NeuroPulse from '../NeuroPulse'
 
 function PublicHeader() {
   const [open,       setOpen]       = useState(false)
@@ -125,16 +126,19 @@ function PublicHeader() {
 
   const transparent = isLanding && !scrolled
 
-  const links = [
+  const linksLeft = [
     { to: '/library',    label: 'NeuroArtikuj' },
     { to: '/brainboost', label: 'BrainBoost' },
     { to: '/psikologu',  label: 'Psikologu yt' },
     { to: '/tests',      label: 'Teste' },
     { to: '/parenting',  label: 'Familje' },
+  ]
+  const linksRight = [
     { to: '/assistant',  label: 'Asistenti' },
     { to: '/pricing',    label: 'Planet' },
     { to: '/about',      label: 'Rreth nesh' },
   ]
+  const links = [...linksLeft, ...linksRight]
 
   /* ── styles shared between transparent & dark ── */
   const headerBg   = transparent ? 'transparent'                     : 'rgba(7,4,26,0.97)'
@@ -175,7 +179,17 @@ function PublicHeader() {
 
           {/* ── Desktop nav ── */}
           <nav className="hidden md:flex items-center gap-0.5 flex-1">
-            {links.map(l => (
+            {linksLeft.map(l => (
+              <NavLink key={l.to} to={l.to}
+                className={({ isActive }) => `${linkBase} ${isActive ? linkActive : linkIdle}`}>
+                {l.label}
+              </NavLink>
+            ))}
+            {/* NeuroPulse — mes Familje dhe Asistenti */}
+            <div className="mx-1">
+              <NeuroPulse scrolled={false} />
+            </div>
+            {linksRight.map(l => (
               <NavLink key={l.to} to={l.to}
                 className={({ isActive }) => `${linkBase} ${isActive ? linkActive : linkIdle}`}>
                 {l.label}
