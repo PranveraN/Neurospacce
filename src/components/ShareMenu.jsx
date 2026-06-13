@@ -1,6 +1,20 @@
 import { useState, useRef, useEffect } from 'react'
 import { Share2, Copy, Check } from 'lucide-react'
 
+const FB_APP_ID = import.meta.env.VITE_FB_APP_ID || ''
+
+function ensureFBSdk() {
+  if (!FB_APP_ID || window.__fbSdkLoading) return
+  window.__fbSdkLoading = true
+  window.fbAsyncInit = function () {
+    window.FB.init({ appId: FB_APP_ID, version: 'v21.0', cookie: true, xfbml: false })
+  }
+  const s = document.createElement('script')
+  s.src = 'https://connect.facebook.net/sq_AL/sdk.js'
+  s.async = true
+  document.head.appendChild(s)
+}
+
 const FB_ICON = (
   <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -38,6 +52,8 @@ export default function ShareMenu({ title, url, className = '' }) {
   const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
   const useNative      = mobile && canNativeShare
 
+  useEffect(() => { ensureFBSdk() }, [])
+
   useEffect(() => {
     if (!open) return
     function handler(e) {
@@ -60,21 +76,21 @@ export default function ShareMenu({ title, url, className = '' }) {
   }
 
   function handleFBClick(e) {
-    if (!mobile) {
-      // Desktop: let <a target="_blank"> work normally
-      setOpen(false)
-      return
-    }
-    // Mobile: always handle ourselves to avoid Universal Links / in-app browser issues
     e.preventDefault()
     setOpen(false)
-    if (canNativeShare) {
-      // Regular mobile browser — native share sheet
-      navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {})
+
+    if (FB_APP_ID && window.FB) {
+      // SDK i gatshëm — hap "Create post" dialog direkt (desktop + mobile)
+      window.FB.ui({ method: 'share', href: shareUrl })
+    } else if (FB_APP_ID && !window.FB) {
+      // SDK duke u ngarkuar — prit pak pastaj hap
+      setTimeout(() => {
+        if (window.FB) window.FB.ui({ method: 'share', href: shareUrl })
+        else window.open(fbShareUrl(shareUrl), '_blank')
+      }, 1200)
     } else {
-      // FB in-app browser or browser without Web Share API:
-      // same-tab navigation shows FB's share dialog directly inside FB's system
-      window.location.href = fbShareUrl(shareUrl)
+      // Pa App ID — hap tab të ri (punon në desktop)
+      window.open(fbShareUrl(shareUrl), '_blank')
     }
   }
 
@@ -111,22 +127,17 @@ export default function ShareMenu({ title, url, className = '' }) {
           </p>
 
           <div className="space-y-1">
-            {/* Facebook — Web Share API on mobile, new tab on desktop */}
-            <a
-              href={fbShareUrl(shareUrl)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
               onClick={handleFBClick}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group text-left"
             >
               <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
                 style={{ background: '#1877F218', color: '#1877F2' }}>
                 {FB_ICON}
               </span>
               <span className="text-sm font-semibold text-gray-700">Facebook</span>
-            </a>
+            </button>
 
-            {/* WhatsApp */}
             <a
               href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareTitle}\n${shareUrl}`)}`}
               target="_blank" rel="noopener noreferrer"
@@ -140,7 +151,6 @@ export default function ShareMenu({ title, url, className = '' }) {
               <span className="text-sm font-semibold text-gray-700">WhatsApp</span>
             </a>
 
-            {/* Viber */}
             <a
               href={`viber://forward?text=${encodeURIComponent(`${shareTitle}\n${shareUrl}`)}`}
               target="_blank" rel="noopener noreferrer"
