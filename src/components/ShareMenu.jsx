@@ -18,7 +18,7 @@ const VB_ICON = (
 )
 
 function fbShareUrl(url) {
-  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&display=page`
+  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
 }
 
 function isMobileDevice() {
@@ -29,13 +29,11 @@ function isMobileDevice() {
 export default function ShareMenu({ title, url, className = '' }) {
   const [open,   setOpen]   = useState(false)
   const [copied, setCopied] = useState(false)
-  const [fbHint, setFbHint] = useState(false)
   const ref = useRef(null)
 
   const shareUrl   = url || (typeof window !== 'undefined' ? window.location.href : '')
   const shareTitle = title || (typeof document !== 'undefined' ? document.title : '')
 
-  // Use Web Share API only on real mobile devices
   const mobile         = typeof window !== 'undefined' && isMobileDevice()
   const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
   const useNative      = mobile && canNativeShare
@@ -61,14 +59,6 @@ export default function ShareMenu({ title, url, className = '' }) {
     }
   }
 
-  // Mobile pa Web Share API (p.sh. brenda FB app): kopjo linkun + hint
-  async function handleFacebookMobileFallback() {
-    setOpen(false)
-    try { await navigator.clipboard.writeText(shareUrl) } catch {}
-    setFbHint(true)
-    setTimeout(() => setFbHint(false), 6000)
-  }
-
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(shareUrl)
@@ -92,20 +82,6 @@ export default function ShareMenu({ title, url, className = '' }) {
         <Share2 size={14} /> Ndaj
       </button>
 
-      {/* Hint kur popup u bllokua (mobile me FB app) */}
-      {fbHint && (
-        <div
-          className="absolute z-[200] right-0 w-64 bg-[#1877F2] text-white text-xs font-semibold rounded-2xl px-4 py-3 shadow-xl"
-          style={{ top: 'calc(100% + 8px)', animation: 'fadeSlideDown .2s ease' }}
-        >
-          ✓ Linku u kopjua!<br/>
-          <span className="font-normal opacity-90">
-            Hap Facebook, krijo post të ri dhe <strong>ngjit (paste)</strong> — foto shfaqet automatikisht.
-          </span>
-        </div>
-      )}
-
-      {/* Dropdown — desktop gjithmonë, mobile vetëm pa Web Share API */}
       {!useNative && open && (
         <div
           className="absolute z-50 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 w-56"
@@ -116,36 +92,20 @@ export default function ShareMenu({ title, url, className = '' }) {
           </p>
 
           <div className="space-y-1">
-            {/* Facebook — tab i ri, dialog share i Facebook (punon në desktop) */}
-            {mobile ? (
-              <button
-                onClick={handleFacebookMobileFallback}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group text-left"
-              >
-                <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                  style={{ background: '#1877F218', color: '#1877F2' }}>
-                  {FB_ICON}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-700">Facebook</p>
-                  <p className="text-[10px] text-gray-400">Kopjon linkun automatikisht</p>
-                </div>
-              </button>
-            ) : (
-              <a
-                href={fbShareUrl(shareUrl)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group"
-              >
-                <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                  style={{ background: '#1877F218', color: '#1877F2' }}>
-                  {FB_ICON}
-                </span>
-                <span className="text-sm font-semibold text-gray-700">Facebook</span>
-              </a>
-            )}
+            {/* Facebook — <a> tag direkt, nuk bllokohet */}
+            <a
+              href={fbShareUrl(shareUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group"
+            >
+              <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+                style={{ background: '#1877F218', color: '#1877F2' }}>
+                {FB_ICON}
+              </span>
+              <span className="text-sm font-semibold text-gray-700">Facebook</span>
+            </a>
 
             {/* WhatsApp */}
             <a
