@@ -34,7 +34,7 @@ const PLATFORMS = [
       `viber://forward?text=${encodeURIComponent(`${title}\n${url}`)}`,
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
-        <path d="M11.398.002C9.473.028 5.331.344 3.014 2.467 1.294 4.177.693 6.698.625 9.82c-.067 3.121-.14 8.972 5.52 10.566h.005l-.004 2.42s-.038.997.625 1.199c.803.247 1.272-.511 2.038-1.33.42-.453.999-1.119 1.436-1.622 3.955.33 6.995-.424 7.34-.538.798-.257 5.314-.834 6.048-6.802.757-6.15-.369-10.037-2.982-11.784l-.001-.001c-.769-.558-3.392-1.56-8.252-1.526zM11.455 2c4.29-.028 6.68.874 7.318 1.337 2.149 1.44 3.054 4.745 2.39 10.054-.62 5.076-4.228 5.407-4.895 5.62-.292.094-3.013.769-6.488.544 0 0-2.572 3.09-3.374 3.899-.126.129-.273.18-.371.157-.138-.032-.176-.19-.174-.42l.021-3.828C4.72 17.78 1.47 16.573 1.525 9.88c.06-2.748.564-4.89 2.013-6.333C5.605 1.937 9.134 2.024 11.455 2zm.23 3.36c-.362-.002-.362.553 0 .555 3.024.017 5.51 2.237 5.53 6.022.001.362.557.36.555 0-.023-4.07-2.773-6.559-6.085-6.577zm-3.07.94c-.307-.085-.606.098-.7.374-.93 2.732-.162 5.28 1.665 7.188.069.071.161.123.262.134.41.047.772-.49.447-.836-1.624-1.694-2.297-3.901-1.476-6.286.083-.25-.066-.505-.198-.574zm3.29 1.145c-.358-.022-.39.531-.034.554 1.545.097 2.43 1.055 2.43 2.628 0 .36.554.36.554 0 0-1.875-1.149-3.099-2.95-3.182zm-1.52.965c-.208.163-.239.476-.088.699.647.952.644 1.834-.004 2.748-.252.351.168.748.506.502.823-1.09.832-2.259.05-3.414a.53.53 0 00-.464-.535zm1.663.86c-.36-.011-.391.54-.034.553a.682.682 0 01.697.749c-.05.361.504.452.553.09.087-.636-.476-1.378-1.216-1.392z"/>
+        <path d="M11.398.002C9.473.028 5.331.344 3.014 2.467 1.294 4.177.693 6.698.625 9.82c-.067 3.121-.14 8.972 5.52 10.566h.005l-.004 2.42s-.038.997.625 1.199c.803.247 1.272-.511 2.038-1.33.42-.453.999-1.119 1.436-1.622 3.955.33 6.995-.424 7.34-.538.798-.257 5.314-.834 6.048-6.802.757-6.15-.369-10.037-2.982-11.784l-.001-.001c-.769-.558-3.392-1.56-8.252-1.526zM11.455 2c4.29-.028 6.68.874 7.318 1.337 2.149 1.44 3.054 4.745 2.39 10.054-.62 5.076-4.228 5.407-4.895 5.62-.292.094-3.013.769-6.488.544 0 0-2.572 3.09-3.374 3.899-.126.129-.273.18-.371.157-.138-.032-.176-.19-.174-.42l.021-3.828C4.72 17.78 1.47 16.573 1.525 9.88c.06-2.748.564-4.89 2.013-6.333C5.605 1.937 9.134 2.024 11.455 2zm.23 3.36c-.362-.002-.362.553 0 .555 3.024.017 5.51 2.237 5.53 6.022.001.362.557.36.555 0-.023-4.07-2.773-6.559-6.085-6.577zm-3.07.94c-.307-.085-.606.098-.7.374-.93 2.732-.162 5.28 1.665 7.188.069.071.161.123.262.134.41.047.772-.49.447-.836-1.624-1.694-2.297-3.901-1.476-6.286.083-.25-.066-.505-.198-.574zm3.29 1.145c-.358-.022-.39.531-.034.554 1.545.097 2.43 1.055 2.43 2.628 0 .36.554.36.554 0 0-1.875-1.149-3.099-2.95-3.182zm-1.52.865c-.208.163-.239.476-.088.699.647.952.644 1.834-.004 2.748-.252.351.168.748.506.502.823-1.09.832-2.259.05-3.414a.53.53 0 00-.464-.535zm1.663.86c-.36-.011-.391.54-.034.553a.682.682 0 01.697.749c-.05.361.504.452.553.09.087-.636-.476-1.378-1.216-1.392z"/>
       </svg>
     ),
   },
@@ -45,10 +45,8 @@ export default function ShareMenu({ title, url, className = '' }) {
   const [copied, setCopied] = useState(false)
   const ref = useRef(null)
 
-  // Resolve share URL — use current page if not provided
   const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '')
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return
     function handler(e) {
@@ -58,27 +56,19 @@ export default function ShareMenu({ title, url, className = '' }) {
     return () => document.removeEventListener('mousedown', handler)
   }, [open])
 
-  function handlePlatform(platform) {
-    window.open(platform.getUrl(shareUrl, title), '_blank', 'noopener,noreferrer')
-    setOpen(false)
-  }
-
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(shareUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     } catch {
-      // fallback
       const el = document.createElement('textarea')
       el.value = shareUrl
       document.body.appendChild(el)
       el.select()
       document.execCommand('copy')
       document.body.removeChild(el)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
@@ -92,8 +82,12 @@ export default function ShareMenu({ title, url, className = '' }) {
 
       {open && (
         <div
-          className="absolute right-0 top-[calc(100%+8px)] z-50 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 w-52"
-          style={{ animation: 'fadeSlideDown .15s ease' }}
+          className="absolute z-50 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 w-52"
+          style={{
+            animation: 'fadeSlideDown .15s ease',
+            top: 'calc(100% + 8px)',
+            right: 0,
+          }}
         >
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2 mb-2">
             Shpërndaje në
@@ -101,10 +95,13 @@ export default function ShareMenu({ title, url, className = '' }) {
 
           <div className="space-y-1">
             {PLATFORMS.map(p => (
-              <button
+              <a
                 key={p.id}
-                onClick={() => handlePlatform(p)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors text-left group"
+                href={p.getUrl(shareUrl, title)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors group"
               >
                 <span
                   className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
@@ -113,7 +110,7 @@ export default function ShareMenu({ title, url, className = '' }) {
                   {p.icon}
                 </span>
                 <span className="text-sm font-semibold text-gray-700">{p.label}</span>
-              </button>
+              </a>
             ))}
           </div>
 
