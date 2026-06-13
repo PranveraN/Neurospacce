@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
-import { Share2, Copy, Check } from 'lucide-react'
+import { Share2, Copy, Check, ExternalLink } from 'lucide-react'
 
 const PLATFORMS = [
   {
     id: 'facebook',
     label: 'Facebook',
     color: '#1877F2',
-    getUrl: (url) =>
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    getUrl: (url, title) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title || '')}`,
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -46,6 +46,10 @@ export default function ShareMenu({ title, url, className = '' }) {
   const ref = useRef(null)
 
   const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '')
+  const shareTitle = title || (typeof document !== 'undefined' ? document.title : '')
+
+  // Web Share API — available on iOS Safari, Android Chrome, etc.
+  const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
   useEffect(() => {
     if (!open) return
@@ -55,6 +59,20 @@ export default function ShareMenu({ title, url, className = '' }) {
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [open])
+
+  // On mobile: native share sheet (includes Facebook natively, works 100%)
+  // On desktop: open dropdown with platform buttons
+  async function handleMainClick() {
+    if (canNativeShare) {
+      try {
+        await navigator.share({ title: shareTitle, url: shareUrl })
+      } catch (e) {
+        if (e.name !== 'AbortError') setOpen(v => !v)
+      }
+    } else {
+      setOpen(v => !v)
+    }
+  }
 
   async function handleCopy() {
     try {
@@ -74,20 +92,17 @@ export default function ShareMenu({ title, url, className = '' }) {
   return (
     <div ref={ref} className={`relative ${className}`}>
       <button
-        onClick={() => setOpen(v => !v)}
+        onClick={handleMainClick}
         className="flex items-center gap-1.5 text-gray-400 hover:text-violet-600 transition-colors"
       >
         <Share2 size={14} /> Ndaj
       </button>
 
-      {open && (
+      {/* Desktop fallback dropdown — only shown when Web Share API is unavailable */}
+      {!canNativeShare && open && (
         <div
           className="absolute z-50 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 w-52"
-          style={{
-            animation: 'fadeSlideDown .15s ease',
-            top: 'calc(100% + 8px)',
-            right: 0,
-          }}
+          style={{ animation: 'fadeSlideDown .15s ease', top: 'calc(100% + 8px)', right: 0 }}
         >
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2 mb-2">
             Shpërndaje në
@@ -97,7 +112,7 @@ export default function ShareMenu({ title, url, className = '' }) {
             {PLATFORMS.map(p => (
               <a
                 key={p.id}
-                href={p.getUrl(shareUrl, title)}
+                href={p.getUrl(shareUrl, shareTitle)}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
