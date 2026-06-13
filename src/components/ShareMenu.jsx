@@ -60,15 +60,22 @@ export default function ShareMenu({ title, url, className = '' }) {
   }
 
   function handleFBClick(e) {
-    // On mobile use Web Share API — avoids Universal Links hijack by FB app
-    if (mobile && canNativeShare) {
-      e.preventDefault()
+    if (!mobile) {
+      // Desktop: let <a target="_blank"> work normally
       setOpen(false)
-      navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {})
       return
     }
+    // Mobile: always handle ourselves to avoid Universal Links / in-app browser issues
+    e.preventDefault()
     setOpen(false)
-    // Desktop: <a> tag handles navigation normally
+    if (canNativeShare) {
+      // Regular mobile browser — native share sheet
+      navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {})
+    } else {
+      // FB in-app browser or browser without Web Share API:
+      // same-tab navigation shows FB's share dialog directly inside FB's system
+      window.location.href = fbShareUrl(shareUrl)
+    }
   }
 
   async function handleCopy() {
