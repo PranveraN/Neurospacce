@@ -17,16 +17,37 @@ const VB_ICON = (
   </svg>
 )
 
+// Desktop: popup Facebook share dialog (626×436 — same as major news sites)
+// Mobile: fallback to copy link since FB app blocks sharer.php
+function openFacebookPopup(url) {
+  const w = 626, h = 436
+  const left = Math.round((screen.width - w) / 2)
+  const top  = Math.round((screen.height - h) / 2)
+  return window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    'fb-share-dialog',
+    `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
+  )
+}
+
+function isMobileDevice() {
+  return typeof navigator !== 'undefined' &&
+    /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+}
+
 export default function ShareMenu({ title, url, className = '' }) {
-  const [open,    setOpen]    = useState(false)
-  const [copied,  setCopied]  = useState(false)
-  const [fbHint,  setFbHint]  = useState(false)
+  const [open,   setOpen]   = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [fbHint, setFbHint] = useState(false)
   const ref = useRef(null)
 
   const shareUrl   = url || (typeof window !== 'undefined' ? window.location.href : '')
   const shareTitle = title || (typeof document !== 'undefined' ? document.title : '')
 
+  // Use Web Share API only on real mobile devices
+  const mobile         = typeof window !== 'undefined' && isMobileDevice()
   const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
+  const useNative      = mobile && canNativeShare
 
   useEffect(() => {
     if (!open) return
@@ -38,7 +59,7 @@ export default function ShareMenu({ title, url, className = '' }) {
   }, [open])
 
   async function handleMainClick() {
-    if (canNativeShare) {
+    if (useNative) {
       try {
         await navigator.share({ title: shareTitle, url: shareUrl })
       } catch (e) {
@@ -49,25 +70,18 @@ export default function ShareMenu({ title, url, className = '' }) {
     }
   }
 
-  // Facebook: kopjon linkun automatikisht + hap Facebook
-  // Kështu, edhe nëse app-i hapet pa dialog, linku është gati për t'u ngjitur
-  async function handleFacebook() {
-    try {
-      await navigator.clipboard.writeText(shareUrl)
-    } catch {
-      const el = document.createElement('textarea')
-      el.value = shareUrl
-      document.body.appendChild(el); el.select()
-      document.execCommand('copy')
-      document.body.removeChild(el)
-    }
+  // Facebook — SINKRON: window.open duhet të jetë i pari para çdo async/setTimeout
+  // që popup blockers ta lejojnë. Nëse popup bllokohet (mobile), kopjon linkun.
+  function handleFacebook() {
     setOpen(false)
-    setFbHint(true)
-    setTimeout(() => setFbHint(false), 5000)
-    // Hap Facebook pas një çasti të vogël
-    setTimeout(() => {
-      window.open(`https://www.facebook.com/`, '_blank', 'noopener,noreferrer')
-    }, 200)
+    const popup = openFacebookPopup(shareUrl)
+    const blocked = !popup || popup.closed || typeof popup.closed === 'undefined'
+    if (blocked) {
+      // Popup u bllokua (zakonisht mobile) — kopjo linkun + trego hint
+      try { navigator.clipboard.writeText(shareUrl) } catch {}
+      setFbHint(true)
+      setTimeout(() => setFbHint(false), 6000)
+    }
   }
 
   async function handleCopy() {
@@ -93,17 +107,21 @@ export default function ShareMenu({ title, url, className = '' }) {
         <Share2 size={14} /> Ndaj
       </button>
 
-      {/* Hint pas klikimit të Facebook */}
+      {/* Hint kur popup u bllokua (mobile me FB app) */}
       {fbHint && (
-        <div className="absolute z-[200] right-0 mt-2 w-64 bg-[#1877F2] text-white text-xs font-semibold rounded-2xl px-4 py-3 shadow-xl"
-          style={{ top: 'calc(100% + 8px)', animation: 'fadeSlideDown .2s ease' }}>
+        <div
+          className="absolute z-[200] right-0 w-64 bg-[#1877F2] text-white text-xs font-semibold rounded-2xl px-4 py-3 shadow-xl"
+          style={{ top: 'calc(100% + 8px)', animation: 'fadeSlideDown .2s ease' }}
+        >
           ✓ Linku u kopjua!<br/>
-          <span className="font-normal opacity-90">Krijo post të ri në Facebook dhe <strong>ngjit (paste)</strong> linkun — foto dhe titulli do të shfaqen automatikisht.</span>
+          <span className="font-normal opacity-90">
+            Hap Facebook, krijo post të ri dhe <strong>ngjit (paste)</strong> — foto shfaqet automatikisht.
+          </span>
         </div>
       )}
 
-      {/* Dropdown — vetëm kur Web Share API nuk është i disponueshëm */}
-      {!canNativeShare && open && (
+      {/* Dropdown — desktop gjithmonë, mobile vetëm pa Web Share API */}
+      {!useNative && open && (
         <div
           className="absolute z-50 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 w-56"
           style={{ animation: 'fadeSlideDown .15s ease', top: 'calc(100% + 8px)', right: 0 }}
@@ -113,7 +131,7 @@ export default function ShareMenu({ title, url, className = '' }) {
           </p>
 
           <div className="space-y-1">
-            {/* Facebook — kopjon linkun + hap FB */}
+            {/* Facebook — popup sinkron */}
             <button
               onClick={handleFacebook}
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group text-left"
@@ -122,10 +140,7 @@ export default function ShareMenu({ title, url, className = '' }) {
                 style={{ background: '#1877F218', color: '#1877F2' }}>
                 {FB_ICON}
               </span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-700">Facebook</p>
-                <p className="text-[10px] text-gray-400 leading-tight">Kopjon linkun automatikisht</p>
-              </div>
+              <span className="text-sm font-semibold text-gray-700">Facebook</span>
             </button>
 
             {/* WhatsApp */}
@@ -157,7 +172,6 @@ export default function ShareMenu({ title, url, className = '' }) {
             </a>
           </div>
 
-          {/* Kopjo linkun */}
           <div className="border-t border-gray-100 mt-2 pt-2">
             <button
               onClick={handleCopy}
