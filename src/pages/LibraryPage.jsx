@@ -84,7 +84,7 @@ function SmartPopup({ type, onClose }) {
   if (!c) return null
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 max-w-xs w-full" style={{ animation: 'libSlideUp .4s ease forwards' }}>
+    <div className="hidden sm:block fixed bottom-6 right-6 z-50 max-w-xs w-full" style={{ animation: 'libSlideUp .4s ease forwards' }}>
       <div className="relative rounded-2xl p-4 backdrop-blur-xl"
         style={{ background: 'rgba(10,10,26,0.93)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 20px 60px rgba(0,0,0,.55)' }}>
         <button onClick={() => { dismissPopupForDay(); onClose() }}
@@ -182,7 +182,7 @@ function ArticleCard({ article }) {
       <div className="relative overflow-hidden aspect-video">
         <img src={article.image} alt={article.title} loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a]/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a]/80 via-transparent to-transparent pointer-events-none" />
         <span className={`absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm ${getCatColor(article.category)}`}>
           {article.category}
         </span>
@@ -216,7 +216,7 @@ function FeaturedCard({ article, large = false }) {
       onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
       <img src={article.image} alt={article.title}
         className={`w-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 ${large ? 'h-full min-h-[280px] md:min-h-[340px]' : 'h-52'}`} />
-      <div className="absolute inset-0"
+      <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(to top,rgba(10,10,26,.95) 0%,rgba(10,10,26,.5) 50%,transparent 100%)' }} />
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{ boxShadow: 'inset 0 0 60px rgba(139,92,246,.12)' }} />
@@ -262,7 +262,7 @@ function TrendingCard({ article }) {
         </p>
         <div className="flex items-center gap-1.5">
           <Clock size={9} className="text-white/30" />
-          <span className="text-[10px] text-white/30">{article.readTime}</span>
+          <span className="text-xs text-white/30">{article.readTime}</span>
         </div>
       </div>
     </Link>
@@ -290,7 +290,7 @@ function AIPickCard({ article, rank }) {
         <p className="font-bold text-white/85 text-xs leading-snug line-clamp-2 group-hover:text-white transition-colors mb-0.5">
           {article.title}
         </p>
-        <p className="text-[10px] text-white/30">{article.author} · {article.readTime}</p>
+        <p className="text-xs text-white/30">{article.author} · {article.readTime}</p>
       </div>
       <ChevronRight size={13} className="text-white/20 group-hover:text-white/50 transition-colors shrink-0" />
     </Link>
@@ -408,6 +408,7 @@ export default function LibraryPage() {
           <div className="relative max-w-xl mx-auto">
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
             <input ref={inputRef} value={search} onChange={e => setSearch(e.target.value)}
+              type="search" autoComplete="off"
               placeholder="Kërko artikuj, tema, autorë..."
               className="w-full pl-11 pr-12 py-3.5 rounded-2xl text-sm text-white placeholder-white/25 focus:outline-none transition-all"
               style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', backdropFilter: 'blur(20px)' }}
@@ -532,7 +533,7 @@ export default function LibraryPage() {
                         <p className="font-bold text-white/80 text-xs leading-snug line-clamp-2 group-hover:text-white transition-colors">
                           {a.title}
                         </p>
-                        <p className="text-[10px] text-white/30 mt-0.5 flex items-center gap-1">
+                        <p className="text-xs text-white/30 mt-0.5 flex items-center gap-1">
                           <Clock size={8} /> {a.readTime}
                         </p>
                       </div>
