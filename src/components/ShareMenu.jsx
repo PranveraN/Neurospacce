@@ -59,6 +59,18 @@ export default function ShareMenu({ title, url, className = '' }) {
     }
   }
 
+  function handleFBClick(e) {
+    // On mobile use Web Share API — avoids Universal Links hijack by FB app
+    if (mobile && canNativeShare) {
+      e.preventDefault()
+      setOpen(false)
+      navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {})
+      return
+    }
+    setOpen(false)
+    // Desktop: <a> tag handles navigation normally
+  }
+
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(shareUrl)
@@ -92,12 +104,12 @@ export default function ShareMenu({ title, url, className = '' }) {
           </p>
 
           <div className="space-y-1">
-            {/* Facebook — <a> tag direkt, nuk bllokohet */}
+            {/* Facebook — Web Share API on mobile, new tab on desktop */}
             <a
               href={fbShareUrl(shareUrl)}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
+              onClick={handleFBClick}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group"
             >
               <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
