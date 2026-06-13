@@ -17,17 +17,8 @@ const VB_ICON = (
   </svg>
 )
 
-// Desktop: popup Facebook share dialog (626×436 — same as major news sites)
-// Mobile: fallback to copy link since FB app blocks sharer.php
-function openFacebookPopup(url) {
-  const w = 626, h = 436
-  const left = Math.round((screen.width - w) / 2)
-  const top  = Math.round((screen.height - h) / 2)
-  return window.open(
-    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-    'fb-share-dialog',
-    `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
-  )
+function fbShareUrl(url) {
+  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&display=page`
 }
 
 function isMobileDevice() {
@@ -70,18 +61,12 @@ export default function ShareMenu({ title, url, className = '' }) {
     }
   }
 
-  // Facebook — SINKRON: window.open duhet të jetë i pari para çdo async/setTimeout
-  // që popup blockers ta lejojnë. Nëse popup bllokohet (mobile), kopjon linkun.
-  function handleFacebook() {
+  // Mobile pa Web Share API (p.sh. brenda FB app): kopjo linkun + hint
+  async function handleFacebookMobileFallback() {
     setOpen(false)
-    const popup = openFacebookPopup(shareUrl)
-    const blocked = !popup || popup.closed || typeof popup.closed === 'undefined'
-    if (blocked) {
-      // Popup u bllokua (zakonisht mobile) — kopjo linkun + trego hint
-      try { navigator.clipboard.writeText(shareUrl) } catch {}
-      setFbHint(true)
-      setTimeout(() => setFbHint(false), 6000)
-    }
+    try { await navigator.clipboard.writeText(shareUrl) } catch {}
+    setFbHint(true)
+    setTimeout(() => setFbHint(false), 6000)
   }
 
   async function handleCopy() {
@@ -131,17 +116,36 @@ export default function ShareMenu({ title, url, className = '' }) {
           </p>
 
           <div className="space-y-1">
-            {/* Facebook — popup sinkron */}
-            <button
-              onClick={handleFacebook}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group text-left"
-            >
-              <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                style={{ background: '#1877F218', color: '#1877F2' }}>
-                {FB_ICON}
-              </span>
-              <span className="text-sm font-semibold text-gray-700">Facebook</span>
-            </button>
+            {/* Facebook — tab i ri, dialog share i Facebook (punon në desktop) */}
+            {mobile ? (
+              <button
+                onClick={handleFacebookMobileFallback}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group text-left"
+              >
+                <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+                  style={{ background: '#1877F218', color: '#1877F2' }}>
+                  {FB_ICON}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-700">Facebook</p>
+                  <p className="text-[10px] text-gray-400">Kopjon linkun automatikisht</p>
+                </div>
+              </button>
+            ) : (
+              <a
+                href={fbShareUrl(shareUrl)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 transition-colors group"
+              >
+                <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+                  style={{ background: '#1877F218', color: '#1877F2' }}>
+                  {FB_ICON}
+                </span>
+                <span className="text-sm font-semibold text-gray-700">Facebook</span>
+              </a>
+            )}
 
             {/* WhatsApp */}
             <a
