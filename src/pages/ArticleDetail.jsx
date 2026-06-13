@@ -244,7 +244,7 @@ export default function ArticleDetail() {
               </div>
               <ShareMenu
                 title={article.title}
-                url={`https://myneurosphera.com/articles/${article.id}`}
+                url={`${window.location.origin}/articles/${article.id}`}
                 className="ml-auto"
               />
             </div>
@@ -364,7 +364,7 @@ export default function ArticleDetail() {
                 <div className="flex items-center gap-3">
                   <ShareMenu
                     title={article.title}
-                    url={`https://myneurosphera.com/articles/${article.id}`}
+                    url={`${window.location.origin}/articles/${article.id}`}
                     className="text-sm"
                   />
                   <Link to="/ask"

@@ -1,5 +1,9 @@
 import { readFileSync } from 'fs'
-import { join } from 'path'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname  = dirname(__filename)
 
 // Article metadata for OG tags (id, title, excerpt, image)
 const ARTICLES = [
@@ -67,11 +71,18 @@ let _baseHtml = null
 
 function getBaseHtml() {
   if (_baseHtml) return _baseHtml
-  try {
-    _baseHtml = readFileSync(join(process.cwd(), 'dist', 'index.html'), 'utf8')
-  } catch {
-    _baseHtml = readFileSync(join(process.cwd(), 'index.html'), 'utf8')
+  // Try multiple paths — Vercel bundles includeFiles relative to project root (/var/task)
+  const candidates = [
+    join(process.cwd(), 'dist', 'index.html'),
+    join(__dirname, '..', 'dist', 'index.html'),
+    join(__dirname, 'dist', 'index.html'),
+    join(process.cwd(), 'index.html'),
+  ]
+  for (const p of candidates) {
+    try { _baseHtml = readFileSync(p, 'utf8'); return _baseHtml } catch {}
   }
+  // Bare-minimum fallback so the function always returns valid HTML
+  _baseHtml = '<!DOCTYPE html><html lang="sq"><head><title>NeuroSphera</title></head><body></body></html>'
   return _baseHtml
 }
 
@@ -83,9 +94,11 @@ function esc(str) {
     .replace(/>/g, '&gt;')
 }
 
+// Strip all Unsplash params and rebuild cleanly — avoids the ?→& bug from partial param removal
 function forceJpeg(imgUrl) {
   if (!imgUrl || !imgUrl.includes('unsplash.com')) return imgUrl
-  return imgUrl.replace(/[?&]auto=format/g, '') + (imgUrl.includes('?') ? '&fm=jpg' : '?fm=jpg')
+  const [base] = imgUrl.split('?')
+  return `${base}?w=1200&h=630&fit=crop&fm=jpg&q=80`
 }
 
 function injectOG(html, { title, description, image, url }) {
@@ -98,6 +111,7 @@ function injectOG(html, { title, description, image, url }) {
     `<meta property="og:image:type" content="image/jpeg" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="${esc(title)}" />`,
     `<meta property="og:url" content="${esc(url)}" />`,
     `<meta property="og:type" content="article" />`,
     `<meta property="og:site_name" content="NeuroSphera" />`,
@@ -106,27 +120,13 @@ function injectOG(html, { title, description, image, url }) {
     `<meta name="twitter:title" content="${esc(title)}" />`,
     `<meta name="twitter:description" content="${esc(description)}" />`,
     `<meta name="twitter:image" content="${esc(img)}" />`,
+    `<meta name="twitter:image:alt" content="${esc(title)}" />`,
   ].join('\n    ')
 
   return html
-    // Remove all generic OG/Twitter tags that would conflict with article-specific ones
-    .replace(/<meta property="og:title"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:description"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:image"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:image:width"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:image:height"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:type"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:url"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:site_name"[^>]*\/?>/g, '')
-    .replace(/<meta name="twitter:card"[^>]*\/?>/g, '')
-    .replace(/<meta name="twitter:title"[^>]*\/?>/g, '')
-    .replace(/<meta name="twitter:description"[^>]*\/?>/g, '')
-    .replace(/<meta name="twitter:image"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:image:secure_url"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:image:type"[^>]*\/?>/g, '')
-    .replace(/<meta property="og:locale"[^>]*\/?>/g, '')
-    // Inject before </head>
-    .replace('</head>', `  ${tags}\n  </head>`)
+    .replace(/<meta\s+property="og:[^"]*"[^>]*\/?>/gi, '')
+    .replace(/<meta\s+name="twitter:[^"]*"[^>]*\/?>/gi, '')
+    .replace(/<\/head>/i, `  ${tags}\n  </head>`)
 }
 
 export default function handler(req, res) {
@@ -137,6 +137,7 @@ export default function handler(req, res) {
 
   if (!article) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
     return res.send(html)
   }
 
