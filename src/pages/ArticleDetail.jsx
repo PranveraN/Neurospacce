@@ -367,10 +367,10 @@ export default function ArticleDetail() {
                     url={`${window.location.origin}/articles/${article.id}`}
                     className="text-sm"
                   />
-                  <Link to="/ask"
-                    className="flex items-center gap-2 px-5 py-3 bg-violet-600 text-white font-bold rounded-xl text-sm hover:bg-violet-500 transition-colors shadow-md">
-                    Pyet {article.author.split(' ')[0]} <ArrowRight size={14} />
-                  </Link>
+                  <span
+                    className="flex items-center gap-2 px-5 py-3 bg-gray-200 text-gray-400 font-bold rounded-xl text-sm cursor-not-allowed select-none">
+                    Pyet ekspertin <span className="text-[10px] bg-gray-300 text-gray-500 px-1.5 py-0.5 rounded-full font-semibold">Shpejt</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -387,10 +387,9 @@ export default function ArticleDetail() {
               <p className="text-white/70 text-sm leading-relaxed mb-4">
                 Psikologët tanë i përgjigjen pyetjeve tuaja falas dhe anonim.
               </p>
-              <Link to="/ask"
-                className="block text-center py-2.5 bg-white text-violet-700 font-bold rounded-xl text-sm hover:bg-violet-50 transition-colors">
-                Pyet psikologun
-              </Link>
+              <span className="block text-center py-2.5 bg-white/20 text-white/50 font-bold rounded-xl text-sm cursor-not-allowed select-none">
+                Shpejt disponibël ✦
+              </span>
             </div>
 
             {/* App CTA */}
