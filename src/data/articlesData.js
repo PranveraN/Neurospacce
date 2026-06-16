@@ -504,7 +504,7 @@ export const ARTICLES = [
     title: 'GTD (Getting Things Done): Zbraz mendjen për të menduar',
     category: 'Produktivitet',
     excerpt: '"Mendja duhet të jetë si ujë", pa barrë detyrave të paplasifikuara. GTD e zbraz mendjen për të menduar, jo për të mbajtur mend.',
-    image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=800&q=80',
     date: '12 Maj 2026', readTime: '6 min', author: 'NeuroSphera', featured: false,
     content: [
       'David Allen vëzhgoi: stresi nuk vjen nga shumë punë, por nga detyrat e paplasifikuara që zënë hapësirë mendore. "Open loops" konsumojnë kujtesën e punës vazhdimisht, duke zvogëluar kapacitetin kognitiv disponibël.',
@@ -545,7 +545,7 @@ export const ARTICLES = [
     title: 'Sfida 30-ditore kognitive: Dual N-Back, meditim dhe lexim aktiv',
     category: 'Labs',
     excerpt: 'Kombinim i tre teknikave me bazë shkencore: 55 minuta/ditë për 30 ditë. Protokoll i plotë me matje para dhe pas.',
-    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80',
     date: '13 Maj 2026', readTime: '8 min', author: 'NeuroSphera', featured: false,
     content: [
       'Kujtesa e punës parashikon performancën akademike dhe profesionale. Jaeggi et al. (2008, Michigan) treguan: Dual N-Back rrit kujtesën e punës dhe inteligjencën fluide me 40% pas 20 sesionesh.',
@@ -571,7 +571,7 @@ export const ARTICLES = [
     title: 'Protokolli 8-javësh i gjumit optimal (CBT-I vetë-zbatim)',
     category: 'Labs',
     excerpt: 'CBT-I adaptuar si protokoll pa terapis. 8 javë, 5 strategji klinike të provuara. 76% efektivitet i raportuar pa ilaçe.',
-    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
     date: '17 Maj 2026', readTime: '8 min', author: 'NeuroSphera', featured: false,
     content: [
       'CBT-I (Cognitive Behavioral Therapy for Insomnia), trajtimi i miratuar si linja e parë para ilaçeve, ka 80% efektivitet për insomninë kronike. Protokolli adapton parimet e tij për vetë-zbatim.',
@@ -612,7 +612,7 @@ export const ARTICLES = [
     title: 'Si një startup zbatoi neuroshkencën në kulturën e punës',
     category: 'Studim Rasti',
     excerpt: 'Eliminuan mbledhjet e mëngjesit, zbatuan deep work blocks dhe No-Meeting Fridays. Produktiviteti u rrit 28% brenda 3 muajsh.',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
     date: '20 Maj 2026', readTime: '7 min', author: 'NeuroSphera', featured: false,
     content: [
       'TechTiranë (emri i ndryshuar), startup me 23 punonjës, vuante nga produktiviteti i ulët pavarësisht orëve të gjata. CEO-ja, Gentian, pas leximit të "Deep Work" vendosi të testonte ndryshimet strukturore.',
@@ -627,7 +627,7 @@ export const ARTICLES = [
     title: '10 kurse online falas nga Harvard, MIT dhe Stanford',
     category: 'Burime',
     excerpt: 'Harvard, MIT, Stanford dhe Yale ofrojnë kurse falas mbi psikologjinë, neuroshkencën dhe produktivitetin. Lista e kuruar me kujdes.',
-    image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80',
     date: '14 Maj 2026', readTime: '4 min', author: 'NeuroSphera', featured: true,
     content: [
       '"The Science of Well-Being" (Yale/Coursera): kursi me enrollment-in më të lartë në historinë e Coursera-s (3.7M+ studentë). Mëson psikologjinë pozitive dhe praktike. "Learning How to Learn" (UCSD/Coursera), Dr. Barbara Oakley: neuroshkenca e mësimit, prokrastinimit dhe fokusit. Absolutisht i domosdoshëm.',
@@ -640,7 +640,7 @@ export const ARTICLES = [
     title: '7 studime themelore që riformuan psikologjinë moderne',
     category: 'Burime',
     excerpt: 'Nga eksperimenti i Milgram-it te Attachment Theory: hulumtimet që çdo person i informuar duhet t\'i njohë.',
-    image: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80',
     date: '16 Maj 2026', readTime: '7 min', author: 'NeuroSphera', featured: false,
     content: [
       '(1) Eksperimenti Milgram (1963): 65% e njerëzve "të zakonshëm" u bindën t\'u jepnin goditje elektrike letale kur urdhëroheshin. Mëson: bindja ndaj autoritetit është instinktive. (2) Stanford Prison (Zimbardo, 1971): rolet sociale ndryshojnë sjellje rrënjësisht brenda ditësh. (3) Marshmallow Test (Mischel, 1972): fëmijët që vonuan gratifikimin kishin rezultate më të mira 20 vjet më vonë.',
@@ -735,7 +735,7 @@ export const ARTICLES = [
     title: 'Arti i diskutimit shkencor: Si të debatoni pa konflikte bosh',
     category: 'Komunitet',
     excerpt: 'Shumica e debateve online janë emocion, jo arsye. Kjo udhëzues praktike të mëson si të diskutoni ideat me integritet intelektual.',
-    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1507537297879-f86f8e5faffb?auto=format&fit=crop&w=800&q=80',
     date: '18 Maj 2026', readTime: '5 min', author: 'NeuroSphera', featured: false,
     content: [
       'Hierarkia e argumenteve (Paul Graham): (1) Ad hominem (sulm personi), niveli më i ulët. (2) Kundërvënie ton-i. (3) Kundërvënie pa argumente. (4) Kundërvënie me argumente. (5) Refutim. (6) Refutim i pikës qendrore, niveli më i lartë. Shumica e debateve online qëndrojnë në nivelet 1-3.',
