@@ -7,7 +7,7 @@ import {
   Play, Pause, RotateCcw, Volume2, VolumeX, ChevronRight,
   ChevronLeft, CheckCircle, AlertCircle, Sparkles, Lock,
   Eye, Cpu, ArrowRight, Star, Flame, BarChart2, Headphones,
-  Upload, X,
+  Upload, X, Clock,
 } from 'lucide-react'
 
 /* ─── shared tokens ─────────────────────────────────────── */
